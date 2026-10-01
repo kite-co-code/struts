@@ -15,7 +15,8 @@
  *   --btn--color, and each colour's --hover state.
  *
  * Read with a fallback (set on the button):
- *   --btn--size        btn--square's minimum size, defaults to 44px
+ *   --btn--size        btn--square's minimum size, defaults to 44px. Below
+ *                      44px, add hit-area to keep the target 44px
  *
  * Icon knobs (set on the button or the icon):
  *   --btn--icon        url() of a mask image for an empty .btn__icon
@@ -109,6 +110,7 @@
 /* Equal sides, for a single icon or number. Pair an icon with sr-only text. */
 @utility btn--square {
     --btn--padding-x: 0.3em;
+    --btn--padding-y: 0.3em;
     --btn--border-radius: var(--radius-sm);
 
     min-inline-size: var(--btn--size, --spacing(44));

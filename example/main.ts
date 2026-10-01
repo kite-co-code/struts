@@ -5,13 +5,15 @@ import '../js/disclosure';
 import '../components';
 
 // Demo only: the colour scheme switcher in the header. One button cycles
-// auto → light → dark; hidden without JS, where the OS setting applies.
+// auto → light → dark, showing the current scheme's icon with its name as
+// sr-only text; hidden without JS, where the OS setting applies.
 type Scheme = 'auto' | 'light' | 'dark';
 const next: Record<Scheme, Scheme> = { auto: 'light', light: 'dark', dark: 'auto' };
 const labels: Record<Scheme, string> = { auto: 'Auto', light: 'Light', dark: 'Dark' };
 
 const toggle = document.querySelector<HTMLButtonElement>('[data-scheme-toggle]');
 const label = toggle?.querySelector<HTMLElement>('[data-scheme-label]');
+const icons = toggle?.querySelectorAll<SVGElement>('[data-scheme-icon]') ?? [];
 let current: Scheme = 'auto';
 
 function setScheme(scheme: Scheme): void {
@@ -22,6 +24,9 @@ function setScheme(scheme: Scheme): void {
         document.documentElement.dataset.scheme = scheme;
     }
     if (label) label.textContent = labels[scheme];
+    for (const icon of icons) {
+        icon.toggleAttribute('hidden', icon.dataset.schemeIcon !== scheme);
+    }
 }
 
 if (toggle) {

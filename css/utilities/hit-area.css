@@ -1,0 +1,21 @@
+/* ---------------------------------------------------------------------------
+ * Hit area
+ *
+ * Grows the clickable area of a small control to at least 44px, centred,
+ * without changing how big it looks. An invisible ::before does it, so the
+ * element needs its ::before free.
+ *   <button class="btn btn--square hit-area [--btn--size:--spacing(32)]">…</button>
+ *
+ * Keep 44px clear around the control's centre, or the areas overlap.
+ * Knob, read with a fallback: --hit-area--size (44px).
+ * ------------------------------------------------------------------------- */
+
+@utility hit-area {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: min(0px, (100% - var(--hit-area--size, --spacing(44))) / 2);
+    }
+}

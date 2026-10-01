@@ -59,6 +59,7 @@
 @import "./utilities/rule.css";
 @import "./utilities/img-fit.css";
 @import "./utilities/button-reset.css";
+@import "./utilities/hit-area.css";
 @import "./utilities/focus-none.css";
 @import "./utilities/aria-expanded.css";
 @import "./utilities/scroll-lock.css";
