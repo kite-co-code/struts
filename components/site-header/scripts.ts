@@ -14,6 +14,8 @@
  * - Closing the nav when a link in it is clicked (same-page links would
  *   otherwise leave it open), when keyboard focus moves out of it, and when
  *   the toggle disappears (the viewport has grown to show the nav inline).
+ *   Browsers without popover show the nav as a plain list, so none of the
+ *   closing applies there.
  *
  * Data attributes on the header:
  *   data-site-header-threshold="px"   scroll this far in one direction before
@@ -23,6 +25,8 @@
 import { getNumberDataAttribute } from '../../js/data-attributes';
 import { debounce } from '../../js/debounce';
 import { define } from '../../js/dynamic-elements';
+
+const supportsPopover = typeof HTMLElement !== 'undefined' && 'popover' in HTMLElement.prototype;
 
 export default class SiteHeader {
     readonly el: HTMLElement;
@@ -58,7 +62,8 @@ export default class SiteHeader {
     }
 
     closeNav(): void {
-        if (this.nav?.matches(':popover-open')) this.nav.hidePopover();
+        // matches(':popover-open') throws where popover isn't supported.
+        if (supportsPopover && this.nav?.matches(':popover-open')) this.nav.hidePopover();
     }
 
     destroy(): void {
@@ -99,7 +104,8 @@ export default class SiteHeader {
     };
 
     private onResize = debounce((): void => {
-        if (this.toggle && !this.toggle.checkVisibility()) this.closeNav();
+        // getClientRects() rather than checkVisibility(), which Safari only has from 17.4.
+        if (this.toggle && this.toggle.getClientRects().length === 0) this.closeNav();
     }, 100);
 
     private onNavClick = (event: MouseEvent): void => {

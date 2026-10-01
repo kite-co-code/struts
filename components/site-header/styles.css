@@ -27,6 +27,9 @@
  * viewport grows past md. Without JS the header just stays put. Keyboard
  * focus or an open nav always brings a hidden header back.
  *
+ * Browsers without popover get no panel: the toggle is hidden and the nav
+ * shows as a list under the brand, with the header no longer sticky under md.
+ *
  * The header must be the first thing at the top of the page: the panel opens
  * at --site-header--block-size from the top of the viewport. Its background
  * is the role colour, so a surface-* class on the header colours it and the
@@ -57,7 +60,14 @@
     background-color: var(--color-background);
 
     @variant max-md {
-        block-size: var(--site-header--block-size);
+        @supports selector(:popover-open) {
+            block-size: var(--site-header--block-size);
+        }
+
+        /* No popover: the nav shows under the bar, too tall to stick */
+        @supports not selector(:popover-open) {
+            position: static;
+        }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -76,6 +86,13 @@
     gap: --spacing(12);
     block-size: 100%;
 
+    @variant max-md {
+        @supports not selector(:popover-open) {
+            flex-wrap: wrap;
+            padding-block: --spacing(16);
+        }
+    }
+
     @variant md {
         gap: --spacing(32);
         padding-block: --spacing(16);
@@ -87,8 +104,15 @@
 }
 
 @utility site-header__toggle {
-    /* .site-header adds specificity, so this beats a btn class on the same element */
+    /* .site-header adds specificity, so these beat a btn class on the same element */
     @variant md {
+        .site-header & {
+            display: none;
+        }
+    }
+
+    /* Nothing to toggle without popover: the nav shows as a list */
+    @supports not selector(:popover-open) {
         .site-header & {
             display: none;
         }
@@ -159,60 +183,67 @@
         color: inherit;
     }
 
-    /* A panel filling the viewport below the bar */
     @variant max-md {
-        position: fixed;
-        inset: var(--site-header--block-size) 0 0;
-        inline-size: auto;
-        block-size: auto;
-        max-inline-size: none;
-        max-block-size: none;
-        margin: 0;
-        padding-block: --spacing(32) --spacing(48);
-        padding-inline: var(--gutter);
-        border: 0;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        background-color: var(--color-background);
-        color: var(--color-foreground);
+        /* A panel filling the viewport below the bar, where popover is supported */
+        @supports selector(:popover-open) {
+            position: fixed;
+            inset: var(--site-header--block-size) 0 0;
+            inline-size: auto;
+            block-size: auto;
+            max-inline-size: none;
+            max-block-size: none;
+            margin: 0;
+            padding-block: --spacing(32) --spacing(48);
+            padding-inline: var(--gutter);
+            border: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            background-color: var(--color-background);
+            color: var(--color-foreground);
 
-        /*
-         * Wipe down from the bar, then fade the links in. display and overlay
-         * keep it in the top layer until the closing transition ends.
-         */
-        @media (prefers-reduced-motion: no-preference) {
-            clip-path: inset(0 0 100%);
-            transition:
-                clip-path var(--site-header--transition-duration) var(--ease-out-quart),
-                display var(--site-header--transition-duration) allow-discrete,
-                overlay var(--site-header--transition-duration) allow-discrete;
-
-            & > * {
-                opacity: 0;
-                translate: 0 --spacing(-8);
-                transition: transition(opacity, translate);
-            }
-
-            &:popover-open {
-                clip-path: inset(0);
+            /*
+             * Wipe down from the bar, then fade the links in. display and overlay
+             * keep it in the top layer until the closing transition ends.
+             */
+            @media (prefers-reduced-motion: no-preference) {
+                clip-path: inset(0 0 100%);
+                transition:
+                    clip-path var(--site-header--transition-duration) var(--ease-out-quart),
+                    display var(--site-header--transition-duration) allow-discrete,
+                    overlay var(--site-header--transition-duration) allow-discrete;
 
                 & > * {
-                    opacity: 1;
-                    translate: 0 0;
-                    transition-delay: 100ms;
+                    opacity: 0;
+                    translate: 0 --spacing(-8);
+                    transition: transition(opacity, translate);
                 }
-            }
 
-            @starting-style {
                 &:popover-open {
-                    clip-path: inset(0 0 100%);
+                    clip-path: inset(0);
 
                     & > * {
-                        opacity: 0;
-                        translate: 0 --spacing(-8);
+                        opacity: 1;
+                        translate: 0 0;
+                        transition-delay: 100ms;
+                    }
+                }
+
+                @starting-style {
+                    &:popover-open {
+                        clip-path: inset(0 0 100%);
+
+                        & > * {
+                            opacity: 0;
+                            translate: 0 --spacing(-8);
+                        }
                     }
                 }
             }
+        }
+
+        /* Otherwise a plain list on its own row under the brand */
+        @supports not selector(:popover-open) {
+            flex-basis: 100%;
         }
     }
 }
