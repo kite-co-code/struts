@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Patterns · struts</title>
+        <meta name="description" content="struts' patterns: reusable blocks with a custom-property API, some with a script." />
+        <!-- @head -->
+        <script type="module" src="../docs.ts"></script>
+    </head>
+    <body>
+        <!-- @header -->
+
+        <main id="main" tabindex="-1">
+            <section class="section layout-grid layout-grid--ruled" aria-labelledby="page-title">
+                <div class="stack-24">
+                    <h1 id="page-title">Patterns</h1>
+                    <p class="type-h4 max-w-[48ch]">
+                        Reusable blocks that work on any markup. Each has a small custom-property API, and some have a
+                        script.
+                    </p>
+                    <p class="max-w-[60ch]">
+                        Patterns are BEM blocks written as Tailwind <code>@utility</code>, so they take variants
+                        (<code>md:btn--small</code>) and can be <code>@apply</code>'d. Their knobs follow
+                        <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/003-custom-property-api.md"
+                            >the custom-property API</a
+                        >. Each header comment below is the file's own: it's the API.
+                    </p>
+                    <p class="type-label-sm">css/patterns/ · js/</p>
+                </div>
+            </section>
+
+            <div class="layout-grid layout-grid--ruled rule-block-start">
+                <div class="docs-layout">
+                    <!-- @toc -->
+
+                    <div>
+                        <section id="layout-group" class="docs-group">
+                            <h2>Layout</h2>
+
+                            <section id="layout" class="docs-item">
+                                <h3>Layout grid</h3>
+                                <p>
+                                    A page grid with named tracks. Children sit in the content track unless they ask for
+                                    another. Outside the grid, the same classes cap the width and centre the element.
+                                    Why: <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/006-layout.md">layout</a>.
+                                </p>
+                                <docs-example>
+                                    <div class="layout-grid gap-y-8">
+                                        <div class="layout-full demo-box">layout-full</div>
+                                        <div class="layout-wide demo-box">layout-wide</div>
+                                        <div class="demo-box">content (default)</div>
+                                        <div class="layout-narrow demo-box">layout-narrow</div>
+                                        <div class="layout-start demo-box">layout-start</div>
+                                        <div class="layout-end demo-box">layout-end</div>
+                                    </div>
+                                </docs-example>
+                                <docs-example>
+                                    <div class="stack-8">
+                                        <div class="layout-wide demo-box">layout-wide, not in a grid</div>
+                                        <div class="layout-width-xs demo-box">layout-width-xs</div>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/layout.css"></docs-source>
+                            </section>
+
+                            <section id="section" class="docs-item">
+                                <h3>Section</h3>
+                                <p>Vertical padding for a page band. Combine it with a surface and the layout grid.</p>
+                                <docs-example>
+                                    <div class="section surface-lilac layout-grid">
+                                        <p class="demo-box">section surface-lilac layout-grid</p>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/section.css"></docs-source>
+                            </section>
+
+                            <section id="grids" class="docs-item">
+                                <h3>Grids</h3>
+                                <docs-example>
+                                    <div class="stack-16">
+                                        <ul class="grid-simple cols-2 md:cols-4 list-reset">
+                                            <li class="demo-box">grid-simple</li>
+                                            <li class="demo-box">cols-2</li>
+                                            <li class="demo-box">md:cols-4</li>
+                                            <li class="demo-box">4</li>
+                                        </ul>
+                                        <ul class="grid-auto list-reset">
+                                            <li class="demo-box">grid-auto</li>
+                                            <li class="demo-box">fits</li>
+                                            <li class="demo-box">as many</li>
+                                            <li class="demo-box">as it can</li>
+                                        </ul>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/grid.css"></docs-source>
+                            </section>
+
+                            <section id="flex-grid" class="docs-item">
+                                <h3>Flex grid</h3>
+                                <docs-example>
+                                    <ul class="flex-grid cols-3 justify-center list-reset">
+                                        <li class="demo-box">flex-grid</li>
+                                        <li class="demo-box">cols-3</li>
+                                        <li class="demo-box">centres</li>
+                                        <li class="demo-box">the last</li>
+                                        <li class="demo-box">row</li>
+                                    </ul>
+                                </docs-example>
+                                <docs-source src="css/patterns/flex-grid.css"></docs-source>
+                            </section>
+
+                            <section id="flex-list" class="docs-item">
+                                <h3>Flex list</h3>
+                                <docs-example>
+                                    <ul class="flex-list">
+                                        <li class="tag">Websites</li>
+                                        <li class="tag">CMS &amp; Content Systems</li>
+                                        <li class="tag">Strategy</li>
+                                    </ul>
+                                </docs-example>
+                                <docs-source src="css/patterns/flex-list.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="text" class="docs-group">
+                            <h2>Text</h2>
+
+                            <section id="type-styles" class="docs-item">
+                                <h3>Type styles</h3>
+                                <p>
+                                    Family and weight composed with a <a href="/foundations/#type-scale">size token</a>.
+                                    Headings get theirs by default.
+                                </p>
+                                <docs-example>
+                                    <div class="stack-12">
+                                        <p class="type-label">type-label: a surtitle</p>
+                                        <p class="type-h3">type-h3 on a paragraph</p>
+                                        <p class="type-meta">type-meta: captions, credits and dates</p>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/type.css"></docs-source>
+                            </section>
+
+                            <section id="flow" class="docs-item">
+                                <h3>Flow</h3>
+                                <p>
+                                    Space between siblings, declared by each element: a paragraph after a heading sits
+                                    closer than a heading after a paragraph. For one fixed gap, use
+                                    <a href="/utilities/#stack">stack</a>. Why:
+                                    <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/005-flow-and-rhythm.md"
+                                        >flow and rhythm</a
+                                    >.
+                                </p>
+                                <docs-example>
+                                    <div class="flow">
+                                        <h4>A heading</h4>
+                                        <p>Each child sets its own space above.</p>
+                                        <p>Paragraphs sit a base step apart.</p>
+                                        <figure class="bg-lilac p-8 rounded-sm">A figure falls back to layout space.</figure>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/flow.css"></docs-source>
+                            </section>
+
+                            <section id="prose" class="docs-item">
+                                <h3>Prose</h3>
+                                <p>Flow plus a reading measure and list styling, for rich text you don't control.</p>
+                                <docs-example>
+                                    <div class="prose">
+                                        <h3>Rich text from a CMS</h3>
+                                        <p>Lists get their markers back inside prose.</p>
+                                        <ul>
+                                            <li>And spacing between items</li>
+                                            <li>
+                                                Nested lists
+                                                <ul>
+                                                    <li>indent further</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <ol>
+                                            <li>Ordered lists use numbers</li>
+                                            <li>Like this</li>
+                                        </ol>
+                                        <div class="not-prose">
+                                            <ul class="flex-list">
+                                                <li>not-prose</li>
+                                                <li>leaves</li>
+                                                <li>this list</li>
+                                                <li>alone</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/prose.css"></docs-source>
+                            </section>
+
+                            <section id="link" class="docs-item">
+                                <h3>Link</h3>
+                                <docs-example>
+                                    <p class="flex-list [--gap:--spacing(24)]">
+                                        <a href="#link">The default link</a>
+                                        <a class="link--subtle" href="#link">link--subtle</a>
+                                        <a class="link--foreground" href="#link">link--foreground</a>
+                                    </p>
+                                </docs-example>
+                                <docs-source src="css/patterns/link.css"></docs-source>
+                            </section>
+
+                            <section id="blockquote" class="docs-item">
+                                <h3>Blockquote</h3>
+                                <docs-example>
+                                    <blockquote>
+                                        <p>Kite Co. brought both deep technical expertise and genuine care to every stage.</p>
+                                        <cite>The client</cite>
+                                    </blockquote>
+                                </docs-example>
+                                <docs-source src="css/patterns/blockquote.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="controls" class="docs-group">
+                            <h2>Controls</h2>
+
+                            <section id="button" class="docs-item">
+                                <h3>Button</h3>
+                                <docs-example>
+                                    <p class="flex-list">
+                                        <a class="btn" href="#button">Button</a>
+                                        <a class="btn btn--secondary" href="#button">Secondary</a>
+                                        <button class="btn btn--ghost" type="button">Ghost</button>
+                                        <button class="btn btn--small" type="button">Small</button>
+                                        <button class="btn btn--square" type="button">
+                                            <span class="btn__icon [--btn--icon:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%207h9.6L7.3%202.7l1.4-1.4L15.4%208l-6.7%206.7-1.4-1.4L11.6%209H2z%22/%3E%3C/svg%3E')]"></span>
+                                            <span class="sr-only">Next</span>
+                                        </button>
+                                    </p>
+                                </docs-example>
+                                <docs-source src="css/patterns/button.css"></docs-source>
+                            </section>
+
+                            <section id="tag" class="docs-item">
+                                <h3>Tag</h3>
+                                <docs-example>
+                                    <ul class="flex-list">
+                                        <li class="tag">Websites</li>
+                                        <li><a class="tag" href="#tag">A linked tag</a></li>
+                                    </ul>
+                                </docs-example>
+                                <docs-source src="css/patterns/tag.css"></docs-source>
+                            </section>
+
+                            <section id="form-controls" class="docs-item">
+                                <h3>Form controls</h3>
+                                <p>
+                                    Classes for form markup you control. The opt-in
+                                    <a href="/foundations/#form-elements">form defaults</a> apply them to bare elements.
+                                </p>
+                                <docs-example>
+                                    <div class="max-w-(--container-2xs) stack-16">
+                                        <label class="stack-8 block">
+                                            <span class="type-label-sm">input</span>
+                                            <input class="input" type="email" placeholder="ada@example.com" />
+                                        </label>
+                                        <label class="stack-8 block">
+                                            <span class="type-label-sm">select</span>
+                                            <select class="select">
+                                                <option>One</option>
+                                                <option>Two</option>
+                                            </select>
+                                        </label>
+                                        <div class="input-group">
+                                            <label class="sr-only" for="search">Search</label>
+                                            <input id="search" type="search" placeholder="input-group" />
+                                            <button class="btn btn--small" type="button">Search</button>
+                                        </div>
+                                        <label class="flex items-center gap-8"><input class="checkbox" type="checkbox" checked /> checkbox</label>
+                                        <label class="flex items-center gap-8"><input class="radio" type="radio" name="radio-demo" checked /> radio</label>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/input.css css/patterns/select.css css/patterns/checkbox.css css/patterns/radio.css"></docs-source>
+                            </section>
+
+                            <section id="focus" class="docs-item">
+                                <h3>Focus ring</h3>
+                                <p>
+                                    On <code>:focus-visible</code> only, in the context's foreground. Tab through this
+                                    example to see it on each surface.
+                                </p>
+                                <docs-example>
+                                    <p class="flex-list">
+                                        <a class="btn" href="#focus">On the page</a>
+                                        <span class="surface-blue p-16 rounded-md"><a class="btn" href="#focus">On blue</a></span>
+                                    </p>
+                                </docs-example>
+                                <docs-source src="css/patterns/focus.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="media" class="docs-group">
+                            <h2>Media</h2>
+
+                            <section id="media-embed" class="docs-item">
+                                <h3>Media embed</h3>
+                                <docs-example>
+                                    <figure class="media-embed max-w-(--container-2xs)">
+                                        <iframe
+                                            title="An embedded page"
+                                            srcdoc="<p style='font: 1rem system-ui; padding: 1rem'>An iframe or video, held at 16 / 9</p>"
+                                        ></iframe>
+                                        <figcaption>A figcaption under the embed</figcaption>
+                                    </figure>
+                                </docs-example>
+                                <docs-source src="css/patterns/media-embed.css"></docs-source>
+                            </section>
+
+                            <section id="icons" class="docs-item">
+                                <h3>Icons</h3>
+                                <p>
+                                    Both draw in <code>currentColor</code>, so icons follow the text on every surface.
+                                </p>
+                                <docs-example>
+                                    <p class="flex items-center gap-24 type-h3">
+                                        <span class="mask-icon [mask-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2%207h9.6L7.3%202.7l1.4-1.4L15.4%208l-6.7%206.7-1.4-1.4L11.6%209H2z%22/%3E%3C/svg%3E')]"></span>
+                                        <span class="cross block size-24" aria-hidden="true"></span>
+                                    </p>
+                                </docs-example>
+                                <docs-source src="css/patterns/mask-icon.css css/patterns/cross.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="interaction" class="docs-group">
+                            <h2>Interaction</h2>
+                            <p>
+                                Patterns with a script. Each hangs off <code>data-*</code> hooks, is set up with
+                                <a href="/utilities/#define"><code>define()</code></a> so it works on markup added later,
+                                and has a working state without JS. Why:
+                                <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/008-progressive-enhancement.md"
+                                    >progressive enhancement</a
+                                >.
+                            </p>
+
+                            <section id="disclosure" class="docs-item">
+                                <h3>Disclosure</h3>
+                                <p>
+                                    For a simple accordion, prefer native <code>&lt;details name&gt;</code>: it needs no
+                                    script. Use this when the trigger and target can't be a summary and details.
+                                </p>
+                                <docs-example>
+                                    <div class="stack-8">
+                                        <button class="btn btn--secondary" type="button" aria-controls="answer-1" aria-expanded="false">
+                                            <span data-show-collapsed>Show the answer</span>
+                                            <span data-show-expanded>Hide the answer</span>
+                                        </button>
+                                        <div id="answer-1" data-disclosure data-disclosure-animate hidden>
+                                            <p class="surface-white p-16 rounded-md">
+                                                Hidden with <code>hidden</code> and <code>inert</code>. Press Escape inside to
+                                                close it. <a href="#disclosure">Focusable link example</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </docs-example>
+                                <docs-example>
+                                    <div class="stack-8">
+                                        <details name="faq">
+                                            <summary>First question</summary>
+                                            <p>Only one in the group stays open.</p>
+                                        </details>
+                                        <details name="faq">
+                                            <summary>Second question</summary>
+                                            <p>Opening this closes the first.</p>
+                                        </details>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="js/disclosure.ts css/utilities/aria-expanded.css"></docs-source>
+                            </section>
+
+                            <section id="dialog" class="docs-item">
+                                <h3>Dialog</h3>
+                                <docs-example>
+                                    <p class="flex-list">
+                                        <button class="btn" type="button" commandfor="demo-dialog" command="show-modal">
+                                            Open with commandfor
+                                        </button>
+                                        <button
+                                            class="btn btn--secondary"
+                                            type="button"
+                                            data-dialog-open="demo-dialog"
+                                            data-dialog-template="dialog-content-alt"
+                                        >
+                                            Open with data-dialog-open
+                                        </button>
+                                    </p>
+
+                                    <dialog
+                                        id="demo-dialog"
+                                        class="surface-neutral m-auto max-w-[min(--spacing(560),100%-2*var(--gutter))] rounded-md p-24 backdrop:bg-blue/60"
+                                        aria-labelledby="demo-dialog-title"
+                                        data-dialog
+                                        data-dialog-template="dialog-content"
+                                    >
+                                        <div class="stack-16">
+                                            <h2 id="demo-dialog-title" class="type-h3">A dialog</h2>
+                                            <div data-dialog-slot></div>
+                                            <button class="btn btn--secondary" type="button" commandfor="demo-dialog" command="close">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </dialog>
+
+                                    <template id="dialog-content">
+                                        <p>This content came from a template, cloned into the slot when the dialog opened.</p>
+                                    </template>
+                                    <template id="dialog-content-alt">
+                                        <p>This opener asked for a different template with <code>data-dialog-template</code>.</p>
+                                    </template>
+                                </docs-example>
+                                <docs-source src="js/dialog.ts"></docs-source>
+                            </section>
+
+                            <section id="animate" class="docs-item">
+                                <h3>Animate on scroll</h3>
+                                <p>
+                                    Items play when their trigger scrolls into view, and replay when you scroll back up
+                                    past it. Why data attributes:
+                                    <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/009-animate-hooks.md"
+                                        >animate on scroll hooks</a
+                                    >.
+                                </p>
+                                <docs-example>
+                                    <div class="grid-simple cols-1 md:cols-3" data-animate data-animate-stagger="120">
+                                        <p class="demo-box" data-animate-item>Fades in</p>
+                                        <p class="demo-box" data-animate-item>one after</p>
+                                        <p class="demo-box" data-animate-item>another</p>
+                                    </div>
+                                </docs-example>
+                                <docs-example>
+                                    <div class="grid-simple cols-1 md:cols-2">
+                                        <p id="animate-trigger" class="demo-box" data-animate-item>No trigger, so it plays itself</p>
+                                        <p class="demo-box [--animate--animation-name:fade-in-translate]" data-animate-item="animate-trigger">
+                                            Played by the box opposite, sliding up
+                                        </p>
+                                    </div>
+                                </docs-example>
+                                <docs-example>
+                                    <div class="stack-16" data-animate>
+                                        <p class="demo-box" data-animate-item>Outer trigger's item</p>
+                                        <div class="grid-simple cols-3" data-animate data-animate-stagger="60">
+                                            <p class="demo-box" data-animate-item>Inner</p>
+                                            <p class="demo-box" data-animate-item>trigger's</p>
+                                            <p class="demo-box" data-animate-item>items</p>
+                                        </div>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/patterns/animate.css js/animate.ts"></docs-source>
+                            </section>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- @footer -->
+    </body>
+</html>

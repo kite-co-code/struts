@@ -5,7 +5,7 @@ struts is a CSS/JS starter and reference built on Tailwind v4. Projects copy it 
 ## Commands
 
 ```bash
-pnpm dev        # demo: homepage, and /components/ for every component example
+pnpm dev        # demo: a docs page per layer (/, /foundations/, /patterns/, /utilities/, /components/)
 pnpm test       # Vitest: postcss functions, colour plugin, component index
 pnpm check      # tsc --noEmit
 pnpm lint       # Biome
@@ -25,4 +25,5 @@ pnpm build      # build the demo; must print no warnings
 - **JS:** TypeScript strict, `data-*` hooks, register with `define()` from `js/dynamic-elements.ts`. Native platform features first.
 - **Build plugins** in `postcss/` and `tools/` stay plain ESM JS with JSDoc, no TypeScript, so they copy into any build.
 - **Accessibility:** `:focus-visible` only; every behaviour has a no-JS state and respects reduced motion.
+- **Docs pages** (`example/`): one per layer. A new pattern or utility gets a section on its page with a `<docs-example>` and a `<docs-source>`; see [decision 011](docs/decisions/011-docs-pages.md).
 - When a change affects how a project adopts struts, update `ADOPT.md`. When it changes a decision, update or add a doc in `docs/decisions/`.

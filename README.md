@@ -48,7 +48,7 @@ For working on struts itself. A project adopting it doesn't need any of these to
 
 ```bash
 pnpm install
-pnpm dev        # the demo: every pattern at /, every component at /components/
+pnpm dev        # the demo: a docs page per layer, from / to /components/
 pnpm test       # build functions, the colour plugin and the component index
 pnpm check      # TypeScript
 pnpm lint       # Biome
@@ -72,7 +72,8 @@ Node 22+, pnpm 11.
    8. [Progressive enhancement](docs/decisions/008-progressive-enhancement.md)
    9. [Animate on scroll hooks](docs/decisions/009-animate-hooks.md)
    10. [Components](docs/decisions/010-components.md)
-3. `example/index.html`: every pattern in use. [components/README.md](components/README.md): how components are built.
+   11. [The docs pages](docs/decisions/011-docs-pages.md)
+3. The demo (`pnpm dev`): a page per layer (Foundations, Patterns, Utilities, Components) with every pattern in use, its markup and its header comment. [components/README.md](components/README.md): how components are built.
 4. The files themselves. Each pattern's header comment lists its markup and knobs.
 
 To bring struts into a project, follow [ADOPT.md](ADOPT.md). To move Gust over, see [docs/guides/gust-migration.md](docs/guides/gust-migration.md).
@@ -98,7 +99,7 @@ postcss/
   color-system.js      colours, surfaces, dark mode, contrast warnings
   functions.js         to-rem, to-em, fluid, transition
 js/                    TypeScript helpers
-example/               the demo: homepage, and components/ (the components page)
+example/               the demo: a docs page per layer, and the plugin that assembles them
 test/                  Vitest
 docs/
 ```

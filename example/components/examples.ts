@@ -9,7 +9,12 @@
  * data-example-layout="page" renders the example at the top of a long page,
  * for components that position themselves against the viewport. Otherwise
  * it's rendered on its own with some padding.
+ *
+ * Also reads the header comments of each component's styles.css and
+ * scripts.ts: the component's API.
  */
+
+import { dedent, headerComment } from '../source-text';
 
 export interface Example {
     title: string;
@@ -20,16 +25,24 @@ export interface Example {
     content: DocumentFragment;
 }
 
+export interface Source {
+    /** The path from the repo root, e.g. components/site-header/styles.css */
+    file: string;
+    /** The file's header comment: its API */
+    comment: string;
+}
+
 export interface Component {
     /** The folder name */
     name: string;
     title: string;
     summary: string;
     files: string[];
+    sources: Source[];
     examples: Example[];
 }
 
-const sources = import.meta.glob<string>('../../components/*/example.html', {
+const exampleFiles = import.meta.glob<string>('../../components/*/example.html', {
     query: '?raw',
     import: 'default',
     eager: true,
@@ -38,17 +51,16 @@ const sources = import.meta.glob<string>('../../components/*/example.html', {
 // Keys only; nothing is loaded.
 const allFiles = Object.keys(import.meta.glob('../../components/*/*.{css,ts,html}'));
 
+const code = import.meta.glob<string>('../../components/*/{styles.css,scripts.ts}', {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+});
+
 /** "site-header" → "Site header" */
 function toTitle(name: string): string {
     const words = name.replace(/-/g, ' ');
     return words.charAt(0).toUpperCase() + words.slice(1);
-}
-
-function dedent(text: string): string {
-    const lines = text.replace(/^\s*\n|\n\s*$/g, '').split('\n');
-    const indents = lines.filter((line) => line.trim()).map((line) => line.match(/^ */)?.[0].length ?? 0);
-    const indent = Math.min(...indents);
-    return lines.map((line) => line.slice(indent)).join('\n');
 }
 
 function parse(name: string, raw: string): Component {
@@ -80,10 +92,16 @@ function parse(name: string, raw: string): Component {
         .map((path) => path.replace('../../', ''))
         .sort();
 
-    return { name, title: toTitle(name), summary, files, examples };
+    const sources = Object.entries(code)
+        .filter(([path]) => path.startsWith(`../../components/${name}/`))
+        .map(([path, text]) => ({ file: path.replace('../../', ''), comment: headerComment(text) }))
+        .filter((source) => source.comment)
+        .sort((a, b) => a.file.localeCompare(b.file));
+
+    return { name, title: toTitle(name), summary, files, sources, examples };
 }
 
-export const components: Component[] = Object.entries(sources)
+export const components: Component[] = Object.entries(exampleFiles)
     .map(([path, raw]) => parse(path.split('/').at(-2) ?? path, raw))
     .sort((a, b) => a.name.localeCompare(b.name));
 

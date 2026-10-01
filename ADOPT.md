@@ -14,7 +14,7 @@ So this file says what each step has to achieve. Where it names a tool (Vite, pn
 
 - [docs/naming.md](docs/naming.md), all of it.
 - [docs/decisions/002-color-contexts.md](docs/decisions/002-color-contexts.md) and [003-custom-property-api.md](docs/decisions/003-custom-property-api.md). These are the two ideas most likely to be undone by accident.
-- Skim `example/index.html` to see the markup each pattern expects.
+- Skim the demo pages to see the markup each pattern expects: `example/foundations/`, `example/patterns/` and `example/utilities/`, or run the demo (below) and read them in a browser.
 - [components/README.md](components/README.md), and each component's `example.html`. To see them working, run the struts demo in the clone (`pnpm install`, `pnpm dev`, then open `/components/`). That's struts' own tooling; the project doesn't need it.
 
 Then look at the target project: its build tool and whether it can run PostCSS, whether it uses TypeScript, where its CSS entry is, what it already has for colours, type and layout, which behaviours it needs (disclosures, dialogs, animation), and which struts components it needs (a site header). Note how it renders markup (components in a framework, server templates, plain HTML): that's where component examples get ported to.
@@ -30,7 +30,7 @@ struts becomes the project's own CSS and JS. Don't put it in a `struts/` folder:
 | `tools/component-index.js` | Beside `postcss/` | Plain ESM JS. Writes the component index files |
 | `colors.config.json`, `colors.schema.json` | Next to the CSS, or the project root | Keep the `$schema` line pointing at the schema |
 | `public/fonts/` | The folder the project serves at `/` (e.g. `public/` in Vite and Astro) | `base/fonts.css` points at `/fonts/…`. Keep `OFL.txt` with the font files |
-| `public/` icons: `favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `manifest.webmanifest` | The same served folder | Only if the project has no icons yet. They're a plain struts-blue square; replace them, and the manifest's `name` and colours, with the project's own. Link them from the `<head>` as `example/index.html` does |
+| `public/` icons: `favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `manifest.webmanifest` | The same served folder | Only if the project has no icons yet. They're a plain struts-blue square; replace them, and the manifest's `name` and colours, with the project's own. Link them from the `<head>` as `example/partials/head.html` does |
 | `js/*.ts` | The project's scripts or helpers folder | Only the helpers you need, plus what they import: `dynamic-elements.ts`, `data-attributes.ts`, `focusable.ts`. Without TypeScript, copy compiled JS |
 | `components/` | Where the project keeps its components (Gust and most frameworks already have `components/`) | One folder per component. Only the components you need: delete the other folders, then regenerate the indexes. `css/index.css` imports `../components/index.css`, and component scripts import `../../js/`; fix both paths if the folders don't end up siblings |
 
@@ -118,7 +118,7 @@ When adding to the project afterwards:
 - Derive states with `color-mix()` from the base value.
 - JS hooks are `data-*` attributes.
 - New behaviour has a no-JS state and respects `prefers-reduced-motion`.
-- UI whose markup, styles and behaviour only work together is a component: a folder in `components/` with `styles.css`, `scripts.ts` and an example ([components/README.md](components/README.md)). The index files are generated; never edit them. Styles or behaviour that work on any markup stay a pattern or a helper.
+- UI whose markup, styles and behaviour only work together is a component: a folder in `components/` with `styles.css`, `scripts.ts` and an example ([components/README.md](components/README.md)). The index files are generated; never edit them. Styles or behaviour that work on any markup stay a pattern or a utility.
 
 Copy `CLAUDE.md`'s conventions section into the project's own agent instructions so they survive.
 

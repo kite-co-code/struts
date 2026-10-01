@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Foundations · struts</title>
+        <meta name="description" content="struts' tokens and element defaults: colour, type, spacing and bare HTML." />
+        <!-- @head -->
+        <script type="module" src="../docs.ts"></script>
+    </head>
+    <body>
+        <!-- @header -->
+
+        <main id="main" tabindex="-1">
+            <section class="section layout-grid layout-grid--ruled" aria-labelledby="page-title">
+                <div class="stack-24">
+                    <h1 id="page-title">Foundations</h1>
+                    <p class="type-h4 max-w-[48ch]">
+                        Tokens, shared knobs and element defaults: what every page gets before a single class.
+                    </p>
+                    <p class="type-label-sm">css/tokens/ · css/base/ · colors.config.json</p>
+                </div>
+            </section>
+
+            <div class="layout-grid layout-grid--ruled rule-block-start">
+                <div class="docs-layout">
+                    <!-- @toc -->
+
+                    <div>
+                        <section id="colour" class="docs-group">
+                            <h2>Colour</h2>
+                            <p>
+                                The palette, its roles and the dark scheme are one JSON file,
+                                <code>colors.config.json</code>. A PostCSS plugin turns it into tokens and
+                                <code>surface-*</code> classes, and warns about weak contrast. Why:
+                                <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/002-color-contexts.md"
+                                    >colour contexts</a
+                                >.
+                            </p>
+
+                            <section id="palette" class="docs-item">
+                                <h3>Palette and roles</h3>
+                                <p>
+                                    Each colour comes as a pair, <code>--color-{name}</code> and
+                                    <code>--color-{name}-foreground</code>. Roles are aliases of palette colours, and
+                                    they're what patterns read: <code>background</code>, <code>foreground</code>,
+                                    <code>accent</code>, <code>secondary</code> and <code>error</code>.
+                                </p>
+                                <docs-example>
+                                    <ul class="grid-auto list-reset [--grid-auto--min-inline-size:--spacing(160)]">
+                                        <li class="surface-white swatch"><p class="type-label-sm">white</p><p class="type-meta">#ffffff</p></li>
+                                        <li class="surface-neutral swatch"><p class="type-label-sm">neutral</p><p class="type-meta">#eee8e3 · background</p></li>
+                                        <li class="surface-neutral-600 swatch"><p class="type-label-sm">neutral-600</p><p class="type-meta">#e2dad2</p></li>
+                                        <li class="surface-lilac swatch"><p class="type-label-sm">lilac</p><p class="type-meta">#e8e5f6 · secondary</p></li>
+                                        <li class="surface-blue swatch"><p class="type-label-sm">blue</p><p class="type-meta">#0e26ac · foreground, accent</p></li>
+                                        <li class="surface-red swatch"><p class="type-label-sm">red</p><p class="type-meta">#b3261e · error</p></li>
+                                    </ul>
+                                </docs-example>
+                                <docs-source src="postcss/color-system.js"></docs-source>
+                            </section>
+
+                            <section id="surfaces" class="docs-item">
+                                <h3>Surfaces</h3>
+                                <p>
+                                    Each colour gives a <code>surface-*</code> class: background, foreground,
+                                    <code>color-scheme</code> and the role tokens it sets. Buttons, links, tags, rules
+                                    and focus rings read the roles, so they follow the surface with no overrides.
+                                </p>
+                                <docs-example>
+                                    <ul class="grid-auto list-reset">
+                                        <li class="surface-neutral swatch">
+                                            <p class="type-label">surface-neutral</p>
+                                            <p><a href="#surfaces">Inline link example</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                        <li class="surface-white swatch">
+                                            <p class="type-label">surface-white</p>
+                                            <p><a href="#surfaces">Inline link example</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                        <li class="surface-lilac swatch">
+                                            <p class="type-label">surface-lilac</p>
+                                            <p><a href="#surfaces">Inline link example</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                        <li class="surface-blue swatch">
+                                            <p class="type-label">surface-blue</p>
+                                            <p><a href="#surfaces">Inline link example</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                        <li class="surface-red swatch">
+                                            <p class="type-label">surface-red</p>
+                                            <p><a href="#surfaces">Inline link example</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                        <li class="surface-background swatch">
+                                            <p class="type-label">surface-background</p>
+                                            <p><a href="#surfaces">Follows the scheme</a></p>
+                                            <p class="flex-list"><a class="btn" href="#surfaces">Button</a> <span class="tag">Tag</span></p>
+                                        </li>
+                                    </ul>
+                                </docs-example>
+                            </section>
+
+                            <section id="on-colour" class="docs-item">
+                                <h3>On a colour</h3>
+                                <p>
+                                    <code>on-*</code> sets the foreground and roles without a background, for text over
+                                    an image or a background set some other way.
+                                </p>
+                                <docs-example>
+                                    <div class="img-fit aspect-[3/1] rounded-md">
+                                        <div class="bg-blue"></div>
+                                        <div class="on-blue p-24 stack-16">
+                                            <p class="type-h3">on-blue</p>
+                                            <p><a href="#on-colour">Inline link example</a> and a <a class="btn btn--small" href="#on-colour">button</a></p>
+                                        </div>
+                                    </div>
+                                </docs-example>
+                            </section>
+
+                            <section id="dark-scheme" class="docs-item">
+                                <h3>Dark scheme</h3>
+                                <p>
+                                    Roles switch with the OS setting, or with <code>data-scheme</code> on any element.
+                                    Kite Co.'s dark scheme is the blue. This box is always dark:
+                                </p>
+                                <docs-example>
+                                    <div data-scheme="dark" class="p-24 rounded-md stack-16">
+                                        <p>Text, an <a href="#dark-scheme">inline link example</a> and buttons inside <code>[data-scheme=dark]</code>.</p>
+                                        <p class="flex-list">
+                                            <a class="btn" href="#dark-scheme">Button</a>
+                                            <a class="btn btn--secondary" href="#dark-scheme">Secondary</a>
+                                            <button class="btn btn--ghost" type="button">Ghost</button>
+                                        </p>
+                                    </div>
+                                </docs-example>
+                            </section>
+                        </section>
+
+                        <section id="type" class="docs-group">
+                            <h2>Type</h2>
+                            <p>
+                                Sizes are theme tokens (<code>--text-h1</code> …), each carrying its line height and
+                                letter spacing. Most are fluid: resize the window to see them scale between the 400 and
+                                1440 pixel frames. The <a href="/patterns/#type-styles">type styles</a> pair them with a
+                                family and weight.
+                            </p>
+
+                            <section id="fonts" class="docs-item">
+                                <h3>Fonts</h3>
+                                <docs-example>
+                                    <dl class="stack-16">
+                                        <div class="stack-4">
+                                            <dt class="type-label-sm">--font-serif</dt>
+                                            <dd class="font-serif font-medium text-h3">IBM Plex Serif Medium, for headings and captions</dd>
+                                        </div>
+                                        <div class="stack-4">
+                                            <dt class="type-label-sm">--font-sans</dt>
+                                            <dd class="font-sans text-h3">IBM Plex Sans, for body text</dd>
+                                        </div>
+                                        <div class="stack-4">
+                                            <dt class="type-label-sm">--font-mono</dt>
+                                            <dd class="font-mono font-semibold text-h3">IBM Plex Mono, for labels and tags</dd>
+                                        </div>
+                                    </dl>
+                                </docs-example>
+                                <docs-source src="css/base/fonts.css"></docs-source>
+                            </section>
+
+                            <section id="type-scale" class="docs-item">
+                                <h3>Type scale</h3>
+                                <docs-example>
+                                    <dl class="grid-simple cols-1 md:cols-2 [--row-gap:--spacing(24)]">
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-hero · fluid(36, 56)</dt>
+                                            <dd class="type-hero">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h1 · fluid(32, 42)</dt>
+                                            <dd class="type-h1">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h2 · fluid(28, 32)</dt>
+                                            <dd class="type-h2">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h3 · fluid(24, 28)</dt>
+                                            <dd class="type-h3">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h4 · fluid(20, 24)</dt>
+                                            <dd class="type-h4">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h5 · fluid(18, 20)</dt>
+                                            <dd class="type-h5">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-h6 · 16</dt>
+                                            <dd class="type-h6">Cultural organisations</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-base · 17</dt>
+                                            <dd>Better technology and better ways to communicate.</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-label · 16</dt>
+                                            <dd class="type-label">Announcement</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-label-sm · 14</dt>
+                                            <dd class="type-label-sm">CMS &amp; Content Systems</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-meta · 14</dt>
+                                            <dd class="type-meta">Visual identity by Doug Kerr</dd>
+                                        </div>
+                                        <div class="stack-8">
+                                            <dt class="type-label-sm">type-code · 13</dt>
+                                            <dd class="type-code">fluid(28, 36)</dd>
+                                        </div>
+                                    </dl>
+                                </docs-example>
+                                <docs-source src="css/tokens/theme.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="space" class="docs-group">
+                            <h2>Space and size</h2>
+                            <p>
+                                One spacing unit, a handful of shared knobs, and fluid values built at compile time. Why:
+                                <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/004-spacing-and-fluid.md"
+                                    >spacing and fluid sizing</a
+                                >.
+                            </p>
+
+                            <section id="spacing" class="docs-item">
+                                <h3>Spacing</h3>
+                                <p>
+                                    <code>--spacing</code> is 1px at the default root size, so a spacing number is a
+                                    pixel size in rem: <code>p-16</code> is 1rem. In CSS, write
+                                    <code>--spacing(16)</code>. Use <code>px</code> only for things that shouldn't
+                                    scale with text, like hairlines.
+                                </p>
+                                <docs-example>
+                                    <dl class="stack-8">
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">8</dt><dd class="h-12 w-8 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">16</dt><dd class="h-12 w-16 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">24</dt><dd class="h-12 w-24 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">32</dt><dd class="h-12 w-32 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">48</dt><dd class="h-12 w-48 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">64</dt><dd class="h-12 w-64 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">96</dt><dd class="h-12 w-96 bg-accent"></dd></div>
+                                        <div class="flex items-center gap-16"><dt class="type-label-sm w-48">128</dt><dd class="h-12 w-128 bg-accent"></dd></div>
+                                    </dl>
+                                </docs-example>
+                            </section>
+
+                            <section id="fluid" class="docs-item">
+                                <h3>Fluid values</h3>
+                                <p>
+                                    <code>fluid(min, max)</code> becomes a <code>clamp()</code> that scales between the
+                                    preset's viewport range, 400 to 1440 here. Sizes are unitless pixels.
+                                </p>
+                                <docs-example>
+                                    <div class="stack-8">
+                                        <p class="type-label-sm">--gutter: fluid(20, 56)</p>
+                                        <div class="h-12 w-(--gutter) bg-accent"></div>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="postcss/functions.js"></docs-source>
+                            </section>
+
+                            <section id="knobs" class="docs-item">
+                                <h3>Global knobs</h3>
+                                <p>Custom properties that several patterns read, declared on <code>:root</code>:</p>
+                                <dl class="stack-12 max-w-[60ch]">
+                                    <div class="stack-4">
+                                        <dt><code>--gutter</code></dt>
+                                        <dd>Inline space between the viewport edge and content, fluid(20, 56).</dd>
+                                    </div>
+                                    <div class="stack-4">
+                                        <dt><code>--space-base</code>, <code>--space-layout</code></dt>
+                                        <dd>Vertical rhythm: 16 between text elements; 32, then 64 from sm, between blocks.</dd>
+                                    </div>
+                                    <div class="stack-4">
+                                        <dt><code>--gap</code></dt>
+                                        <dd>The default gap for grids, fluid(8, 12).</dd>
+                                    </div>
+                                    <div class="stack-4">
+                                        <dt><code>--focus-width</code>, <code>--focus-offset</code>, <code>--rule-width</code></dt>
+                                        <dd>The focus ring and keylines, in px because they shouldn't scale.</dd>
+                                    </div>
+                                </dl>
+                                <docs-source src="css/tokens/globals.css"></docs-source>
+                            </section>
+
+                            <section id="sizes" class="docs-item">
+                                <h3>Containers and breakpoints</h3>
+                                <p>
+                                    Tailwind's container scale is replaced with the widths the layout uses. Breakpoints
+                                    are Tailwind's, plus three more.
+                                </p>
+                                <docs-example>
+                                    <div class="grid-simple cols-1 md:cols-2 [--gap:--spacing(32)]">
+                                        <dl class="stack-8">
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">container-2xs</dt><dd>560</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">container-xs</dt><dd>720</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">container-sm</dt><dd>765, layout-narrow</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">container-md</dt><dd>1200</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">container-lg</dt><dd>1328, layout-wide</dd></div>
+                                        </dl>
+                                        <dl class="stack-8">
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">2xs</dt><dd>400</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">xs</dt><dd>576</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">sm · md · lg</dt><dd>640 · 768 · 1024</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">xl · 2xl</dt><dd>1280 · 1536</dd></div>
+                                            <div class="flex justify-between gap-16"><dt class="type-label-sm">3xl</dt><dd>1900</dd></div>
+                                        </dl>
+                                    </div>
+                                </docs-example>
+                            </section>
+
+                            <section id="motion" class="docs-item">
+                                <h3>Motion</h3>
+                                <p>
+                                    Easing curves in every family (<code>--ease-out-quart</code> …) and a default
+                                    transition of 200ms <code>ease-out-quad</code>, which
+                                    <code>transition(color, opacity)</code> reads. Every animation stops for reduced
+                                    motion.
+                                </p>
+                            </section>
+                        </section>
+
+                        <section id="elements" class="docs-group">
+                            <h2>Elements</h2>
+                            <p>
+                                Bare elements get the matching pattern, so markup from a CMS or Markdown looks right
+                                without classes. They sit in the base layer, so any class wins.
+                            </p>
+
+                            <section id="text-elements" class="docs-item">
+                                <h3>Text</h3>
+                                <docs-example>
+                                    <div class="flow">
+                                        <h1>Heading 1</h1>
+                                        <h2>Heading 2</h2>
+                                        <h3>Heading 3</h3>
+                                        <h4>Heading 4</h4>
+                                        <h5>Heading 5</h5>
+                                        <h6>Heading 6</h6>
+                                        <p>
+                                            A paragraph with <a href="#text-elements">a link to somewhere</a>, <strong>strong</strong>
+                                            and <em>emphasised</em> text, <code>inline code</code> and
+                                            <small>small print</small>.
+                                        </p>
+                                        <blockquote>
+                                            <p>Kite Co. brought both deep technical expertise and genuine care to every stage.</p>
+                                            <cite>The client</cite>
+                                        </blockquote>
+                                        <hr />
+                                        <pre><code>pre: type-code, wrapping</code></pre>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/base/elements.css css/base/reset.css"></docs-source>
+                            </section>
+
+                            <section id="form-elements" class="docs-item">
+                                <h3>Forms</h3>
+                                <p>
+                                    Opt in with <code>base/forms.css</code> when the project controls its form markup.
+                                    Leave it off when a form plugin brings its own styles, and use the
+                                    <a href="/patterns/#form-controls">form control classes</a> instead.
+                                </p>
+                                <docs-example>
+                                    <form class="max-w-(--container-2xs) stack-24" onsubmit="return false">
+                                        <div class="stack-8">
+                                            <label class="type-label-sm" for="name">Name</label>
+                                            <input id="name" type="text" autocomplete="name" placeholder="Ada Lovelace" />
+                                        </div>
+                                        <div class="stack-8">
+                                            <label class="type-label-sm" for="topic">Topic</label>
+                                            <select id="topic">
+                                                <option>A new site</option>
+                                                <option>Help with an existing one</option>
+                                                <option>Something else</option>
+                                            </select>
+                                        </div>
+                                        <div class="stack-8">
+                                            <label class="type-label-sm" for="message">Message</label>
+                                            <textarea id="message"></textarea>
+                                        </div>
+                                        <fieldset class="stack-8">
+                                            <legend class="type-label-sm">Budget</legend>
+                                            <label class="flex items-center gap-8"><input type="radio" name="budget" checked /> Small</label>
+                                            <label class="flex items-center gap-8"><input type="radio" name="budget" /> Large</label>
+                                        </fieldset>
+                                        <label class="flex items-center gap-8"><input type="checkbox" checked /> Send me a copy</label>
+                                        <p><button class="btn" type="submit">Send</button></p>
+                                    </form>
+                                </docs-example>
+                                <docs-source src="css/base/forms.css"></docs-source>
+                            </section>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- @footer -->
+    </body>
+</html>

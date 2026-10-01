@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Utilities · struts</title>
+        <meta name="description" content="struts' utilities: single-purpose classes and script helpers." />
+        <!-- @head -->
+        <script type="module" src="../docs.ts"></script>
+    </head>
+    <body>
+        <!-- @header -->
+
+        <main id="main" tabindex="-1">
+            <section class="section layout-grid layout-grid--ruled" aria-labelledby="page-title">
+                <div class="stack-24">
+                    <h1 id="page-title">Utilities</h1>
+                    <p class="type-h4 max-w-[48ch]">
+                        Single-purpose helpers: classes that do one thing, and small functions for scripts.
+                    </p>
+                    <p class="type-label-sm">css/utilities/ · js/</p>
+                </div>
+            </section>
+
+            <div class="layout-grid layout-grid--ruled rule-block-start">
+                <div class="docs-layout">
+                    <!-- @toc -->
+
+                    <div>
+                        <section id="classes" class="docs-group">
+                            <h2>Classes</h2>
+                            <p>
+                                Named in Tailwind's shape, <code>name</code> or <code>name-{value}</code>, and they take
+                                variants like any utility.
+                            </p>
+
+                            <section id="tailwind" class="docs-item">
+                                <h3>Tailwind's utilities</h3>
+                                <p>
+                                    All of Tailwind's utilities are there too, built from struts' tokens:
+                                    <code>p-16</code> is 1rem, <code>text-h2</code> is the Heading 2 size,
+                                    <code>bg-lilac</code> is the palette's lilac. Tailwind's default colours and
+                                    containers are cleared, so only the project's exist.
+                                </p>
+                            </section>
+
+                            <section id="stack" class="docs-item">
+                                <h3>Stack</h3>
+                                <docs-example>
+                                    <div class="stack-8">
+                                        <p class="demo-box">stack-8</p>
+                                        <p class="demo-box">One fixed gap between every child,</p>
+                                        <p class="demo-box">whatever the element</p>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/utilities/stack.css"></docs-source>
+                            </section>
+
+                            <section id="rules" class="docs-item">
+                                <h3>Rules</h3>
+                                <docs-example>
+                                    <div class="grid-simple cols-2 md:cols-4">
+                                        <p class="rule-block-start p-12 type-label-sm">rule-block-start</p>
+                                        <p class="rule-block-end p-12 type-label-sm">rule-block-end</p>
+                                        <p class="rule-inline-start p-12 type-label-sm">rule-inline-start</p>
+                                        <p class="rule-inline-end p-12 type-label-sm">rule-inline-end</p>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/utilities/rule.css"></docs-source>
+                            </section>
+
+                            <section id="lists" class="docs-item">
+                                <h3>Lists</h3>
+                                <docs-example>
+                                    <div class="grid-simple cols-1 md:cols-2">
+                                        <ul class="list-reset">
+                                            <li>list-reset</li>
+                                            <li>no markers</li>
+                                        </ul>
+                                        <ul class="list-styled">
+                                            <li>list-styled</li>
+                                            <li>markers back</li>
+                                        </ul>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/utilities/list.css"></docs-source>
+                            </section>
+
+                            <section id="img-fit" class="docs-item">
+                                <h3>Image fit</h3>
+                                <docs-example>
+                                    <div class="img-fit aspect-[3/1] rounded-md max-w-(--container-2xs)">
+                                        <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                                            <rect width="300" height="100" fill="var(--color-lilac)" />
+                                            <circle cx="150" cy="50" r="40" fill="var(--color-blue)" />
+                                        </svg>
+                                    </div>
+                                </docs-example>
+                                <docs-source src="css/utilities/img-fit.css"></docs-source>
+                            </section>
+
+                            <section id="hit-area" class="docs-item">
+                                <h3>Hit area</h3>
+                                <p>The scheme switch in the header uses it: 32px to look at, 44px to tap.</p>
+                                <docs-source src="css/utilities/hit-area.css"></docs-source>
+                            </section>
+
+                            <section id="aria-expanded" class="docs-item">
+                                <h3>Expanded state</h3>
+                                <p>
+                                    Show or hide parts of a trigger by its <code>aria-expanded</code>, as the
+                                    <a href="/patterns/#disclosure">disclosure</a> does.
+                                </p>
+                                <docs-source src="css/utilities/aria-expanded.css"></docs-source>
+                            </section>
+
+                            <section id="scroll-lock" class="docs-item">
+                                <h3>Scroll lock</h3>
+                                <p>
+                                    The <a href="/components/#site-header">site header</a>'s menu and the
+                                    <a href="/patterns/#dialog">dialog</a> both use it.
+                                </p>
+                                <docs-source src="css/utilities/scroll-lock.css"></docs-source>
+                            </section>
+
+                            <section id="resets" class="docs-item">
+                                <h3>Resets</h3>
+                                <p>
+                                    <code>button-reset</code>, <code>margin-trim</code> (and its <code>-first</code> and
+                                    <code>-last</code>) and <code>focus-none</code>.
+                                </p>
+                                <docs-source src="css/utilities/button-reset.css css/utilities/margin-trim.css css/utilities/focus-none.css"></docs-source>
+                            </section>
+                        </section>
+
+                        <section id="scripts" class="docs-group">
+                            <h2>Scripts</h2>
+                            <p>
+                                TypeScript with no framework and no dependencies. Patterns and components import what they
+                                need; a project copies only those.
+                            </p>
+
+                            <section id="define" class="docs-item">
+                                <h3>define()</h3>
+                                <p>
+                                    How every pattern and component script sets itself up. Why:
+                                    <a href="https://github.com/kite-co-code/struts/blob/main/docs/decisions/007-js-dynamic-elements.md"
+                                        >JS and dynamicElements</a
+                                    >.
+                                </p>
+                                <docs-source src="js/dynamic-elements.ts"></docs-source>
+                            </section>
+
+                            <section id="debounce" class="docs-item">
+                                <h3>debounce()</h3>
+                                <docs-source src="js/debounce.ts"></docs-source>
+                            </section>
+
+                            <section id="focusable" class="docs-item">
+                                <h3>Focusable elements</h3>
+                                <p>
+                                    <code>focusableElements()</code>, <code>firstFocusable()</code> and
+                                    <code>lastFocusable()</code>.
+                                </p>
+                                <docs-source src="js/focusable.ts"></docs-source>
+                            </section>
+
+                            <section id="data-attributes" class="docs-item">
+                                <h3>Data attributes</h3>
+                                <p>
+                                    <code>getBooleanDataAttribute()</code> and <code>getNumberDataAttribute()</code>, for
+                                    reading a hook's options.
+                                </p>
+                                <docs-source src="js/data-attributes.ts"></docs-source>
+                            </section>
+
+                            <section id="cookies" class="docs-item">
+                                <h3>Cookies</h3>
+                                <p><code>setCookie()</code>, <code>getCookie()</code> and <code>deleteCookie()</code>.</p>
+                                <docs-source src="js/cookies.ts"></docs-source>
+                            </section>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- @footer -->
+    </body>
+</html>

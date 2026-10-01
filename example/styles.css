@@ -24,6 +24,175 @@
     text-align: center;
 }
 
+/* ---------------------------------------------------------------------------
+ * Docs pages
+ *
+ *   <div class="layout-grid layout-grid--ruled rule-block-start">
+ *       <div class="docs-layout">
+ *           <!-- @toc -->                          the docs-toc nav, built at build time
+ *           <div>
+ *               <section id="…" class="docs-group">
+ *                   <h2>Group</h2>
+ *                   <section id="…" class="docs-item">
+ *                       <h3>Item</h3>
+ *                       <docs-example>…</docs-example>
+ *                       <docs-source src="css/patterns/…"></docs-source>
+ *
+ * example/docs-plugin.ts expands the toc, examples and sources. Pages with
+ * no groups use docs-group on its own, with an h2.
+ * ------------------------------------------------------------------------- */
+
+:root {
+    /* Anchored headings clear the sticky site header */
+    --scroll-offset: --spacing(88);
+}
+
+/* "On this page" above the content, then beside it from lg up */
+@utility docs-layout {
+    display: grid;
+
+    @variant lg {
+        grid-template-columns: --spacing(208) minmax(0, 1fr);
+        column-gap: --spacing(48);
+    }
+}
+
+@utility docs-toc {
+    padding-block: --spacing(24);
+
+    @variant max-lg {
+        @apply rule-block-end;
+    }
+
+    /* The top padding clears the site header, which hides as you scroll down */
+    @variant lg {
+        position: sticky;
+        inset-block-start: 0;
+        align-self: start;
+        max-block-size: 100svh;
+        padding-block: var(--space-layout);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+@utility docs-toc__list {
+    @apply list-reset;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: --spacing(8) --spacing(20);
+    margin-block-start: --spacing(12);
+
+    @variant lg {
+        flex-direction: column;
+        gap: --spacing(12);
+    }
+}
+
+/* Items under a group: only beside the content, where there's room */
+@utility docs-toc__sublist {
+    @apply list-reset rule-inline-start;
+
+    display: none;
+
+    @variant lg {
+        display: flex;
+        flex-direction: column;
+        gap: --spacing(6);
+        margin-block-start: --spacing(8);
+        padding-inline-start: --spacing(12);
+    }
+
+    & .docs-toc__link {
+        font-family: var(--font-sans);
+        font-weight: var(--font-weight-normal);
+    }
+}
+
+@utility docs-group {
+    @apply flow;
+
+    padding-block: var(--space-layout);
+
+    & > h2 {
+        @apply type-h1;
+    }
+
+    & + & {
+        @apply rule-block-start;
+    }
+
+    & > p {
+        max-inline-size: 60ch;
+    }
+}
+
+@utility docs-item {
+    @apply flow;
+
+    /* Everything after the heading sits a base step apart; the markup hugs its example */
+    & > :where(:not(h1, h2, h3, h4, h5, h6)) {
+        --flow-space: var(--space-base);
+    }
+
+    & > .docs-markup {
+        --flow-space: --spacing(8);
+    }
+
+    & > p,
+    & > ul {
+        max-inline-size: 60ch;
+    }
+}
+
+@layer components {
+    /* A live example. Its markup is added after it at build time. */
+    docs-example {
+        display: block;
+        padding: --spacing(24);
+        border: var(--rule-width) solid color-mix(in oklab, currentColor 30%, transparent);
+        border-radius: var(--radius-md);
+    }
+}
+
+/* A file's header comment: the pattern's API */
+@utility docs-source {
+    display: grid;
+    gap: --spacing(8);
+}
+
+@utility docs-markup__code {
+    @apply docs-code;
+
+    margin-block-start: --spacing(8);
+}
+
+@utility docs-source__code {
+    @apply docs-code;
+}
+
+@utility docs-code {
+    padding: --spacing(16);
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    background-color: color-mix(in oklab, var(--color-foreground) 6%, var(--color-background));
+    white-space: pre;
+}
+
+/* aria-current is set by example/docs.ts on the section being read */
+@utility docs-toc__link {
+    @apply type-label-sm link--subtle;
+
+    --link--color: color-mix(in oklab, var(--color-foreground) 70%, var(--color-background));
+
+    &[aria-current],
+    li:has([aria-current]) > & {
+        --link--color: var(--color-foreground);
+        --link--text-decoration-line: underline;
+    }
+}
+
 [aria-pressed="true"] {
     --btn--background-color: var(--color-accent);
     --btn--color: var(--color-accent-foreground);

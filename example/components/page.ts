@@ -1,11 +1,14 @@
 /**
  * Demo only: the components page. Lists every component with an
  * example.html and renders each example in a resizable frame, with its
- * markup underneath.
+ * markup underneath, then the header comments of its styles and script.
+ * The page is built here, so its "On this page" nav is filled in here too.
  */
 
-import '../main';
+import { refreshToc } from '../docs';
 import { type Component, components, type Example, frameUrl } from './examples';
+
+const repo = 'https://github.com/kite-co-code/struts/blob/main';
 
 const widths = [
     { label: 'Mobile', value: '390px' },
@@ -30,11 +33,9 @@ function renderExample(component: Component, example: Example, index: number): s
         .join('');
 
     return `
-        <div class="stack-16" aria-labelledby="${id}-title" role="group">
-            <div class="stack-8">
-                <h3 id="${id}-title" class="type-h3">${escapeHtml(example.title)}</h3>
-                ${example.description ? `<p class="max-w-[60ch]">${escapeHtml(example.description)}</p>` : ''}
-            </div>
+        <section id="${id}" class="docs-item" data-preview>
+            <h3>${escapeHtml(example.title)}</h3>
+            ${example.description ? `<p>${escapeHtml(example.description)}</p>` : ''}
             <div class="flex flex-wrap items-center gap-x-16 gap-y-8">
                 <div class="flex-list [--gap:--spacing(8)]" role="group" aria-label="Frame width">${buttons}</div>
                 <a class="type-label-sm" href="${url}">Open on its own</a>
@@ -47,28 +48,49 @@ function renderExample(component: Component, example: Example, index: number): s
                     loading="lazy"
                 ></iframe>
             </div>
-            <details class="stack-12">
-                <summary class="type-label">Markup</summary>
-                <pre class="surface-neutral-600 p-16 rounded-md overflow-x-auto"><code>${escapeHtml(example.source)}</code></pre>
+            <details class="docs-markup">
+                <summary class="type-label-sm">Markup</summary>
+                <pre class="docs-markup__code"><code>${escapeHtml(example.source)}</code></pre>
             </details>
-        </div>`;
+        </section>`;
 }
 
 function renderComponent(component: Component): string {
     const files = component.files.map((file) => `<li><code>${escapeHtml(file)}</code></li>`).join('');
+    const sources = component.sources
+        .map(
+            (source) => `
+            <figure class="docs-source">
+                <figcaption class="type-label-sm"><a class="link--subtle" href="${repo}/${source.file}">${escapeHtml(source.file)}</a></figcaption>
+                <pre class="docs-source__code"><code>${escapeHtml(source.comment)}</code></pre>
+            </figure>`
+        )
+        .join('');
 
     return `
-        <section id="${component.name}" class="section layout-grid layout-grid--ruled rule-block-start" aria-labelledby="${component.name}-title">
-            <div class="stack-48">
-                <div class="stack-16">
-                    <p class="type-label">Component</p>
-                    <h2 id="${component.name}-title" class="type-h1">${escapeHtml(component.title)}</h2>
-                    ${component.summary ? `<p class="max-w-[60ch]">${escapeHtml(component.summary)}</p>` : ''}
-                    <ul class="flex-list [--gap:--spacing(12)]" aria-label="Files">${files}</ul>
-                </div>
-                ${component.examples.map((example, index) => renderExample(component, example, index)).join('')}
-            </div>
+        <section id="${component.name}" class="docs-group">
+            <h2>${escapeHtml(component.title)}</h2>
+            ${component.summary ? `<p>${escapeHtml(component.summary)}</p>` : ''}
+            <ul class="flex-list [--gap:--spacing(12)]" aria-label="Files">${files}</ul>
+            ${component.examples.map((example, index) => renderExample(component, example, index)).join('')}
+            ${sources ? `<section id="${component.name}-api" class="docs-item"><h3>API</h3>${sources}</section>` : ''}
         </section>`;
+}
+
+/** The nav the build gives every docs page, with each component and its examples. */
+function renderToc(): string {
+    return components
+        .map((component) => {
+            const items = component.examples.map(
+                (example, index) =>
+                    `<li><a class="docs-toc__link" href="#${component.name}-${index}">${escapeHtml(example.title)}</a></li>`
+            );
+            if (component.sources.length) {
+                items.push(`<li><a class="docs-toc__link" href="#${component.name}-api">API</a></li>`);
+            }
+            return `<li><a class="docs-toc__link" href="#${component.name}">${escapeHtml(component.title)}</a><ul class="docs-toc__sublist">${items.join('')}</ul></li>`;
+        })
+        .join('');
 }
 
 /** Fit padded frames to their content. Page frames keep a fixed height and scroll inside. */
@@ -83,20 +105,13 @@ function fitFrame(frame: HTMLIFrameElement): void {
     resize();
 }
 
-const index = document.querySelector<HTMLElement>('[data-components-index]');
+const toc = document.querySelector<HTMLElement>('[data-docs-toc] ul');
 const container = document.querySelector<HTMLElement>('[data-components]');
 
-if (index && container && components.length > 0) {
-    index
-        .querySelector('ul')
-        ?.insertAdjacentHTML(
-            'beforeend',
-            components
-                .map((item) => `<li><a class="tag" href="#${item.name}">${escapeHtml(item.title)}</a></li>`)
-                .join('')
-        );
-    index.hidden = false;
+if (toc && container && components.length > 0) {
+    toc.innerHTML = renderToc();
     container.innerHTML = components.map(renderComponent).join('');
+    refreshToc();
 
     for (const frame of container.querySelectorAll<HTMLIFrameElement>('iframe')) {
         frame.addEventListener('load', () => fitFrame(frame));
@@ -105,7 +120,7 @@ if (index && container && components.length > 0) {
     container.addEventListener('click', (event) => {
         const button =
             event.target instanceof Element ? event.target.closest<HTMLElement>('[data-preview-width]') : null;
-        const group = button?.closest('[role="group"][aria-labelledby]');
+        const group = button?.closest('[data-preview]');
         const frame = group?.querySelector<HTMLIFrameElement>('iframe');
         if (!(button && group && frame)) return;
 
