@@ -30,6 +30,7 @@ struts becomes the project's own CSS and JS. Don't put it in a `struts/` folder:
 | `tools/component-index.js` | Beside `postcss/` | Plain ESM JS. Writes the component index files |
 | `colors.config.json`, `colors.schema.json` | Next to the CSS, or the project root | Keep the `$schema` line pointing at the schema |
 | `public/fonts/` | The folder the project serves at `/` (e.g. `public/` in Vite and Astro) | `base/fonts.css` points at `/fonts/…`. Keep `OFL.txt` with the font files |
+| `public/` icons: `favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `manifest.webmanifest` | The same served folder | Only if the project has no icons yet. They're a plain struts-blue square; replace them, and the manifest's `name` and colours, with the project's own. Link them from the `<head>` as `example/index.html` does |
 | `js/*.ts` | The project's scripts or helpers folder | Only the helpers you need, plus what they import: `dynamic-elements.ts`, `data-attributes.ts`, `focusable.ts`. Without TypeScript, copy compiled JS |
 | `components/` | Where the project keeps its components (Gust and most frameworks already have `components/`) | One folder per component. Only the components you need: delete the other folders, then regenerate the indexes. `css/index.css` imports `../components/index.css`, and component scripts import `../../js/`; fix both paths if the folders don't end up siblings |
 
