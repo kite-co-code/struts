@@ -4,14 +4,20 @@ This is a task for an agent (or a person) bringing struts into a project. struts
 
 Work in phases that each leave a working build: copy unchanged (section 2), wire up the build (section 3), then tailor one step at a time (section 4). Commit at the end of each phase.
 
+## Any stack
+
+struts doesn't assume a framework, CMS, bundler or package manager. It needs **Tailwind CSS v4** and **a build step that can run PostCSS plugins**. Everything else is CSS, HTML and TypeScript that compiles to plain JS.
+
+So this file says what each step has to achieve. Where it names a tool (Vite, pnpm, Astro, Gust), that's an example: do the equivalent with the project's own tools. If a step doesn't fit the project's stack, keep its outcome and change the method. Note what you changed in the project's docs.
+
 ## 1. Read first
 
 - [docs/naming.md](docs/naming.md), all of it.
 - [docs/decisions/002-color-contexts.md](docs/decisions/002-color-contexts.md) and [003-custom-property-api.md](docs/decisions/003-custom-property-api.md). These are the two ideas most likely to be undone by accident.
 - Skim `example/index.html` to see the markup each pattern expects.
-- [components/README.md](components/README.md), and each component's `example.html`. Run `pnpm dev` and open `/components/` to see them working.
+- [components/README.md](components/README.md), and each component's `example.html`. To see them working, run the struts demo in the clone (`pnpm install`, `pnpm dev`, then open `/components/`). That's struts' own tooling; the project doesn't need it.
 
-Then look at the target project: its build tool, where its CSS entry is, what it already has for colours, type and layout, which behaviours it needs (disclosures, dialogs, animation), and which struts components it needs (a site header). Note how it renders markup (Astro components, PHP templates, plain HTML): that's where component examples get ported to.
+Then look at the target project: its build tool and whether it can run PostCSS, whether it uses TypeScript, where its CSS entry is, what it already has for colours, type and layout, which behaviours it needs (disclosures, dialogs, animation), and which struts components it needs (a site header). Note how it renders markup (components in a framework, server templates, plain HTML): that's where component examples get ported to.
 
 ## 2. Copy
 
@@ -23,8 +29,8 @@ struts becomes the project's own CSS and JS. Don't put it in a `struts/` folder:
 | `postcss/` | Where the project keeps build scripts | Plain ESM JS |
 | `tools/component-index.js` | Beside `postcss/` | Plain ESM JS. Writes the component index files |
 | `colors.config.json`, `colors.schema.json` | Next to the CSS, or the project root | Keep the `$schema` line pointing at the schema |
-| `public/fonts/` | The folder the project serves at `/` (`public/` in Vite and Astro) | `base/fonts.css` points at `/fonts/…`. Keep `OFL.txt` with the font files |
-| `js/*.ts` | The project's scripts or helpers folder | Only the helpers you need, plus what they import: `dynamic-elements.ts`, `data-attributes.ts`, `focusable.ts` |
+| `public/fonts/` | The folder the project serves at `/` (e.g. `public/` in Vite and Astro) | `base/fonts.css` points at `/fonts/…`. Keep `OFL.txt` with the font files |
+| `js/*.ts` | The project's scripts or helpers folder | Only the helpers you need, plus what they import: `dynamic-elements.ts`, `data-attributes.ts`, `focusable.ts`. Without TypeScript, copy compiled JS |
 | `components/` | Where the project keeps its components (Gust and most frameworks already have `components/`) | One folder per component. Only the components you need: delete the other folders, then regenerate the indexes. `css/index.css` imports `../components/index.css`, and component scripts import `../../js/`; fix both paths if the folders don't end up siblings |
 
 Three habits keep the link to struts without making it a dependency:
@@ -33,9 +39,23 @@ Three habits keep the link to struts without making it a dependency:
 2. **Copy unchanged first, as its own commit.** Tailor in later commits, so `git log` separates struts from the project's changes.
 3. **Record where it came from** in the project's docs (e.g. `docs/struts.md`): the struts commit hash, the date, and where each struts folder went.
 
-Dev dependencies: `tailwindcss`, `@tailwindcss/postcss`, `postcss`, `postcss-functions`, `culori`.
+Dev dependencies, installed with the project's package manager: `tailwindcss`, `@tailwindcss/postcss`, `postcss`, `postcss-functions`, `culori`. Add `postcss-import` if the build doesn't inline CSS imports itself (see section 3).
 
 ## 3. Wire up the build
+
+Whatever the build tool, it needs to do five things. Each item below says what must happen. The tool-specific blocks after it are examples; do the equivalent in the project's own setup.
+
+1. **Inline CSS imports, then run the struts preset, then Tailwind.** `postcss/preset.js` returns the plugins in order (colour system → functions → Tailwind). The preset's plugins must see one flattened stylesheet, so whatever inlines `@import`s runs before them.
+2. **Point the colour plugin at `colors.config.json`.** It reads the config at build time and appends the colours, `surface-*` and `on-*` classes to the entry stylesheet.
+3. **Regenerate the component indexes** (`components/index.css` and `index.ts`) before each build, and whenever a component folder is added or deleted. `tools/component-index.js` does this from the command line or as a Vite plugin.
+4. **Compile the TypeScript** in `js/` and `components/` to plain JS, and load the main script entry, which imports `components/index.ts` and any helpers from `js/` it needs. Without TypeScript in the project, compile them once, copy in the JS output (`scripts.js` in each component), and run the index tool with `--js` (or `{ language: 'js' }`) so it writes `index.js`.
+5. **Serve `/fonts/`** from wherever the font files went.
+
+### Examples
+
+These are suggestions, not requirements.
+
+**PostCSS config**, read by most tools that run PostCSS:
 
 ```js
 // postcss.config.js
@@ -43,31 +63,29 @@ import { struts } from './postcss/preset.js';
 export default { plugins: struts({ colorsConfig: './colors.config.json' }) };
 ```
 
-- **Vite and Vite-based frameworks (Astro, SvelteKit, Nuxt):** that's all; Vite inlines imports before PostCSS plugins run and picks up `postcss.config.js`. The colour plugin registers the config file as a dependency, so dev reloads when it changes.
-- **Other builds:** put `postcss-import` before the preset so the functions see every file.
-- **Component-scoped CSS** (`<style>` in Astro/Vue/Svelte, CSS modules): the colour plugin only acts on the entry stylesheet, so generated colours and `surface-*`/`on-*` exist only there. Component CSS can use `fluid()`, `to-rem()`, `--spacing()` and `var(--color-*)`. To `@apply` patterns, add `@reference` to the entry; put `surface-*` classes in the markup rather than applying them.
+**Vite and Vite-based frameworks (Astro, SvelteKit, Nuxt).** Vite inlines imports before PostCSS plugins run and picks up `postcss.config.js` on its own. The colour plugin registers its config as a dependency, so the dev server reloads when it changes. Add the component index plugin. Pass `dir` if `components/` isn't in the working directory.
 
-Add the no-JS swap to the document `<head>`, before the stylesheet:
+```js
+// vite.config.js
+import { componentIndex } from './tools/component-index.js';
+export default { plugins: [componentIndex()] };
+```
+
+**webpack, Rollup, Parcel and others.** Put `postcss-import` before the preset in the PostCSS plugins, and run `node tools/component-index.js [dir]` before each build (a `prebuild` script, a task-runner step, a CI step).
+
+**No bundler, or a build that can't run PostCSS** (a CMS theme with its own asset pipeline, a static-site generator): build the CSS as its own step with `postcss-cli` and `postcss-import`, and compile the scripts with `tsc` or `esbuild`. Then hand both outputs to the existing pipeline.
+
+**Component-scoped CSS** (`<style>` in Astro, Vue or Svelte, CSS modules): the colour plugin only acts on the entry stylesheet, so generated colours and `surface-*`/`on-*` exist only there. Scoped CSS can use `fluid()`, `to-rem()`, `--spacing()` and `var(--color-*)`. To `@apply` patterns, add `@reference` to the entry; put `surface-*` classes in the markup rather than applying them.
+
+### The no-JS swap
+
+Add this to the document `<head>`, before the stylesheet, however the project renders its pages:
 
 ```html
 <html lang="en" class="no-js">
 <head>
     <script>document.documentElement.classList.replace('no-js', 'js');</script>
 ```
-
-Keep the component indexes generated:
-
-- **Vite:** add the plugin. Pass `dir` if `components/` isn't in the working directory.
-
-  ```js
-  // vite.config.js
-  import { componentIndex } from './tools/component-index.js';
-  export default { plugins: [componentIndex()] };
-  ```
-
-- **Other builds:** run `node tools/component-index.js [dir]` before each build, e.g. as a `prebuild` script.
-
-Import `components/index.ts` from the main script entry, beside any helpers from `js/`. It registers every component's script.
 
 With the swap in place, `[data-animate-item]` elements start hidden, so any page that uses them must also load `js/animate.ts`. Otherwise they never appear.
 
@@ -86,7 +104,7 @@ Work through these in order and run the build after each one.
 5. **Fluid range**: `struts({ fluid: { min, max } })` if the design's narrowest and widest frames differ from 320 and 1200.
 6. **Patterns**: restyle by changing each block's declared knobs first, and only then its rules. Delete patterns the project won't use: remove the import from `index.css` and the file.
 7. **Forms**: turn on `base/forms.css` in `index.css` if the project owns its form markup. Leave it off if a form plugin brings its own styles, and use the `input`/`checkbox`/`radio`/`select` classes instead.
-8. **Components**: port each component's `example.html` to the project's templates (an Astro component, a Gust `template.php` with a `make()` class and an `example.php`), keeping its class names and `data-*` hooks. Restyle through its knobs and the role tokens, as with patterns. See [components/README.md](components/README.md#in-a-project).
+8. **Components**: port each component's `example.html` to however the project renders markup (for example an Astro component, or a Gust `template.php` with a `make()` class and an `example.php`), keeping its class names and `data-*` hooks. Restyle through its knobs and the role tokens, as with patterns. See [components/README.md](components/README.md#in-a-project).
 9. **Adapters**: for WordPress, import `css/adapters/wordpress.css` and set `safelist` and `classes` as its header describes.
 
 ## 5. Keep the conventions
@@ -112,4 +130,4 @@ Copy `CLAUDE.md`'s conventions section into the project's own agent instructions
 - Site header, below md: the Menu button reports expanded and collapsed; Escape, a click outside, a link click and tabbing past the last link all close the menu; the page doesn't scroll behind it. The bar hides on scroll down and returns on scroll up. With JS off the menu still opens and closes. From md up the nav sits inline and the button is gone.
 - With reduced motion on, nothing animates and scrolling isn't smooth.
 - Animate on scroll: items play on the way down and replay after scrolling back above them; they're visible with JS off and in print preview.
-- A Lighthouse accessibility audit passes, in both schemes.
+- An accessibility audit (Lighthouse, axe or similar) passes, in both schemes.

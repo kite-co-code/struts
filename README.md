@@ -4,6 +4,22 @@ A CSS and JS starter for web projects, built on Tailwind v4. It's a **starting p
 
 Its defaults are dressed in Kite Co.'s brand (blue on neutral, the IBM Plex family, hairline keylines) so the demo looks finished. A project swaps the palette, fonts and type scale and keeps the rest.
 
+## Any stack
+
+struts is meant to work with whatever a project already uses: any framework or CMS, any bundler, any package manager. It needs two things:
+
+- **Tailwind CSS v4.**
+- **A build step that can run PostCSS plugins.** The colour system and the build functions (`fluid()`, `to-rem()`) are PostCSS plugins, the most widely supported plugin format. Vite, webpack, Parcel and Rollup all run them, and `postcss-cli` works as a standalone step beside anything else.
+
+Everything else is plain web platform:
+
+- **CSS** for every pattern.
+- **HTML** for the markup each pattern and component expects, to port to whatever renders the project's pages.
+- **TypeScript** compiled to plain JS, with no framework and no runtime dependencies.
+- **A small Node script** that writes the component index files.
+
+This repo uses Vite, pnpm, Biome and Vitest to run its demo and tests. That's this repo's choice, not a requirement. Where the docs show config for a particular tool, it's an example of one way to do it.
+
 ## Add it to a project
 
 Give your coding agent this prompt from the project's root:
@@ -27,6 +43,8 @@ phases that each leave a working build, starting with the foundation.
 - **Components.** Markup, styles and behaviour in one folder each, starting with a site header whose mobile menu is a native popover. A components page renders every example in a resizable frame.
 
 ## Run the demo
+
+For working on struts itself. A project adopting it doesn't need any of these tools.
 
 ```bash
 pnpm install
@@ -101,4 +119,4 @@ export default {
 };
 ```
 
-The preset runs the colour plugin, then the functions, then Tailwind. Imports must be inlined before it runs so the functions reach every file: Vite does this; in other builds put `postcss-import` first.
+The preset runs the colour plugin, then the functions, then Tailwind. CSS `@import`s must be inlined before it runs, so the functions reach every file. Vite does this itself; in most other builds, put `postcss-import` first.

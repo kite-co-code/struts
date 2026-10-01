@@ -33,14 +33,14 @@ describe('findComponents', () => {
 
 describe('renderIndex', () => {
     it('imports each component', () => {
-        const { css, ts } = renderIndex({ styles: ['card', 'tabs'], scripts: ['tabs'] });
+        const { css, script } = renderIndex({ styles: ['card', 'tabs'], scripts: ['tabs'] });
 
         expect(css).toContain('@import "./card/styles.css";\n@import "./tabs/styles.css";');
-        expect(ts).toContain("import './tabs/scripts';");
+        expect(script).toContain("import './tabs/scripts';");
     });
 
     it('keeps the script index a module when nothing has a script', () => {
-        expect(renderIndex({ styles: ['card'], scripts: [] }).ts).toContain('export {};');
+        expect(renderIndex({ styles: ['card'], scripts: [] }).script).toContain('export {};');
     });
 });
 
@@ -56,5 +56,13 @@ describe('writeComponentIndex', () => {
 
         expect(writeComponentIndex(dir)).toBe(true);
         expect(readFileSync(join(dir, 'index.ts'), 'utf8')).toContain("import './tabs/scripts';");
+    });
+
+    it('writes index.js from scripts.js for projects without TypeScript', () => {
+        component('tabs', ['styles.css', 'scripts.js']);
+
+        writeComponentIndex(dir, { language: 'js' });
+
+        expect(readFileSync(join(dir, 'index.js'), 'utf8')).toContain("import './tabs/scripts';");
     });
 });

@@ -15,7 +15,10 @@
  *
  * Other builds: run it before building, e.g. as a prebuild script:
  *
- *   node tools/component-index.js [components-dir]
+ *   node tools/component-index.js [components-dir] [--js]
+ *
+ * Projects without TypeScript keep compiled scripts.js files instead: pass
+ * --js (or { language: 'js' }) to look for those and write index.js.
  *
  * Why not a glob @import: Vite and postcss-import both inline imports before
  * a PostCSS plugin could expand a glob, and import.meta.glob is Vite-only.
@@ -36,12 +39,15 @@ const NOTE = [
     " * Don't edit it: add or delete a component folder instead.",
 ];
 
+/** @typedef {'ts' | 'js'} Language */
+
 /**
  * Component folders that have styles, and those that have a script, sorted by name.
  * @param {string} dir - The components folder.
+ * @param {Language} [language] - Look for scripts.ts or scripts.js.
  * @returns {{ styles: string[], scripts: string[] }}
  */
-export function findComponents(dir) {
+export function findComponents(dir, language = 'ts') {
     const names = readdirSync(dir, { withFileTypes: true })
         .filter((entry) => entry.isDirectory())
         .map((entry) => entry.name)
@@ -49,16 +55,17 @@ export function findComponents(dir) {
 
     return {
         styles: names.filter((name) => existsSync(join(dir, name, 'styles.css'))),
-        scripts: names.filter((name) => existsSync(join(dir, name, 'scripts.ts'))),
+        scripts: names.filter((name) => existsSync(join(dir, name, `scripts.${language}`))),
     };
 }
 
 /**
  * The two index files' contents.
  * @param {{ styles: string[], scripts: string[] }} components
- * @returns {{ css: string, ts: string }}
+ * @param {Language} [language]
+ * @returns {{ css: string, script: string }}
  */
-export function renderIndex({ styles, scripts }) {
+export function renderIndex({ styles, scripts }, language = 'ts') {
     const css = [
         '/* ---------------------------------------------------------------------------',
         ' * Components: every components/{name}/styles.css. Imported by css/index.css.',
@@ -70,9 +77,9 @@ export function renderIndex({ styles, scripts }) {
         '',
     ].join('\n');
 
-    const ts = [
+    const script = [
         '/**',
-        ' * Components: every components/{name}/scripts.ts. Each registers itself with',
+        ` * Components: every components/{name}/scripts.${language}. Each registers itself with`,
         " * define() on import. Import this from the main script entry: import './components';",
         ' *',
         ...NOTE,
@@ -82,7 +89,7 @@ export function renderIndex({ styles, scripts }) {
         '',
     ].join('\n');
 
-    return { css, ts };
+    return { css, script };
 }
 
 /**
@@ -97,36 +104,39 @@ function writeIfChanged(path, content) {
 }
 
 /**
- * Write index.css and index.ts into the components folder.
+ * Write index.css and index.ts (or index.js) into the components folder.
  * @param {string} [dir] - The components folder. Defaults to ./components.
+ * @param {{ language?: Language }} [options]
  * @returns {boolean} Whether either file changed.
  */
-export function writeComponentIndex(dir = 'components') {
-    const { css, ts } = renderIndex(findComponents(dir));
+export function writeComponentIndex(dir = 'components', { language = 'ts' } = {}) {
+    const { css, script } = renderIndex(findComponents(dir, language), language);
     const cssChanged = writeIfChanged(join(dir, 'index.css'), css);
-    const tsChanged = writeIfChanged(join(dir, 'index.ts'), ts);
-    return cssChanged || tsChanged;
+    const scriptChanged = writeIfChanged(join(dir, `index.${language}`), script);
+    return cssChanged || scriptChanged;
 }
 
 /**
  * Vite plugin: keep the index files in step with the component folders.
- * @param {{ dir?: string }} [options] - dir: the components folder, absolute or from the working directory.
+ * @param {{ dir?: string, language?: Language }} [options] - dir: the components folder,
+ *   absolute or from the working directory. language: 'js' for scripts.js and index.js.
  * @returns {import('vite').Plugin}
  */
 export function componentIndex(options = {}) {
     const dir = resolve(options.dir ?? 'components');
-    const componentFile = /[\\/](styles\.css|scripts\.ts)$/;
+    const language = options.language ?? 'ts';
+    const componentFile = /[\\/](styles\.css|scripts\.[jt]s)$/;
 
     return {
         name: 'struts-component-index',
         buildStart() {
-            writeComponentIndex(dir);
+            writeComponentIndex(dir, { language });
         },
         configureServer(server) {
             server.watcher.add(dir);
             /** @param {string} file */
             const update = (file) => {
-                if (file.startsWith(dir) && componentFile.test(file)) writeComponentIndex(dir);
+                if (file.startsWith(dir) && componentFile.test(file)) writeComponentIndex(dir, { language });
             };
             server.watcher.on('add', update);
             server.watcher.on('unlink', update);
@@ -134,9 +144,11 @@ export function componentIndex(options = {}) {
     };
 }
 
-// Run directly: node tools/component-index.js [dir]
+// Run directly: node tools/component-index.js [dir] [--js]
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-    writeComponentIndex(process.argv[2]);
+    const args = process.argv.slice(2);
+    const dir = args.find((arg) => !arg.startsWith('--'));
+    writeComponentIndex(dir, { language: args.includes('--js') ? 'js' : 'ts' });
 }
 
 export default componentIndex;

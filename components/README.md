@@ -34,7 +34,7 @@ import './site-header/scripts';
 
 `css/index.css` imports `components/index.css`, and the demo's script imports `components/index.ts`.
 
-[`tools/component-index.js`](../tools/component-index.js) writes them. In Vite it's a plugin (see `vite.config.ts`) that runs when the dev server starts or a build begins, and again when a component's `styles.css` or `scripts.ts` is added or deleted. In other builds, run `pnpm components` (or `node tools/component-index.js`) before building. Both files are committed, so a fresh clone builds straight away.
+[`tools/component-index.js`](../tools/component-index.js) writes them. In Vite it's a plugin (see `vite.config.ts`) that runs when the dev server starts or a build begins, and again when a component's `styles.css` or `scripts.ts` is added or deleted. In other builds, run `node tools/component-index.js` before building (`pnpm components` in this repo). In a project without TypeScript, components keep a compiled `scripts.js`; pass `--js` and it writes `index.js` instead. Both files are committed, so a fresh clone builds straight away.
 
 Why not a glob `@import "./*/styles.css"`: Vite and `postcss-import` inline imports before any PostCSS plugin could expand the glob, and `import.meta.glob` only exists in Vite. Generated files work everywhere.
 
@@ -83,7 +83,7 @@ Write each example as real, accessible markup, with real `href`s and `id`s. It's
 
 ## In a project
 
-struts has no templating, so `example.html` is the source a project ports to its own:
+struts has no templating, so `example.html` is the source a project ports to its own. Any templating works; for example:
 
 - **Astro, Svelte, Vue:** a component per folder. Keep `styles.css` and `scripts.ts` beside it and import them from the global entries, not a scoped `<style>` (scoped CSS can't see the colour utilities).
 - **Gust:** `template.php` and a `make()` class from the markup, `example.php` from the examples, `styles.pcss` from `styles.css`, `scripts.js` from `scripts.ts`.
