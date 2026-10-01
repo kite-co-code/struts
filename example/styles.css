@@ -5,6 +5,7 @@
 /* Don't generate classes mentioned in docs and tests */
 @source not "../docs";
 @source not "../test";
+@source not "../components/README.md";
 
 /* Demo-only helpers */
 @utility swatch {
@@ -26,4 +27,32 @@
 [aria-pressed="true"] {
     --btn--background-color: var(--color-accent);
     --btn--color: var(--color-accent-foreground);
+}
+
+/* Components page: a frame for one example. Width set by the page's buttons. */
+@utility preview {
+    display: grid;
+    justify-items: center;
+    padding: --spacing(16);
+    overflow-x: auto;
+    border: var(--rule-width) solid color-mix(in oklab, currentColor 50%, transparent);
+    border-radius: var(--radius-md);
+    background-color: color-mix(in oklab, var(--color-foreground) 6%, var(--color-background));
+}
+
+@utility preview__frame {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: --spacing(160);
+    border: var(--rule-width) solid color-mix(in oklab, currentColor 50%, transparent);
+    background-color: var(--color-background);
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition: inline-size 300ms var(--ease-out-quart);
+    }
+}
+
+/* Page-level components scroll inside a fixed height */
+@utility preview__frame--page {
+    block-size: min(--spacing(640), 80svh);
 }

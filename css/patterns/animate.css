@@ -1,43 +1,63 @@
 /* ---------------------------------------------------------------------------
  * Animate on scroll
  *
- *   <div class="animate" data-animate data-animate-stagger="80">
- *       <p class="animate__item">…</p>
- *       <p class="animate__item">…</p>
+ *   <div data-animate data-animate-stagger="80">
+ *       <p data-animate-item>…</p>
+ *       <p data-animate-item>…</p>
  *   </div>
  *
- * js/animate.ts sets [data-playing] when the block scrolls into view. The block
- * can be its own item. Items stay visible without JS (the html.js class) and
- * when the user prefers reduced motion.
+ *   <h2 data-animate-item>…</h2>                 no trigger: plays itself
  *
- * Block knobs: --animate--animation-name (fade-in), --animate--animation-duration,
- * --animate--animation-timing-function, --animate--animation-delay, and
- * --animate--translate for fade-in-translate.
- * Item knob (read with a fallback): --animate__item--animation-delay, added to
- * the block's delay. animate.ts sets it from data-animate-stagger.
+ *   <section id="intro" data-animate>…</section>
+ *   <img data-animate-item="intro" …>            played by #intro, wherever it is
  *
- * .animate__item needs no CSS of its own; .animate styles it.
+ * js/animate.ts sets [data-playing] on each item when its trigger scrolls into
+ * view; this file does the animating. An item's trigger is the id in its value,
+ * else its nearest [data-animate] ancestor, else the item itself, so nested
+ * triggers each play only their own items.
+ *
+ * Data attributes rather than classes: the hidden state has to match exactly
+ * what the script will reveal (see docs/decisions/009-animate-hooks.md).
+ *
+ * Items stay visible without JS (the html.js class), when the user prefers
+ * reduced motion, and in print.
+ *
+ * Knobs (never declared, read with a fallback). Set them on the item or any
+ * ancestor, the trigger included; a remote item doesn't inherit from its trigger.
+ *   --animate--animation-name              fade-in, or fade-in-translate
+ *   --animate--animation-duration          300ms
+ *   --animate--animation-timing-function   ease-out
+ *   --animate--animation-delay             50ms, added to the item's place in the queue
+ *   --animate--translate                   fade-in-translate's start offset, 0 16px
+ *
+ * Set by the script: --animate__item--animation-delay, the item's place in the queue.
  * ------------------------------------------------------------------------- */
 
-@utility animate {
-    --animate--animation-name: fade-in;
-    --animate--animation-duration: 300ms;
-    --animate--animation-timing-function: ease-out;
-    --animate--animation-delay: 50ms;
-
-    @media (prefers-reduced-motion: no-preference) {
-        :where(.js) &:where(.animate__item),
-        :where(.js) & :where(.animate__item) {
+@layer utilities {
+    @media screen and (prefers-reduced-motion: no-preference) {
+        :where(.js [data-animate-item]:not([data-playing])) {
             opacity: 0;
         }
 
-        &:where([data-playing]):where(.animate__item),
-        &:where([data-playing]) :where(.animate__item) {
-            /* The keyframes animate from their start state to this */
-            opacity: 1;
-            animation: var(--animate--animation-name) var(--animate--animation-duration)
-                var(--animate--animation-timing-function) both;
-            animation-delay: calc(var(--animate--animation-delay) + var(--animate__item--animation-delay, 0ms));
+        :where([data-animate-item][data-playing]) {
+            animation: var(--animate--animation-name, fade-in) var(--animate--animation-duration, 300ms)
+                var(--animate--animation-timing-function, ease-out) both;
+            animation-delay: calc(var(--animate--animation-delay, 50ms) + var(--animate__item--animation-delay, 0ms));
         }
+    }
+}
+
+/* Outside @theme so they're always emitted: the pattern names them through a
+   variable, which Tailwind can't see. Also used by the animate-* utilities. */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-translate {
+    from {
+        opacity: 0;
+        translate: var(--animate--translate, 0 --spacing(16));
     }
 }

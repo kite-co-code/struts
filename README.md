@@ -24,15 +24,17 @@ phases that each leave a working build, starting with the foundation.
 - **Flow spacing.** Elements declare the space above themselves.
 - **Layout.** A named-track page grid, and role widths that work inside or outside it. Keylines (`rule-*`, `layout-grid--ruled`) follow every surface.
 - **Accessible JS helpers** in TypeScript: disclosure, dialog, animate-on-scroll and small utilities. No framework.
+- **Components.** Markup, styles and behaviour in one folder each, starting with a site header whose mobile menu is a native popover. A components page renders every example in a resizable frame.
 
 ## Run the demo
 
 ```bash
 pnpm install
-pnpm dev        # the demo page: every pattern in one place
-pnpm test       # build functions and the colour plugin
+pnpm dev        # the demo: every pattern at /, every component at /components/
+pnpm test       # build functions, the colour plugin and the component index
 pnpm check      # TypeScript
 pnpm lint       # Biome
+pnpm components # regenerate the component indexes (pnpm dev does this itself)
 pnpm build      # build the demo into dist/
 ```
 
@@ -50,7 +52,9 @@ Node 22+, pnpm 11.
    6. [Layout](docs/decisions/006-layout.md)
    7. [JS and dynamicElements](docs/decisions/007-js-dynamic-elements.md)
    8. [Progressive enhancement](docs/decisions/008-progressive-enhancement.md)
-3. `example/index.html`: every pattern in use.
+   9. [Animate on scroll hooks](docs/decisions/009-animate-hooks.md)
+   10. [Components](docs/decisions/010-components.md)
+3. `example/index.html`: every pattern in use. [components/README.md](components/README.md): how components are built.
 4. The files themselves. Each pattern's header comment lists its markup and knobs.
 
 To bring struts into a project, follow [ADOPT.md](ADOPT.md). To move Gust over, see [docs/guides/gust-migration.md](docs/guides/gust-migration.md).
@@ -67,13 +71,16 @@ css/
   patterns/            BEM blocks written as @utility
   utilities/           single-purpose helpers
   adapters/            wordpress.css
+components/            one folder per component: styles.css, scripts.ts, example.html
+                       index.css and index.ts are generated from the folders
+tools/
+  component-index.js   writes the component indexes (Vite plugin or CLI)
 postcss/
   preset.js            struts({ … }) → the plugin array
   color-system.js      colours, surfaces, dark mode, contrast warnings
   functions.js         to-rem, to-em, fluid, transition
-  glob-import.js       optional @import globs
 js/                    TypeScript helpers
-example/               the demo page
+example/               the demo: homepage, and components/ (the components page)
 test/                  Vitest
 docs/
 ```
@@ -90,7 +97,6 @@ export default {
         fluid: { min: 400, max: 1440 },       // viewport range for fluid(), in px (default 320–1200)
         safelist: false,                      // emit every surface-/on- class even if unused
         // classes: { surface: ['surface-{name}'], on: ['on-{name}'] },
-        // globImport: true,
     }),
 };
 ```

@@ -27,23 +27,27 @@
             </symbol>
         </svg>
 
-        <a class="sr-only focus:not-sr-only focus:absolute focus:inset-s-16 focus:top-16 focus:z-10 btn" href="#main"
+        <a class="sr-only focus:not-sr-only focus:absolute focus:inset-s-16 focus:top-16 focus:z-20 btn" href="#main"
             >Skip to content</a
         >
 
-        <header class="layout-grid rule-block-end">
-            <div class="layout-wide flex flex-wrap items-center justify-between gap-x-32 gap-y-12 py-16">
-                <a class="type-h4 link--foreground link--subtle" href="#main">struts</a>
-                <nav aria-label="Sections">
-                    <ul class="flex-list [--col-gap:--spacing(32)]">
-                        <li><a class="type-label link--subtle" href="#colour">Colour</a></li>
-                        <li><a class="type-label link--subtle" href="#type">Type</a></li>
-                        <li><a class="type-label link--subtle" href="#layout">Layout</a></li>
-                        <li><a class="type-label link--subtle" href="#forms">Forms</a></li>
-                        <li><a class="type-label link--subtle" href="#behaviour">Behaviour</a></li>
+        <header class="site-header layout-grid rule-block-end" data-site-header>
+            <div class="site-header__bar layout-wide md:grid md:grid-cols-[1fr_auto_1fr]">
+                <a class="site-header__brand type-h4 link--foreground link--subtle" href="#main">struts</a>
+                <button class="site-header__toggle btn btn--small btn--secondary" type="button" popovertarget="site-nav">
+                    <span class="site-header__icon" aria-hidden="true"></span> Menu
+                </button>
+                <nav id="site-nav" class="site-header__nav" aria-label="Main" popover data-scroll-lock>
+                    <ul class="site-header__list">
+                        <li><a class="site-header__link link--subtle" href="#colour">Colour</a></li>
+                        <li><a class="site-header__link link--subtle" href="#type">Type</a></li>
+                        <li><a class="site-header__link link--subtle" href="#layout">Layout</a></li>
+                        <li><a class="site-header__link link--subtle" href="#forms">Forms</a></li>
+                        <li><a class="site-header__link link--subtle" href="#behaviour">Behaviour</a></li>
+                        <li><a class="site-header__link link--subtle" href="/components/">Components</a></li>
                     </ul>
                 </nav>
-                <button class="btn btn--small btn--secondary" type="button" data-scheme-toggle hidden>
+                <button class="btn btn--small btn--secondary justify-self-end" type="button" data-scheme-toggle hidden>
                     <span class="sr-only">Colour scheme:</span> <span data-scheme-label>Auto</span>
                 </button>
             </div>
@@ -53,40 +57,87 @@
             <!-- Intro ------------------------------------------------------------ -->
             <section class="section layout-grid layout-grid--ruled" aria-labelledby="intro-title">
                 <div class="stack-24">
-                    <div class="stack-24">
-                        <svg class="block h-(--text-h1) w-auto" viewBox="0 0 344 66" role="img" aria-label="Kite Co.">
-                            <use href="#kite-co-logo" />
-                        </svg>
+                    <div class="stack-12">
                         <h1 id="intro-title" class="max-w-[22ch]">struts: a CSS and JS starter for web projects</h1>
+                        <p class="type-label"><a href="https://kite-co.net">by Kite Co.</a></p>
                     </div>
-                    <ul class="flex-list [--gap:--spacing(12)]" aria-label="What's in it">
-                        <li class="tag">Colour contexts</li>
-                        <li class="tag">Custom-property API</li>
-                        <li class="tag">Fluid type</li>
-                        <li class="tag">Flow spacing</li>
-                        <li class="tag">Layout</li>
-                        <li class="tag">Accessible JS</li>
-                    </ul>
+                    <p class="type-h4 max-w-[48ch]">
+                        A starting point you copy and tailor, not a library you install. Opinionated, and shaped by the
+                        sites we build.
+                    </p>
+                    <div class="stack-12">
+                        <p id="intro-tags" class="type-label-sm">On this page</p>
+                        <ul class="flex-list [--gap:--spacing(10)]" aria-labelledby="intro-tags">
+                            <li><a class="tag" href="#colour">Colour that follows the surface</a></li>
+                            <li><a class="tag" href="#colour">Dark mode</a></li>
+                            <li><a class="tag" href="#type">Fluid type</a></li>
+                            <li><a class="tag" href="#type">Flow spacing</a></li>
+                            <li><a class="tag" href="#layout">Page grid and keylines</a></li>
+                            <li><a class="tag" href="#forms">Form defaults</a></li>
+                            <li><a class="tag" href="#behaviour">Native-first JS</a></li>
+                            <li><a class="tag" href="#components">Components</a></li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- Services / approach: the ruled split --------------------------- -->
-            <section class="layout-grid layout-grid--ruled rule-block-start" aria-label="Ruled split" data-demo="ruled-split">
+            <!-- Approach / get started: the ruled split ------------------------ -->
+            <section class="layout-grid layout-grid--ruled rule-block-start" aria-label="About struts" data-demo="ruled-split">
                 <div class="layout-start section stack-24">
-                    <p class="type-label">Services</p>
-                    <ul class="flex-list [--gap:--spacing(10)]">
-                        <li><a class="tag" href="#colour">Websites</a></li>
-                        <li><a class="tag" href="#colour">Web Applications</a></li>
-                        <li><a class="tag" href="#colour">Digital Strategy</a></li>
-                        <li><a class="tag" href="#colour">CMS &amp; Content Systems</a></li>
-                        <li><a class="tag" href="#colour">Ticketing &amp; CRM Integration</a></li>
-                    </ul>
+                    <h2 class="type-label">Approach</h2>
+                    <dl class="stack-16">
+                        <div class="stack-4">
+                            <dt>Copy it, don't install it</dt>
+                            <dd>Each project takes the parts it needs and changes them freely. There's no version to keep up with.</dd>
+                        </div>
+                        <div class="stack-4">
+                            <dt>The platform first</dt>
+                            <dd>
+                                <code>&lt;details&gt;</code>, <code>&lt;dialog&gt;</code>, <code>commandfor</code> and
+                                <code>color-mix()</code> do most of the work. JS fills the gaps, and everything works
+                                without it.
+                            </dd>
+                        </div>
+                        <div class="stack-4">
+                            <dt>Tailwind underneath, used sparingly</dt>
+                            <dd>
+                                Tokens and utilities come from Tailwind v4. Patterns are BEM blocks with a small
+                                custom-property API, so markup stays readable.
+                            </dd>
+                        </div>
+                        <div class="stack-4">
+                            <dt>Colour by context</dt>
+                            <dd>Set a surface and everything inside follows it. No per-component overrides.</dd>
+                        </div>
+                        <div class="stack-4">
+                            <dt>Components in one folder</dt>
+                            <dd>
+                                A component keeps its markup, styles and script together, with an example that the
+                                components page renders.
+                            </dd>
+                        </div>
+                        <div class="stack-4">
+                            <dt>Written down</dt>
+                            <dd>
+                                Each pattern's header comment is its API, and each choice has a short decision doc
+                                explaining why.
+                            </dd>
+                        </div>
+                    </dl>
                 </div>
-                <div class="layout-end section stack-16 max-md:rule-block-start md:rule-inline-start md:ps-(--layout--inset)">
-                    <p class="type-label">Approach</p>
-                    <p class="type-h3 max-w-[28ch]">
-                        layout-grid--ruled draws the keyline; rule-block-start and rule-inline-start draw the rest.
-                        Each follows the surface it's on.
+                <div class="layout-end section stack-24 max-md:rule-block-start md:rule-inline-start md:ps-(--layout--inset)">
+                    <h2 class="type-label">Get started</h2>
+                    <p>Give your coding agent this prompt from your project's root:</p>
+                    <div class="stack-12">
+                        <pre id="adopt-prompt" class="surface-neutral-600 p-16 rounded-md"><code>Adopt struts (https://github.com/kite-co-code/struts) into this project. Clone it to a temporary folder and follow its ADOPT.md. Plan the work in phases that each leave a working build, starting with the foundation.</code></pre>
+                        <p class="flex flex-wrap items-center gap-x-16 gap-y-8" data-copy-controls hidden>
+                            <button class="btn btn--small" type="button" data-copy="adopt-prompt">Copy prompt</button>
+                            <span class="type-meta" role="status" data-copy-status></span>
+                        </p>
+                    </div>
+                    <p>
+                        <a href="https://github.com/kite-co-code/struts/blob/main/ADOPT.md">ADOPT.md</a> is the full
+                        procedure, for agents and people alike.
                     </p>
                 </div>
             </section>
@@ -108,6 +159,15 @@
                 <ul class="grid-auto list-reset" data-demo="surfaces">
                     <li class="surface-neutral swatch">
                         <p class="type-label">surface-neutral</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-neutral-600 swatch">
+                        <p class="type-label">surface-neutral-600</p>
                         <p><a href="#colour">Inline link example</a></p>
                         <p class="flex-list">
                             <a class="btn" href="#colour">Button</a>
@@ -167,7 +227,7 @@
                     <code>on-*</code> sets the foreground and roles without a background, for text over an image or
                     a background set some other way.
                 </p>
-                <div class="layout-wide img-fit aspect-[3/1] rounded-md" data-demo="on-blue">
+                <div class="img-fit aspect-[3/1] rounded-md" data-demo="on-blue">
                     <div class="bg-blue"></div>
                     <div class="on-blue p-24 stack-16">
                         <p class="type-h3">on-blue</p>
@@ -461,11 +521,53 @@
                 </template>
 
                 <h3>Animate on scroll</h3>
-                <div class="animate grid-simple cols-1 md:cols-3" data-animate data-animate-stagger="120" data-demo="animate">
-                    <p class="animate__item demo-box">Fades in</p>
-                    <p class="animate__item demo-box">one after</p>
-                    <p class="animate__item demo-box">another</p>
+                <div class="grid-simple cols-1 md:cols-3" data-animate data-animate-stagger="120" data-demo="animate">
+                    <p class="demo-box" data-animate-item>Fades in</p>
+                    <p class="demo-box" data-animate-item>one after</p>
+                    <p class="demo-box" data-animate-item>another</p>
                 </div>
+
+                <div class="grid-simple cols-1 md:cols-2" data-demo="animate-remote">
+                    <p id="animate-trigger" class="demo-box" data-animate-item>No trigger, so it plays itself</p>
+                    <p
+                        class="demo-box [--animate--animation-name:fade-in-translate]"
+                        data-animate-item="animate-trigger"
+                    >
+                        Played by the box opposite, sliding up
+                    </p>
+                </div>
+
+                <div class="stack-16" data-animate data-demo="animate-nested">
+                    <p class="demo-box" data-animate-item>Outer trigger’s item</p>
+                    <div class="grid-simple cols-3" data-animate data-animate-stagger="60">
+                        <p class="demo-box" data-animate-item>Inner</p>
+                        <p class="demo-box" data-animate-item>trigger’s</p>
+                        <p class="demo-box" data-animate-item>items</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Components ------------------------------------------------------- -->
+            <section
+                id="components"
+                class="section layout-grid layout-grid--ruled rule-block-start flow"
+                aria-labelledby="components-title"
+            >
+                <p class="type-label">Components</p>
+                <h2 id="components-title" class="type-h1 [--flow-space:--spacing(16)]">One folder each</h2>
+                <p class="max-w-[60ch]">
+                    Patterns style things that appear everywhere. A component is a whole piece of UI, like the header at
+                    the top of this page, with its markup, styles and behaviour kept together:
+                </p>
+                <pre class="surface-neutral-600 p-16 rounded-md max-w-[60ch]"><code>components/site-header/
+  styles.css     @utility blocks; the header comment is the API
+  scripts.ts     behaviour, registered with define()
+  example.html   reference markup, one &lt;template&gt; per example</code></pre>
+                <p class="max-w-[60ch]">
+                    A project ports each <code>example.html</code> to its own templates: an Astro component, a Gust
+                    <code>template.php</code>. The components page shows every example in a frame you can resize.
+                </p>
+                <p><a class="btn" href="/components/">Browse the components</a></p>
             </section>
         </main>
 
@@ -484,15 +586,28 @@
                     class="layout-end section max-md:rule-block-start md:rule-inline-start md:ps-(--layout--inset)"
                     aria-label="Footer"
                 >
-                    <ul class="stack-24 list-reset">
-                        <li><a class="type-label" href="https://github.com/">Source</a></li>
-                        <li><a class="type-label" href="#colour">Colour</a></li>
-                        <li><a class="type-label" href="#main">Back to top</a></li>
-                    </ul>
+                    <div class="grid-simple cols-2 [--gap:--spacing(32)]">
+                        <div class="stack-16">
+                            <h2 class="type-meta">struts</h2>
+                            <ul class="stack-12 list-reset">
+                                <li><a class="type-label" href="https://github.com/kite-co-code/struts">GitHub</a></li>
+                            </ul>
+                        </div>
+                        <div class="stack-16">
+                            <h2 class="type-meta">Kite Co.</h2>
+                            <ul class="stack-12 list-reset">
+                                <li><a class="type-label" href="https://kite-co.net">kite-co.net</a></li>
+                                <li><a class="type-label" href="https://github.com/kite-co-code/gust">Gust WP Theme</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </nav>
             </div>
             <div class="layout-grid rule-block-start">
-                <p class="layout-wide type-meta py-16">©2026 Kite Co.</p>
+                <div class="layout-wide flex flex-wrap items-center justify-between gap-x-32 gap-y-12 py-16">
+                    <p class="type-meta">©2026 Kite Co.</p>
+                    <a class="type-meta" href="#main">Back to top</a>
+                </div>
             </div>
         </footer>
     </body>

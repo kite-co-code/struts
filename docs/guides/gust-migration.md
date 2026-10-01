@@ -85,9 +85,9 @@ Check: `pnpm build` passes and the dev kit pages look the same, apart from the s
 | `checkbox-field`, `radio-field` (wrapper + label pseudo-elements) | `checkbox` / `radio` on the `<input>`, with the label wrapping it | `(checkbox\|radio)-field` | 3 |
 | `input--button-height` | Dropped | | 0 |
 | `link--2` | `link--subtle` | `link--2` | 4 |
-| `.animate` | `.animate` + `data-animate` | `class="[^"]*\banimate\b` | 3 |
-| `animate-element` | `animate__item` | `animate-element` | 12 |
-| `animate--play` | `[data-playing]` (set by `animate.ts`) | `animate--play` | 4 |
+| `.animate` | `data-animate` (no class) | `class="[^"]*\banimate\b` | 3 |
+| `animate-element` | `data-animate-item` (no class). On its own, with no `data-animate` around it, it plays itself | `animate-element` | 12 |
+| `animate--play` | `[data-playing]`, set on each item by `animate.ts` | `animate--play` | 4 |
 | `tooltip` | Dropped (it hard-coded the error context). Build it in the component | `\btooltip\b` | 3 |
 | `body::before` backdrop | `::backdrop` on the dialog | | |
 | `js-*` hooks | `data-*` attributes | `\bjs-[a-z0-9-]+` | 13 in 6 files |
@@ -128,7 +128,7 @@ Check: `pnpm build` passes and the dev kit pages look the same, apart from the s
 | `--color-{x}--hsl`, `--h`, `--s`, `--l` | `color-mix()` or relative colour syntax | `--color-[a-z0-9-]+--(hsl\|h\|s\|l)\b` | 1 |
 | `--animate-animation` | `--animate--animation-name` | `--animate-(animation\|duration\|delay\|easing\|item-delay\|key\|translate)` | 24 |
 | `--animate-duration`, `--animate-delay`, `--animate-easing` | `--animate--animation-duration`, `--animate--animation-delay`, `--animate--animation-timing-function` | | |
-| `--animate-item-delay` + `--animate-key` | `data-animate-stagger="ms"` on the block (sets `--animate__item--animation-delay`) | | |
+| `--animate-item-delay` + `--animate-key` | `data-animate-stagger="ms"` on the trigger (default 100ms; sets `--animate__item--animation-delay`) | | |
 | `--animate-translateX`, `--animate-translateY` | `--animate--translate: X Y` | | |
 | `--prose--max-width` | `--prose--max-inline-size` | `--prose--max-width` | 0 |
 | `--hr--color`, `--hr--thickness` | The global `--rule-color`, `--rule-width`: `<hr>` is a keyline like the `rule-*` utilities | `--hr--` | 2 |
@@ -202,7 +202,7 @@ The struts helpers are TypeScript. Vite compiles `.ts` imports with no setup, so
 | `isElementVisible(el)` | `el.checkVisibility()` | `SiteHeader.js:2,182` |
 | `helpers/cookies.js` | `js/cookies.ts` | Same `setCookie(name, value, days)` / `getCookie(name)`. Values are now URI-encoded; `deleteCookie` is new. |
 | `lodash.debounce` | `js/debounce.ts` | `debounce(fn, ms)` with `.cancel()`. |
-| `components/animate/scripts.js` (`.animate`) | `js/animate.ts` (`[data-animate]`) | Through `define()`, so blocks added later also animate. |
+| `components/animate/scripts.js` (`.animate`) | `js/animate.ts` (`[data-animate-item]`) | Through `define()`, so items added later also animate. |
 | — | `js/data-attributes.ts` | `getBooleanDataAttribute`, `getNumberDataAttribute`, so classes don't each copy them. |
 
 **Disclosure changes**
@@ -283,7 +283,7 @@ export default {
 
 Turn on `base/forms.css` in `index.css` only where Gravity Forms doesn't bring its own styles.
 
-**Vite.** Keep `laravel-vite-plugin`, `vite-plugin-css-glob-import` and the generated `_components.pcss`. struts' `globImport: true` option does the same job as Gust's `postcss-glob-import.js` if you still need it; no `**` imports are left in `assets/` today. The colour plugin registers the config as a build dependency, so `themeConfigWatcherPlugin` in `vite.config.js` can go. Check this by editing a colour while `pnpm dev` runs.
+**Vite.** Keep `laravel-vite-plugin`, `vite-plugin-css-glob-import` and the generated `_components.pcss`. struts has no glob-import option (a PostCSS plugin can't expand a glob before Vite inlines imports); Gust's Vite plugins already do it, and no `**` imports are left in `assets/` today. The colour plugin registers the config as a build dependency, so `themeConfigWatcherPlugin` in `vite.config.js` can go. Check this by editing a colour while `pnpm dev` runs.
 
 **Editor palette.** Update `Gust/WordPress/Colors.php`:
 

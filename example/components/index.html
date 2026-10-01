@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Components · struts</title>
+        <meta name="description" content="Every struts component, with live examples and their markup." />
+        <script>
+            document.documentElement.classList.replace('no-js', 'js');
+        </script>
+        <link rel="preload" href="/fonts/ibm-plex-serif-medium.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/ibm-plex-sans.woff2" as="font" type="font/woff2" crossorigin />
+        <script type="module" src="./page.ts"></script>
+    </head>
+    <body>
+        <a class="sr-only focus:not-sr-only focus:absolute focus:inset-s-16 focus:top-16 focus:z-20 btn" href="#main"
+            >Skip to content</a
+        >
+
+        <header class="site-header layout-grid rule-block-end" data-site-header>
+            <div class="site-header__bar layout-wide md:grid md:grid-cols-[1fr_auto_1fr]">
+                <a class="site-header__brand type-h4 link--foreground link--subtle" href="/">struts</a>
+                <button class="site-header__toggle btn btn--small btn--secondary" type="button" popovertarget="site-nav">
+                    <span class="site-header__icon" aria-hidden="true"></span> Menu
+                </button>
+                <nav id="site-nav" class="site-header__nav" aria-label="Main" popover data-scroll-lock>
+                    <ul class="site-header__list">
+                        <li><a class="site-header__link link--subtle" href="/">Overview</a></li>
+                        <li>
+                            <a class="site-header__link link--subtle" href="/components/" aria-current="page">Components</a>
+                        </li>
+                        <li><a class="site-header__link link--subtle" href="https://github.com/kite-co-code/struts">GitHub</a></li>
+                    </ul>
+                </nav>
+                <button class="btn btn--small btn--secondary justify-self-end" type="button" data-scheme-toggle hidden>
+                    <span class="sr-only">Colour scheme:</span> <span data-scheme-label>Auto</span>
+                </button>
+            </div>
+        </header>
+
+        <main id="main" tabindex="-1">
+            <section class="section layout-grid layout-grid--ruled" aria-labelledby="components-title">
+                <div class="stack-24">
+                    <h1 id="components-title">Components</h1>
+                    <p class="type-h4 max-w-[48ch]">
+                        Markup, styles and behaviour that belong together, one folder each. Every example here comes
+                        straight from a component's <code>example.html</code>.
+                    </p>
+                    <p class="max-w-[60ch]">
+                        Each example runs in its own frame, so page-level components behave as they would on a site.
+                        Switch the frame's width to try the breakpoints. How components are built:
+                        <a href="https://github.com/kite-co-code/struts/blob/main/components/README.md">components/README.md</a>.
+                    </p>
+                    <div class="stack-12" data-components-index hidden>
+                        <p id="components-index-title" class="type-label-sm">All components</p>
+                        <ul class="flex-list [--gap:--spacing(10)]" aria-labelledby="components-index-title"></ul>
+                    </div>
+                    <noscript><p>The examples are rendered by script. Turn JS on to see them.</p></noscript>
+                </div>
+            </section>
+
+            <div data-components></div>
+        </main>
+    </body>
+</html>

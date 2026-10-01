@@ -6,7 +6,8 @@
  *   2. tokens/               @theme tokens and shared :root knobs
  *   3. base/                 element defaults (in @layer base)
  *   4. patterns/             multi-property BEM blocks, written as @utility
- *   5. utilities/            single-purpose helpers
+ *   5. components/           one folder per component (components/index.css)
+ *   6. utilities/            single-purpose helpers
  *
  * Colours aren't here: postcss/color-system.js appends them from colors.config.json.
  * Imports must be inlined before the preset runs (Vite does this; elsewhere use postcss-import).
@@ -47,6 +48,9 @@
 @import "./patterns/mask-icon.css";
 @import "./patterns/cross.css";
 @import "./patterns/animate.css";
+
+/* Components: markup, styles and behaviour in one folder each */
+@import "../components/index.css";
 
 /* Utilities */
 @import "./utilities/list.css";

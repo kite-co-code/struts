@@ -19,7 +19,7 @@ CSS that needs JS is scoped with `:where(.js)`, so it adds no specificity. Witho
 Other rules that follow from this:
 
 - **CSS before JS.** Scroll lock is `html:has(dialog:modal)`; trigger labels swap with `[aria-expanded]` selectors; `<details name>` covers simple accordions.
-- **Native first.** `<dialog>` for modals, invoker commands (`commandfor`) for opening them, `:focus-visible` for focus rings. The JS fills gaps rather than replacing the platform.
+- **Native first.** `<dialog>` for modals, invoker commands (`commandfor`) for opening them, `popover` for the mobile nav (light dismiss and `aria-expanded` for free), `:focus-visible` for focus rings. The JS fills gaps rather than replacing the platform.
 - **Disclosure targets** start with `hidden` in the markup, so they're hidden before JS runs. If the content must be reachable without JS, leave `hidden` off and let the script collapse it on load, or use `<details>`.
 - **Reduced motion.** Animations, smooth scrolling and `interpolate-size` sit behind `prefers-reduced-motion: no-preference`. The disclosure skips its height animation when the user prefers reduced motion.
 

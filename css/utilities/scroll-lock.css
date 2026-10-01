@@ -1,15 +1,17 @@
 /* ---------------------------------------------------------------------------
  * Scroll lock
  *
- * The page stops scrolling while a modal dialog is open, with no JS. The
- * gutter stays reserved so the content doesn't shift sideways.
+ * The page stops scrolling while a modal dialog, or a popover with
+ * data-scroll-lock, is open, with no JS. The gutter stays reserved so the
+ * content doesn't shift sideways.
  *
- * For anything else that should lock scrolling (a full-screen menu), add
- * scroll-lock to <html>.
+ *   <nav popover data-scroll-lock>…</nav>
+ *
+ * For anything else that should lock scrolling, add scroll-lock to <html>.
  * ------------------------------------------------------------------------- */
 
 @layer base {
-    html:has(dialog:modal) {
+    html:has(dialog:modal, [popover][data-scroll-lock]:popover-open) {
         overflow: hidden;
         scrollbar-gutter: stable;
     }

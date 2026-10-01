@@ -20,11 +20,13 @@ Helpers:
 | --- | --- |
 | `disclosure.ts` | `hidden` + `inert` instead of `aria-hidden` and tabindex rewriting. `CSS.escape` for ids. Enter/Space for non-button triggers. Trigger contents shown by state with CSS (`data-show-expanded`), not JS. For a plain accordion, use `<details name>` instead. |
 | `dialog.ts` | Native `<dialog>` does focus and Escape. Adds invoker commands (`commandfor`) where they're missing, `data-dialog-open` from anywhere, `<template>` cloning into a slot, and clearing the slot after close. Scroll lock is CSS. |
-| `animate.ts` | An IntersectionObserver that sets `[data-playing]`; unobserves on disconnect. |
+| `animate.ts` | IntersectionObservers that set `[data-playing]` on each item, through one queue so items that start together play in document order. Unobserves on disconnect. |
 | `focusable.ts` | Functions, using `checkVisibility()`. |
 | `cookies.ts` | URI-encoded names and values; `Secure` on HTTPS. |
 | `debounce.ts` | Replaces `lodash.debounce`. |
 | `data-attributes.ts` | Shared boolean/number data-attribute readers. |
+
+Component scripts (`components/{name}/scripts.ts`) follow the same rules; see [010](010-components.md).
 
 Build plugins stay plain ESM JS with JSDoc so they copy into any build without TypeScript config.
 

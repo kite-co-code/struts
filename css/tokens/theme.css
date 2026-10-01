@@ -38,7 +38,8 @@
      *   base    Body             IBM Plex Sans (Mobile/Body at the small end)
      *   label   Surtitle         IBM Plex Mono SemiBold; label-sm for tags
      *   meta    Caption          IBM Plex Serif Medium
-     * hero is a step above Heading 1 for one-off display text.
+     *   code    Code blocks      IBM Plex Mono
+     *   hero is a step above Heading 1 for one-off display text.
      */
     --text-hero: fluid(36, 56);
     --text-hero--line-height: 1.1;
@@ -61,7 +62,7 @@
     --text-h6: to-rem(16);
     --text-h6--line-height: 1.4;
     --text-h6--letter-spacing: 0em;
-    --text-base: fluid(18, 22);
+    --text-base: to-rem(17);
     --text-base--line-height: 1.4;
     --text-base--letter-spacing: -0.01em;
     --text-label: to-rem(16);
@@ -73,6 +74,9 @@
     --text-meta: to-rem(14);
     --text-meta--line-height: 1.4;
     --text-meta--letter-spacing: 0em;
+    --text-code: to-rem(13);
+    --text-code--line-height: 1.6;
+    --text-code--letter-spacing: 0em;
 
     /* Transitions: read by transition() and Tailwind's transition-* utilities */
     --default-transition-duration: 200ms;
@@ -104,22 +108,10 @@
     --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
     --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Animations (see patterns/animate.css) */
+    /* Animations. The keyframes live in patterns/animate.css, outside @theme,
+       because Tailwind drops @theme keyframes that no animate-* class uses. */
     --animate-fade-in: fade-in var(--animate--animation-duration, 300ms)
         var(--animate--animation-timing-function, ease-out) both;
     --animate-fade-in-translate: fade-in-translate var(--animate--animation-duration, 300ms)
         var(--animate--animation-timing-function, ease-out) both;
-
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
-    }
-
-    @keyframes fade-in-translate {
-        from {
-            opacity: 0;
-            translate: var(--animate--translate, 0 --spacing(16));
-        }
-    }
 }

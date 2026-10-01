@@ -19,6 +19,15 @@
                 "--color-accent-foreground": "neutral"
             }
         },
+        "neutral-600": {
+            "color": "#e2dad2",
+            "name": "Neutral 600",
+            "foreground": "blue",
+            "vars": {
+                "--color-accent": "blue",
+                "--color-accent-foreground": "neutral-600"
+            }
+        },
         "lilac": {
             "color": "#e8e5f6",
             "name": "Lilac",

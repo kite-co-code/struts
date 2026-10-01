@@ -1,0 +1,51 @@
+<!--
+A sticky header. Under md the nav is a popover panel behind a Menu button;
+from md up it sits inline. Scrolling down hides the bar and scrolling up
+brings it back.
+-->
+
+<template
+    data-example="Default"
+    data-description="Narrow the frame to get the Menu button. Open it, then try Escape, Tab past the last link, or a click outside. Scroll the page to hide the bar and bring it back."
+    data-example-layout="page"
+>
+    <header class="site-header layout-grid rule-block-end" data-site-header>
+        <div class="site-header__bar layout-wide">
+            <a class="site-header__brand type-h4 link--foreground link--subtle" href="#main">struts</a>
+            <button class="site-header__toggle btn btn--small btn--secondary" type="button" popovertarget="site-nav">
+                <span class="site-header__icon" aria-hidden="true"></span> Menu
+            </button>
+            <nav id="site-nav" class="site-header__nav" aria-label="Main" popover data-scroll-lock>
+                <ul class="site-header__list">
+                    <li><a class="site-header__link link--subtle" href="#work">Work</a></li>
+                    <li><a class="site-header__link link--subtle" href="#services">Services</a></li>
+                    <li><a class="site-header__link link--subtle" href="#about">About</a></li>
+                    <li><a class="site-header__link link--subtle" href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</template>
+
+<template
+    data-example="On a surface"
+    data-description="A surface-* class on the header colours the bar, the panel, the links and the button together. No component overrides."
+    data-example-layout="page"
+>
+    <header class="site-header surface-blue layout-grid" data-site-header>
+        <div class="site-header__bar layout-wide">
+            <a class="site-header__brand type-h4 link--foreground link--subtle" href="#main">struts</a>
+            <button class="site-header__toggle btn btn--small btn--secondary" type="button" popovertarget="site-nav-blue">
+                <span class="site-header__icon" aria-hidden="true"></span> Menu
+            </button>
+            <nav id="site-nav-blue" class="site-header__nav" aria-label="Main" popover data-scroll-lock>
+                <ul class="site-header__list">
+                    <li><a class="site-header__link link--subtle" href="#work">Work</a></li>
+                    <li><a class="site-header__link link--subtle" href="#services">Services</a></li>
+                    <li><a class="site-header__link link--subtle" href="#about">About</a></li>
+                    <li><a class="site-header__link link--subtle" href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</template>

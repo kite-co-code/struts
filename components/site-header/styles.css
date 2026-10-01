@@ -1,0 +1,238 @@
+/* ---------------------------------------------------------------------------
+ * Site header
+ *
+ *   <header class="site-header layout-grid" data-site-header>
+ *       <div class="site-header__bar layout-wide">
+ *           <a class="site-header__brand" href="/">Brand</a>
+ *           <button class="site-header__toggle btn" type="button" popovertarget="site-nav">
+ *               <span class="site-header__icon" aria-hidden="true"></span> Menu
+ *           </button>
+ *           <nav id="site-nav" class="site-header__nav" aria-label="Main" popover data-scroll-lock>
+ *               <ul class="site-header__list">
+ *                   <li><a class="site-header__link" href="…">Link</a></li>
+ *               </ul>
+ *           </nav>
+ *       </div>
+ *   </header>
+ *
+ * A sticky header whose nav is inline from md up, and a popover panel below
+ * the bar under md. The popover does the work with no JS: the toggle gets
+ * aria-expanded, Escape and a click outside close it, and focus goes back to
+ * the toggle. The panel slides open with @starting-style; data-scroll-lock
+ * stops the page scrolling behind it (css/utilities/scroll-lock.css).
+ *
+ * scripts.ts adds the rest: it sets [data-site-header-hidden] while the user
+ * scrolls down and removes it when they scroll up, so the header peeks back.
+ * It also closes the nav on a link click, when focus leaves it, and when the
+ * viewport grows past md. Without JS the header just stays put. Keyboard
+ * focus or an open nav always brings a hidden header back.
+ *
+ * The header must be the first thing at the top of the page: the panel opens
+ * at --site-header--block-size from the top of the viewport. Its background
+ * is the role colour, so a surface-* class on the header colours it and the
+ * panel together.
+ *
+ * Elements:
+ *   __bar      the row; place it with a layout-* class
+ *   __brand    pushed to the inline start, everything else to the end
+ *   __toggle   the menu button, hidden from md up. Add btn classes to style it
+ *   __icon     a cross (css/patterns/cross.css) drawn as two bars until the nav opens
+ *   __nav      the popover; give it an id, aria-label, popover and data-scroll-lock
+ *   __list, __link
+ *
+ * Block knobs (declared here, set by variants):
+ *   --site-header--block-size            the bar's height under md, 64px
+ *   --site-header--transition-duration   slide in and out, 300ms
+ *
+ * Examples: example.html, shown on the components page.
+ * ------------------------------------------------------------------------- */
+
+@utility site-header {
+    --site-header--block-size: --spacing(64);
+    --site-header--transition-duration: 300ms;
+
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 10;
+    background-color: var(--color-background);
+
+    @variant max-md {
+        block-size: var(--site-header--block-size);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition: translate var(--site-header--transition-duration) var(--ease-out-quart);
+    }
+
+    /* Scrolled away, unless keyboard focus is in it or the nav is open */
+    &[data-site-header-hidden]:not(:has(:focus-visible, :popover-open)) {
+        translate: 0 -100%;
+    }
+}
+
+@utility site-header__bar {
+    display: flex;
+    align-items: center;
+    gap: --spacing(12);
+    block-size: 100%;
+
+    @variant md {
+        gap: --spacing(32);
+        padding-block: --spacing(16);
+    }
+}
+
+@utility site-header__brand {
+    margin-inline-end: auto;
+}
+
+@utility site-header__toggle {
+    /* .site-header adds specificity, so this beats a btn class on the same element */
+    @variant md {
+        .site-header & {
+            display: none;
+        }
+    }
+}
+
+/* Two bars that cross when the nav opens */
+@utility site-header__icon {
+    @apply cross;
+
+    display: block;
+    inline-size: 1em;
+    block-size: 1em;
+
+    &::before,
+    &::after {
+        rotate: 0deg;
+    }
+
+    &::before {
+        translate: -50% calc(-50% - 0.2em);
+    }
+
+    &::after {
+        translate: -50% calc(-50% + 0.2em);
+    }
+
+    :where(.site-header:has(:popover-open)) &::before {
+        rotate: 45deg;
+        translate: -50% -50%;
+    }
+
+    :where(.site-header:has(:popover-open)) &::after {
+        rotate: -45deg;
+        translate: -50% -50%;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::before,
+        &::after {
+            transition:
+                rotate var(--site-header--transition-duration) var(--ease-out-quart),
+                translate var(--site-header--transition-duration) var(--ease-out-quart);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after {
+            transition: none;
+        }
+    }
+}
+
+@utility site-header__nav {
+    /* Inline: undo the UA popover styles so the closed popover shows in the bar */
+    @variant md {
+        display: block;
+        position: static;
+        inset: auto;
+        inline-size: auto;
+        block-size: auto;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        overflow: visible;
+        background-color: transparent;
+        color: inherit;
+    }
+
+    /* A panel filling the viewport below the bar */
+    @variant max-md {
+        position: fixed;
+        inset: var(--site-header--block-size) 0 0;
+        inline-size: auto;
+        block-size: auto;
+        max-inline-size: none;
+        max-block-size: none;
+        margin: 0;
+        padding-block: --spacing(32) --spacing(48);
+        padding-inline: var(--gutter);
+        border: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+
+        /*
+         * Wipe down from the bar, then fade the links in. display and overlay
+         * keep it in the top layer until the closing transition ends.
+         */
+        @media (prefers-reduced-motion: no-preference) {
+            clip-path: inset(0 0 100%);
+            transition:
+                clip-path var(--site-header--transition-duration) var(--ease-out-quart),
+                display var(--site-header--transition-duration) allow-discrete,
+                overlay var(--site-header--transition-duration) allow-discrete;
+
+            & > * {
+                opacity: 0;
+                translate: 0 --spacing(-8);
+                transition: transition(opacity, translate);
+            }
+
+            &:popover-open {
+                clip-path: inset(0);
+
+                & > * {
+                    opacity: 1;
+                    translate: 0 0;
+                    transition-delay: 100ms;
+                }
+            }
+
+            @starting-style {
+                &:popover-open {
+                    clip-path: inset(0 0 100%);
+
+                    & > * {
+                        opacity: 0;
+                        translate: 0 --spacing(-8);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@utility site-header__list {
+    display: flex;
+    flex-direction: column;
+    gap: --spacing(20);
+
+    @variant md {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: --spacing(8) --spacing(32);
+    }
+}
+
+@utility site-header__link {
+    @apply type-h3;
+
+    @variant md {
+        @apply type-label;
+    }
+}
