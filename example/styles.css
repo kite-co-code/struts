@@ -1,0 +1,29 @@
+/* Demo entry: struts plus the opt-in form defaults. */
+@import "../css/index.css";
+@import "../css/base/forms.css" layer(base);
+
+/* Don't generate classes mentioned in docs and tests */
+@source not "../docs";
+@source not "../test";
+
+/* Demo-only helpers */
+@utility swatch {
+    @apply stack-16 p-24 rounded-md;
+
+    border: var(--rule-width) solid color-mix(in oklab, currentColor 50%, transparent);
+}
+
+@utility demo-box {
+    @apply type-label-sm;
+
+    padding: --spacing(12);
+    border: 1px dashed currentColor;
+    border-radius: var(--radius-md);
+    background-color: color-mix(in oklab, var(--color-accent) 8%, var(--color-background));
+    text-align: center;
+}
+
+[aria-pressed="true"] {
+    --btn--background-color: var(--color-accent);
+    --btn--color: var(--color-accent-foreground);
+}

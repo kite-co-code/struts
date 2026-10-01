@@ -1,0 +1,153 @@
+/* ---------------------------------------------------------------------------
+ * Layout
+ *
+ * layout-grid: a page-level grid with named tracks. Children sit in `content`
+ * unless they ask for another track.
+ *
+ *   | full | wide |        content        | wide | full |
+ *                 | start      |     end  |
+ *
+ * layout-full | layout-wide | layout-content | layout-narrow:
+ *   inside layout-grid they pick a track; anywhere else they cap the width and
+ *   centre the element, keeping --gutter clear of the viewport edge.
+ *
+ * layout-start | layout-end: the two halves of the content track, side by
+ * side from md up. Only valid inside layout-grid.
+ *
+ * layout-grid--ruled: Kite Co.'s keyline down the inline-start edge of the
+ * wide track, through the grid's padding, from md up. --layout--inset keeps
+ * content clear of it.
+ *
+ * layout-width-{size}: a gutter-aware max width for any --container-* token.
+ *
+ * Role widths are set below; point them at different containers per project.
+ * --layout--inset is the least space between the wide and content edges.
+ * Kite Co. runs content the full width of the frame, inset from the keyline,
+ * and lets each element cap its own measure, so text sits to the left.
+ * ------------------------------------------------------------------------- */
+
+@layer base {
+    :root {
+        --layout--wide: var(--container-lg);
+        --layout--content: var(--container-lg);
+        --layout--narrow: var(--container-sm);
+        --layout--inset: 0px;
+
+        @media (width >= theme(--breakpoint-md)) {
+            --layout--inset: --spacing(24);
+        }
+    }
+}
+
+@utility layout-grid {
+    /* Internal track sizes (underscore: not a knob) */
+    --_wide-size: min(var(--layout--wide), 100% - 2 * var(--gutter));
+    --_content: min(var(--layout--content), var(--_wide-size) - 2 * var(--layout--inset));
+    --_wide: max(0px, (var(--_wide-size) - var(--_content)) / 2);
+
+    display: grid;
+    grid-template-columns:
+        [full-start] minmax(var(--gutter), 1fr)
+        [wide-start] var(--_wide)
+        [content-start] calc(var(--_content) / 2)
+        [middle] calc(var(--_content) / 2)
+        [content-end] var(--_wide)
+        [wide-end] minmax(var(--gutter), 1fr)
+        [full-end];
+
+    /* Zero specificity, so a layout-* class on the child always wins */
+    :where(&) > * {
+        grid-column: content;
+    }
+}
+
+/* An absolutely positioned grid child takes its grid-column area as its containing block */
+@utility layout-grid--ruled {
+    position: relative;
+
+    &::before {
+        content: "";
+        display: none;
+        position: absolute;
+        grid-column: wide;
+        inset-block: 0;
+        inset-inline-start: 0;
+        border-inline-start: var(--rule-width) solid
+            var(--rule-color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
+        pointer-events: none;
+
+        @variant md {
+            display: block;
+        }
+    }
+}
+
+@utility layout-full {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    margin-inline: auto;
+
+    .layout-grid > & {
+        grid-column: full;
+    }
+}
+
+@utility layout-wide {
+    inline-size: 100%;
+    max-inline-size: min(var(--layout--wide), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+
+    .layout-grid > & {
+        grid-column: wide;
+        max-inline-size: none;
+    }
+}
+
+@utility layout-content {
+    inline-size: 100%;
+    max-inline-size: min(var(--layout--content), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+
+    .layout-grid > & {
+        grid-column: content;
+        max-inline-size: none;
+    }
+}
+
+/* Inside the grid: the content track, narrowed and centred */
+@utility layout-narrow {
+    inline-size: 100%;
+    max-inline-size: min(var(--layout--narrow), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+
+    .layout-grid > & {
+        grid-column: content;
+        max-inline-size: min(var(--layout--narrow), 100%);
+    }
+}
+
+@utility layout-start {
+    .layout-grid > & {
+        grid-column: content;
+
+        @variant md {
+            grid-column: content-start / middle;
+        }
+    }
+}
+
+@utility layout-end {
+    .layout-grid > & {
+        grid-column: content;
+
+        @variant md {
+            grid-column: middle / content-end;
+        }
+    }
+}
+
+@utility layout-width-* {
+    inline-size: 100%;
+    max-inline-size: min(--value(--container-*), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+}

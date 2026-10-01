@@ -1,0 +1,49 @@
+/* ---------------------------------------------------------------------------
+ * Global knobs
+ *
+ * Shared custom properties that several patterns read. Single-dash names, like
+ * Tailwind's. Anything owned by one pattern lives with that pattern instead.
+ *
+ * Not declared here on purpose (read with a fallback, so a context can set them):
+ *   --focus-color   falls back to --color-foreground
+ *   --rule-color    falls back to --color-foreground at half strength
+ *   --col-gap, --row-gap   fall back to --gap
+ * ------------------------------------------------------------------------- */
+
+/* Each element declares its own space above it in a flow; it must not inherit. */
+@property --flow-space {
+    syntax: "*";
+    inherits: false;
+}
+
+/* Column count for grid and flex-grid; nested grids start from 1 again. */
+@property --cols {
+    syntax: "<integer>";
+    inherits: false;
+    initial-value: 1;
+}
+
+@layer base {
+    :root {
+        /* Inline space between the viewport edge and content: 20 → 56 across the Figma frames */
+        --gutter: fluid(20, 56);
+
+        /* Vertical rhythm: between text elements, and between larger blocks */
+        --space-base: --spacing(16);
+        --space-layout: --spacing(32);
+
+        /* Default gap for grids */
+        --gap: fluid(8, 12);
+
+        /* Focus ring. px on purpose: it shouldn't scale with text. */
+        --focus-width: 3px;
+        --focus-offset: 5px;
+
+        /* Keylines (utilities/rule.css, hr, layout-grid--ruled). px: a hairline shouldn't scale. */
+        --rule-width: 1px;
+
+        @media (width >= theme(--breakpoint-sm)) {
+            --space-layout: --spacing(64);
+        }
+    }
+}

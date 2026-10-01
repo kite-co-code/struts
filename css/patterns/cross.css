@@ -1,0 +1,33 @@
+/* ---------------------------------------------------------------------------
+ * Cross
+ *
+ * Two bars drawn with pseudo-elements, in currentColor. Rotate or scale them
+ * for a burger-to-close transition.
+ *
+ * Read with fallbacks: --cross--size (arm length, 100%), --cross--stroke-width (2px).
+ * ------------------------------------------------------------------------- */
+
+@utility cross {
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        inline-size: var(--cross--size, 100%);
+        block-size: var(--cross--stroke-width, 2px);
+        background-color: currentColor;
+        translate: -50% -50%;
+        transition: transition(rotate, scale);
+    }
+
+    &::before {
+        rotate: 45deg;
+    }
+
+    &::after {
+        rotate: -45deg;
+    }
+}

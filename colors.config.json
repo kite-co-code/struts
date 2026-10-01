@@ -1,0 +1,62 @@
+{
+    "$schema": "./colors.schema.json",
+    "colors": {
+        "white": {
+            "color": "#ffffff",
+            "name": "White",
+            "foreground": "blue",
+            "vars": {
+                "--color-accent": "blue",
+                "--color-accent-foreground": "white"
+            }
+        },
+        "neutral": {
+            "color": "#eee8e3",
+            "name": "Neutral",
+            "foreground": "blue",
+            "vars": {
+                "--color-accent": "blue",
+                "--color-accent-foreground": "neutral"
+            }
+        },
+        "lilac": {
+            "color": "#e8e5f6",
+            "name": "Lilac",
+            "foreground": "blue",
+            "vars": {
+                "--color-accent": "blue",
+                "--color-accent-foreground": "lilac"
+            }
+        },
+        "blue": {
+            "color": "#0e26ac",
+            "name": "Blue",
+            "foreground": "white",
+            "vars": {
+                "--color-accent": "white",
+                "--color-accent-foreground": "blue"
+            }
+        },
+        "red": {
+            "color": "#b3261e",
+            "name": "Red",
+            "foreground": "white",
+            "vars": {
+                "--color-accent": "white",
+                "--color-accent-foreground": "red"
+            }
+        },
+        "background": { "alias": "neutral" },
+        "foreground": { "alias": "blue" },
+        "accent": { "alias": "blue" },
+        "secondary": { "alias": "lilac" },
+        "error": { "alias": "red" }
+    },
+    "schemes": {
+        "dark": {
+            "background": "blue",
+            "foreground": "white",
+            "accent": "white"
+        }
+    }
+}

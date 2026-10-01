@@ -1,0 +1,15 @@
+/* Strip a button back to its content, for buttons that shouldn't look like buttons. */
+
+@utility button-reset {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+}

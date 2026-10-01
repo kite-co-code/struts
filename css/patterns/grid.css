@@ -1,0 +1,31 @@
+/* ---------------------------------------------------------------------------
+ * Grids
+ *
+ * grid-simple: --cols equal columns. Set the count with cols-{n}, which works
+ * with variants: <ul class="grid-simple cols-1 md:cols-2 lg:cols-4">
+ *
+ * grid-auto: as many columns as fit, each at least --grid-auto--min-inline-size.
+ *
+ * Both read the global --gap, --col-gap and --row-gap. --cols is registered as
+ * non-inheriting (tokens/globals.css), so nested grids start from one column.
+ * ------------------------------------------------------------------------- */
+
+@utility grid-simple {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--col-gap, var(--gap));
+    row-gap: var(--row-gap, var(--gap));
+}
+
+@utility grid-auto {
+    --grid-auto--min-inline-size: to-rem(250);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-auto--min-inline-size), 100%), 1fr));
+    column-gap: var(--col-gap, var(--gap));
+    row-gap: var(--row-gap, var(--gap));
+}
+
+@utility cols-* {
+    --cols: --value(integer);
+}

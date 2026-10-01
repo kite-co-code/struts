@@ -1,0 +1,15 @@
+/* A box whose child image or video covers it. Give the box a size or aspect ratio. */
+
+@utility img-fit {
+    position: relative;
+    display: block;
+    overflow: hidden;
+
+    & > * {
+        position: absolute;
+        inset: 0;
+        inline-size: 100%;
+        block-size: 100%;
+        object-fit: cover;
+    }
+}

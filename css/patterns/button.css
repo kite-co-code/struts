@@ -1,0 +1,116 @@
+/* ---------------------------------------------------------------------------
+ * Button
+ *
+ *   <a class="btn" href="…">Label</a>
+ *   <button class="btn btn--secondary">Label <span class="btn__icon"></span></button>
+ *   <button class="btn btn--square"><span class="btn__icon"></span><span class="sr-only">Close</span></button>
+ *
+ * Set in Plex Mono (type-label), with Kite Co.'s 6px corners. Colours come
+ * from the role tokens, so a button follows its surface without per-context
+ * overrides. Hover colours are derived with color-mix().
+ *
+ * Block knobs, declared here and set by variants:
+ *   --btn--padding-x, --btn--padding-y, --btn--gap, --btn--border-width,
+ *   --btn--border-radius, --btn--background-color, --btn--border-color,
+ *   --btn--color, and each colour's --hover state.
+ *
+ * Read with a fallback (set on the button):
+ *   --btn--size        btn--square's minimum size, defaults to 44px
+ *
+ * Icon knobs (set on the button or the icon):
+ *   --btn--icon        url() of a mask image for an empty .btn__icon
+ *   --btn--icon-size   defaults to 1em
+ * ------------------------------------------------------------------------- */
+
+@utility btn {
+    --btn--padding-x: 1em;
+    --btn--padding-y: 0.6em;
+    --btn--gap: 0.5em;
+    --btn--border-width: 1px;
+    --btn--border-radius: var(--radius-md);
+    --btn--background-color: var(--color-accent);
+    --btn--border-color: var(--btn--background-color);
+    --btn--color: var(--color-accent-foreground);
+    --btn--background-color--hover: color-mix(in oklab, var(--btn--background-color) 80%, var(--color-background));
+    --btn--border-color--hover: var(--btn--background-color--hover);
+    --btn--color--hover: var(--btn--color);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--btn--gap);
+    padding-block: var(--btn--padding-y);
+    padding-inline: var(--btn--padding-x);
+    border: var(--btn--border-width) solid var(--btn--border-color);
+    border-radius: var(--btn--border-radius);
+    background-color: var(--btn--background-color);
+    color: var(--btn--color);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-align: center;
+    text-decoration-line: none;
+    cursor: pointer;
+    user-select: none;
+    transition: transition(color, background-color, border-color, translate);
+
+    @variant hover {
+        border-color: var(--btn--border-color--hover);
+        background-color: var(--btn--background-color--hover);
+        color: var(--btn--color--hover);
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+/* An inline SVG, or an empty element masked with --btn--icon */
+@utility btn__icon {
+    flex: none;
+    inline-size: var(--btn--icon-size, 1em);
+    block-size: var(--btn--icon-size, 1em);
+
+    &:empty {
+        @apply mask-icon;
+
+        mask-image: var(--btn--icon);
+    }
+}
+
+/* Outline: fills with the accent on hover */
+@utility btn--secondary {
+    --btn--background-color: transparent;
+    --btn--border-color: var(--color-accent);
+    --btn--color: var(--color-accent);
+    --btn--background-color--hover: var(--color-accent);
+    --btn--border-color--hover: var(--color-accent);
+    --btn--color--hover: var(--color-accent-foreground);
+}
+
+/* Text only: underline on hover */
+@utility btn--ghost {
+    --btn--background-color: transparent;
+    --btn--border-color: transparent;
+    --btn--color: var(--color-foreground);
+    --btn--background-color--hover: color-mix(in oklab, var(--color-foreground) 8%, transparent);
+    --btn--border-color--hover: transparent;
+}
+
+@utility btn--small {
+    --btn--padding-x: 0.6em;
+    --btn--padding-y: 0.3em;
+}
+
+/* Equal sides, for a single icon or number. Pair an icon with sr-only text. */
+@utility btn--square {
+    --btn--padding-x: 0.3em;
+    --btn--border-radius: var(--radius-sm);
+
+    min-inline-size: var(--btn--size, --spacing(44));
+    min-block-size: var(--btn--size, --spacing(44));
+}

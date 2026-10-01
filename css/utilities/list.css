@@ -1,0 +1,44 @@
+/* ---------------------------------------------------------------------------
+ * Lists
+ *
+ * list-reset: no markers, no indent.
+ * list-styled: markers back, with spacing between items. prose applies it.
+ *
+ * list-styled knobs: --list-styled--padding-inline-start, --list-styled--gap,
+ * --list-styled__marker--color (read with a fallback to currentColor).
+ * ------------------------------------------------------------------------- */
+
+@utility list-reset {
+    padding-inline-start: 0;
+    list-style: none;
+}
+
+@utility list-styled {
+    --list-styled--padding-inline-start: 1.1em;
+    --list-styled--gap: calc(var(--space-base) / 2);
+
+    padding-inline-start: var(--list-styled--padding-inline-start);
+    list-style-type: disc;
+    list-style-position: outside;
+
+    @variant sm {
+        --list-styled--padding-inline-start: 2.6em;
+    }
+
+    &:where(ol) {
+        list-style-type: decimal;
+    }
+
+    & > li + li,
+    & :where(li > ul, li > ol) {
+        margin-block-start: var(--list-styled--gap);
+    }
+
+    & ::marker {
+        color: var(--list-styled__marker--color, currentColor);
+    }
+
+    & :where(ul, ol) {
+        padding-inline-start: 1.5em;
+    }
+}

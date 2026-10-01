@@ -1,0 +1,63 @@
+/* ---------------------------------------------------------------------------
+ * Fonts
+ *
+ * The IBM Plex family, self-hosted from public/fonts/ and served at /fonts/
+ * (Latin subsets from Google Fonts; SIL Open Font License, see OFL.txt).
+ * Families are wired to the theme in tokens/theme.css:
+ *   --font-serif   IBM Plex Serif Medium     headings, captions
+ *   --font-mono    IBM Plex Mono SemiBold    labels, nav, tags, buttons
+ *                  (Regular for code)
+ *   --font-sans    IBM Plex Sans             body
+ *
+ * The URLs are root-absolute because imports are flattened before url()s
+ * resolve, so a relative path would resolve from the entry file.
+ * ------------------------------------------------------------------------- */
+
+@font-face {
+    font-family: "IBM Plex Serif";
+    src: url("/fonts/ibm-plex-serif-medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Serif";
+    src: url("/fonts/ibm-plex-serif-medium-italic.woff2") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("/fonts/ibm-plex-mono.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("/fonts/ibm-plex-mono-semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Variable weight */
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/fonts/ibm-plex-sans.woff2") format("woff2");
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/fonts/ibm-plex-sans-italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}

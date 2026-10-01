@@ -1,0 +1,12 @@
+/* ---------------------------------------------------------------------------
+ * Focus ring
+ *
+ * Applied to :focus-visible in base/reset.css. Reads the global knobs:
+ *   --focus-color   not declared; falls back to the context's foreground
+ *   --focus-width, --focus-offset   declared in tokens/globals.css
+ * ------------------------------------------------------------------------- */
+
+@utility focus-ring {
+    outline: var(--focus-width) dotted var(--focus-color, var(--color-foreground));
+    outline-offset: var(--focus-offset);
+}

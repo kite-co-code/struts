@@ -1,0 +1,20 @@
+/* ---------------------------------------------------------------------------
+ * Stack
+ *
+ * One explicit gap between every child, in spacing units: stack-16 = 1rem.
+ * Children's own block margins are cleared so the gap is exact.
+ *
+ * The gap is written straight onto the children, not passed through an
+ * inherited variable, so a nested stack can't pick up its parent's gap.
+ * For per-element spacing, use flow.
+ * ------------------------------------------------------------------------- */
+
+@utility stack-* {
+    & > * {
+        margin-block: 0;
+    }
+
+    & > * + * {
+        margin-block-start: --spacing(--value(integer));
+    }
+}

@@ -1,0 +1,19 @@
+/* ---------------------------------------------------------------------------
+ * Mask icon
+ *
+ * Paints a mask image in currentColor, so icons follow the text colour.
+ *   .thing::after { @apply mask-icon; mask-image: url("/icons/arrow.svg"); }
+ *
+ * Block knob: --mask-icon--size (1em).
+ * ------------------------------------------------------------------------- */
+
+@utility mask-icon {
+    content: "";
+    display: inline-block;
+    inline-size: var(--mask-icon--size, 1em);
+    block-size: var(--mask-icon--size, 1em);
+    background-color: currentColor;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+}

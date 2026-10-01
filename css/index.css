@@ -1,0 +1,63 @@
+/* ---------------------------------------------------------------------------
+ * struts entry stylesheet
+ *
+ * Order matters:
+ *   1. Tailwind              theme, preflight and utilities layers
+ *   2. tokens/               @theme tokens and shared :root knobs
+ *   3. base/                 element defaults (in @layer base)
+ *   4. patterns/             multi-property BEM blocks, written as @utility
+ *   5. utilities/            single-purpose helpers
+ *
+ * Colours aren't here: postcss/color-system.js appends them from colors.config.json.
+ * Imports must be inlined before the preset runs (Vite does this; elsewhere use postcss-import).
+ * ------------------------------------------------------------------------- */
+
+@import "tailwindcss";
+
+/* Tokens */
+@import "./tokens/theme.css";
+@import "./tokens/globals.css";
+
+/* Base */
+@import "./base/fonts.css" layer(base);
+@import "./base/reset.css" layer(base);
+@import "./base/elements.css" layer(base);
+/* Opt-in: style bare form elements. Without it, use the input/checkbox/radio/select classes. */
+/* @import "./base/forms.css" layer(base); */
+
+/* Patterns */
+@import "./patterns/focus.css";
+@import "./patterns/type.css";
+@import "./patterns/link.css";
+@import "./patterns/blockquote.css";
+@import "./patterns/flow.css";
+@import "./patterns/prose.css";
+@import "./patterns/button.css";
+@import "./patterns/tag.css";
+@import "./patterns/input.css";
+@import "./patterns/checkbox.css";
+@import "./patterns/radio.css";
+@import "./patterns/select.css";
+@import "./patterns/layout.css";
+@import "./patterns/grid.css";
+@import "./patterns/flex-grid.css";
+@import "./patterns/flex-list.css";
+@import "./patterns/section.css";
+@import "./patterns/media-embed.css";
+@import "./patterns/mask-icon.css";
+@import "./patterns/cross.css";
+@import "./patterns/animate.css";
+
+/* Utilities */
+@import "./utilities/list.css";
+@import "./utilities/margin-trim.css";
+@import "./utilities/stack.css";
+@import "./utilities/rule.css";
+@import "./utilities/img-fit.css";
+@import "./utilities/button-reset.css";
+@import "./utilities/focus-none.css";
+@import "./utilities/aria-expanded.css";
+@import "./utilities/scroll-lock.css";
+
+/* Adapters: import one if the project needs it */
+/* @import "./adapters/wordpress.css"; */

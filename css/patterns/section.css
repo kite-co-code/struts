@@ -1,0 +1,21 @@
+/* ---------------------------------------------------------------------------
+ * Section
+ *
+ * Vertical padding for a page band. Combine with a surface and layout-grid:
+ *   <section class="section surface-blue layout-grid">…</section>
+ *
+ * For Kite Co.'s ruled bands, add rule-block-start and layout-grid--ruled.
+ *
+ * Block knob: --section--padding-y.
+ * ------------------------------------------------------------------------- */
+
+@utility section {
+    --section--padding-y: fluid(40, 80);
+
+    padding-block: var(--section--padding-y);
+}
+
+/* Two sections with the same surface share their padding */
+@utility section--flush-start {
+    --section--padding-y: 0 fluid(40, 80);
+}

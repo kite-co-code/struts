@@ -1,0 +1,52 @@
+/* ---------------------------------------------------------------------------
+ * Form element defaults (opt-in)
+ *
+ * Styles bare form elements with the form patterns. Turn it on in index.css
+ * when the project controls its form markup; leave it off when a third-party
+ * form plugin brings its own styles, and use the classes instead.
+ * ------------------------------------------------------------------------- */
+
+fieldset {
+    min-inline-size: 0;
+    padding: 0;
+    border: 0;
+}
+
+label {
+    display: inline-block;
+}
+
+:where(
+    [type="text"],
+    [type="password"],
+    [type="date"],
+    [type="datetime-local"],
+    [type="month"],
+    [type="week"],
+    [type="email"],
+    [type="number"],
+    [type="search"],
+    [type="tel"],
+    [type="time"],
+    [type="url"],
+    textarea
+) {
+    @apply input;
+}
+
+textarea {
+    min-block-size: --spacing(100);
+    resize: vertical;
+}
+
+select {
+    @apply input select;
+}
+
+[type="checkbox"] {
+    @apply checkbox;
+}
+
+[type="radio"] {
+    @apply radio;
+}

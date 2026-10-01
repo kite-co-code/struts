@@ -1,0 +1,43 @@
+/* ---------------------------------------------------------------------------
+ * Tag
+ *
+ * A small outlined label in Plex Mono, for services, categories and filters:
+ *   <ul class="flex-list"><li class="tag">Websites</li></ul>
+ *   <a class="tag" href="…">Websites</a>
+ *
+ * Drawn in currentColor, so it follows the text colour on every surface.
+ * A linked tag fills faintly on hover.
+ *
+ * Block knobs: --tag--padding-x, --tag--padding-y, --tag--border-width,
+ * --tag--border-radius, --tag--background-color (+ --hover).
+ * ------------------------------------------------------------------------- */
+
+@utility tag {
+    --tag--padding-x: 0.57em;
+    --tag--padding-y: 0.29em;
+    --tag--border-width: 1px;
+    --tag--border-radius: var(--radius-md);
+    --tag--background-color: transparent;
+    --tag--background-color--hover: color-mix(in oklab, currentColor 12%, transparent);
+
+    @apply type-label-sm;
+
+    display: inline-flex;
+    align-items: center;
+    padding-block: var(--tag--padding-y);
+    padding-inline: var(--tag--padding-x);
+    border: var(--tag--border-width) solid currentColor;
+    border-radius: var(--tag--border-radius);
+    background-color: var(--tag--background-color);
+    text-decoration-line: none;
+    white-space: nowrap;
+
+    &:where(a[href]) {
+        color: inherit;
+        transition: transition(background-color);
+
+        @variant hover {
+            background-color: var(--tag--background-color--hover);
+        }
+    }
+}

@@ -1,0 +1,32 @@
+/* ---------------------------------------------------------------------------
+ * Rules
+ *
+ * Kite Co.'s keylines: a hairline on one edge, in the context's foreground at
+ * half strength, so it follows every surface.
+ *
+ *   rule-block-start | rule-block-end | rule-inline-start | rule-inline-end
+ *
+ * Reads the global knobs --rule-width (declared) and --rule-color (not
+ * declared; set it on a context to change every rule inside). For the
+ * keyline down a layout-grid's wide edge, see layout-grid--ruled.
+ * ------------------------------------------------------------------------- */
+
+@utility rule-block-start {
+    border-block-start: var(--rule-width) solid
+        var(--rule-color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
+}
+
+@utility rule-block-end {
+    border-block-end: var(--rule-width) solid
+        var(--rule-color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
+}
+
+@utility rule-inline-start {
+    border-inline-start: var(--rule-width) solid
+        var(--rule-color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
+}
+
+@utility rule-inline-end {
+    border-inline-end: var(--rule-width) solid
+        var(--rule-color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
+}

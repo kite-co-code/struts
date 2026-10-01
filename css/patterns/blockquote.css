@@ -1,0 +1,47 @@
+/* ---------------------------------------------------------------------------
+ * Blockquote
+ *
+ * Applied to <blockquote> in base/elements.css. Kite Co.'s pixel quote mark
+ * above the quote, the quote set in the h1 style, the <cite> as body text.
+ *
+ *   <blockquote><p>Quote</p><cite>Name, role</cite></blockquote>
+ *
+ * Block knobs: --blockquote--gap, --blockquote__mark--block-size,
+ * --blockquote__mark--background-color.
+ * ------------------------------------------------------------------------- */
+
+@utility blockquote {
+    --blockquote--gap: fluid(16, 24);
+    --blockquote__mark--block-size: --spacing(24);
+    --blockquote__mark--background-color: var(--color-accent);
+
+    @apply margin-trim;
+
+    /* The mark: two glyphs of 8px squares, as a mask so it takes any colour */
+    &::before {
+        content: "";
+        display: block;
+        aspect-ratio: 40 / 24;
+        block-size: var(--blockquote__mark--block-size);
+        margin-block-end: var(--blockquote--gap);
+        background-color: var(--blockquote__mark--background-color);
+        mask:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24'%3E%3Cpath d='M0 0h8v8H0zM0 8h16v16H0zM24 0h8v8h-8zM24 8h16v16H24z'/%3E%3C/svg%3E")
+            no-repeat 0 0 / contain;
+    }
+
+    & > * + * {
+        margin-block-start: var(--blockquote--gap);
+    }
+
+    & > :not(cite, footer) {
+        @apply type-h1;
+    }
+
+    & > :where(cite, footer) {
+        display: block;
+        font-size: fluid(16, 18);
+        font-style: normal;
+        font-weight: var(--font-weight-medium);
+    }
+}

@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en-GB" class="no-js">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>struts demo · Kite Co.</title>
+        <meta name="description" content="Every struts pattern on one page." />
+        <!-- Swap no-js for js before first paint, so JS-only styles never flash. -->
+        <script>
+            document.documentElement.classList.replace('no-js', 'js');
+        </script>
+        <link rel="preload" href="/fonts/ibm-plex-serif-medium.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/ibm-plex-sans.woff2" as="font" type="font/woff2" crossorigin />
+        <script type="module" src="./main.ts"></script>
+    </head>
+    <body>
+        <!-- The Kite Co. logo, drawn once and placed with <use href="#kite-co-logo">. currentColor follows the surface. -->
+        <svg hidden aria-hidden="true">
+            <symbol id="kite-co-logo" viewBox="0 0 344 66" fill="currentColor">
+                <path d="M329.671 53.3311H343.112V64.5541H329.671V53.3311Z" />
+                <path d="M297.848 65.7289C293.005 65.7289 288.786 64.8009 285.19 62.9449C281.623 61.0599 278.839 58.4209 276.838 55.0279C274.866 51.6349 273.88 47.6474 273.88 43.0654C273.88 39.6144 274.445 36.4969 275.576 33.7129C276.707 30.9289 278.317 28.5509 280.405 26.5789C282.522 24.5779 285.045 23.0554 287.974 22.0114C290.903 20.9384 294.18 20.4019 297.805 20.4019C301.43 20.4019 304.707 20.9384 307.636 22.0114C310.594 23.0554 313.117 24.5779 315.205 26.5789C317.322 28.5509 318.946 30.9289 320.077 33.7129C321.208 36.4969 321.773 39.6144 321.773 43.0654C321.773 46.5164 321.208 49.6339 320.077 52.4179C318.946 55.2019 317.322 57.5944 315.205 59.5954C313.117 61.5674 310.608 63.0899 307.679 64.1629C304.75 65.2069 301.473 65.7289 297.848 65.7289ZM297.848 58.9864C299.53 58.9864 301.038 58.6384 302.372 57.9424C303.735 57.2174 304.895 56.1734 305.852 54.8104C306.838 53.4184 307.578 51.7364 308.071 49.7644C308.593 47.7924 308.854 45.5594 308.854 43.0654C308.854 39.7594 308.404 36.9174 307.505 34.5394C306.606 32.1324 305.33 30.3054 303.677 29.0584C302.024 27.7824 300.067 27.1444 297.805 27.1444C296.152 27.1444 294.644 27.5069 293.281 28.2319C291.918 28.9279 290.758 29.9719 289.801 31.3639C288.844 32.7559 288.104 34.4379 287.582 36.4099C287.06 38.3529 286.799 40.5714 286.799 43.0654C286.799 46.4004 287.249 49.2569 288.148 51.6349C289.076 54.0129 290.366 55.8399 292.019 57.1159C293.701 58.3629 295.644 58.9864 297.848 58.9864Z" />
+                <path d="M268.799 44.3265C268.104 48.5605 266.465 52.287 263.884 55.506C261.332 58.725 258.04 61.2335 254.009 63.0315C250.007 64.8295 245.484 65.7285 240.438 65.7285C235.536 65.7285 231.085 64.989 227.083 63.51C223.081 62.002 219.644 59.8415 216.773 57.0285C213.902 54.2155 211.684 50.8225 210.118 46.8495C208.581 42.8475 207.812 38.367 207.812 33.408C207.812 29.696 208.32 26.2595 209.335 23.0985C210.379 19.9085 211.858 17.052 213.772 14.529C215.686 11.977 217.977 9.81649 220.645 8.04749C223.313 6.24949 226.3 4.87199 229.606 3.91499C232.941 2.95799 236.522 2.47949 240.35 2.47949C244.265 2.47949 247.905 2.98699 251.269 4.00199C254.633 4.98799 257.605 6.42349 260.186 8.30849C262.767 10.1645 264.812 12.3975 266.32 15.0075C267.857 17.5885 268.727 20.445 268.93 23.577H255.141C254.967 20.967 254.241 18.647 252.965 16.617C251.689 14.587 249.979 13.0065 247.833 11.8755C245.716 10.7155 243.279 10.1355 240.524 10.1355C238.349 10.1355 236.319 10.498 234.434 11.223C232.578 11.948 230.897 12.992 229.389 14.355C227.881 15.689 226.59 17.2985 225.517 19.1835C224.444 21.0395 223.617 23.1275 223.037 25.4475C222.486 27.7675 222.211 30.247 222.211 32.886C222.211 37.874 223.096 42.224 224.865 45.936C226.663 49.619 229.156 52.4755 232.346 54.5055C235.536 56.5355 239.176 57.5505 243.265 57.5505C246.339 57.5505 249.152 56.9995 251.704 55.8975C254.285 54.7665 256.445 53.2005 258.185 51.1995C259.925 49.1985 261.1 46.9075 261.709 44.3265H268.799Z" />
+                <path d="M159.327 65.7289C154.542 65.7289 150.322 64.7574 146.668 62.8144C143.014 60.8424 140.158 58.1164 138.099 54.6364C136.04 51.1274 135.01 47.0529 135.01 42.4129C135.01 39.2229 135.561 36.2939 136.663 33.6259C137.794 30.9289 139.375 28.5944 141.405 26.6224C143.464 24.6504 145.914 23.1279 148.756 22.0549C151.627 20.9529 154.832 20.4019 158.37 20.4019C161.502 20.4019 164.431 20.9384 167.157 22.0114C169.912 23.0554 172.29 24.5779 174.291 26.5789C176.292 28.5509 177.771 30.9289 178.728 33.7129C179.714 36.4969 180.004 39.6289 179.598 43.1089H140.752V37.4104H168.549L166.504 39.1069C166.736 37.3089 166.693 35.6704 166.374 34.1914C166.084 32.7124 165.576 31.4509 164.851 30.4069C164.126 29.3339 163.198 28.5219 162.067 27.9709C160.965 27.3909 159.689 27.1009 158.239 27.1009C156.586 27.1009 155.122 27.4924 153.846 28.2754C152.599 29.0294 151.555 30.0879 150.714 31.4509C149.873 32.8139 149.235 34.3944 148.8 36.1924C148.394 37.9904 148.191 39.9334 148.191 42.0214C148.191 45.1824 148.698 47.9519 149.713 50.3299C150.728 52.7079 152.193 54.5639 154.107 55.8979C156.05 57.2319 158.37 57.8989 161.067 57.8989C162.662 57.8989 164.228 57.6379 165.765 57.1159C167.331 56.5649 168.723 55.7529 169.941 54.6799C171.159 53.6069 172.014 52.2874 172.507 50.7214H178.989C178.612 52.8674 177.843 54.8539 176.683 56.6809C175.523 58.5079 174.059 60.1029 172.29 61.4659C170.55 62.8289 168.578 63.8729 166.374 64.5979C164.17 65.3519 161.821 65.7289 159.327 65.7289Z" />
+                <path d="M117.599 64.5543C115.714 64.5543 114.061 64.3658 112.64 63.9888C111.219 63.5828 110.015 62.9738 109.029 62.1618C108.072 61.3208 107.347 60.2623 106.854 58.9863C106.361 57.6813 106.115 56.1153 106.115 54.2883V23.4903H108.246V8.09131H118.773V53.2008C118.773 54.1288 118.889 54.9843 119.121 55.7673C119.353 56.5213 119.774 57.1303 120.383 57.5943C121.021 58.0293 121.92 58.2468 123.08 58.2468H131.345V64.5543H117.599ZM97.2407 28.6233V21.5763H131.475V27.1443H108.942L108.072 28.6233H97.2407Z" />
+                <path d="M83.0764 14.1377C80.9884 14.1377 79.2339 13.4562 77.8129 12.0932C76.4209 10.7302 75.7249 9.04819 75.7249 7.04719C75.7249 5.04619 76.4209 3.37869 77.8129 2.04469C79.2339 0.681684 80.9884 0.000183105 83.0764 0.000183105C85.1064 0.000183105 86.8174 0.681684 88.2094 2.04469C89.6304 3.37869 90.3409 5.04619 90.3409 7.04719C90.3409 9.04819 89.6304 10.7302 88.2094 12.0932C86.8174 13.4562 85.1064 14.1377 83.0764 14.1377ZM71.5054 64.5542V58.9862H77.5954V27.1442H71.5054V21.5762H90.2539V58.9862H96.3439V64.5542H71.5054Z" />
+                <path d="M46.458 64.5543L26.2305 38.2803H14.529V31.3203H26.3175L49.8075 6.4818H59.856L34.7565 32.8863L35.1045 27.6663L59.5515 58.9863H66.468V64.5543H46.458ZM0 64.5543V58.9863H6.1335V9.2223H0V3.6543H27.5355V9.2223H19.9665V58.9863H27.5355V64.5543H0ZM40.2375 9.2223V3.6543H64.38V9.2223H40.2375Z" />
+            </symbol>
+        </svg>
+
+        <a class="sr-only focus:not-sr-only focus:absolute focus:inset-s-16 focus:top-16 focus:z-10 btn" href="#main"
+            >Skip to content</a
+        >
+
+        <header class="layout-grid rule-block-end">
+            <div class="layout-wide flex flex-wrap items-center justify-between gap-x-32 gap-y-12 py-16">
+                <a class="type-h4 link--foreground link--subtle" href="#main">struts</a>
+                <nav aria-label="Sections">
+                    <ul class="flex-list [--col-gap:--spacing(32)]">
+                        <li><a class="type-label link--subtle" href="#colour">Colour</a></li>
+                        <li><a class="type-label link--subtle" href="#type">Type</a></li>
+                        <li><a class="type-label link--subtle" href="#layout">Layout</a></li>
+                        <li><a class="type-label link--subtle" href="#forms">Forms</a></li>
+                        <li><a class="type-label link--subtle" href="#behaviour">Behaviour</a></li>
+                    </ul>
+                </nav>
+                <button class="btn btn--small btn--secondary" type="button" data-scheme-toggle hidden>
+                    <span class="sr-only">Colour scheme:</span> <span data-scheme-label>Auto</span>
+                </button>
+            </div>
+        </header>
+
+        <main id="main" tabindex="-1">
+            <!-- Intro ------------------------------------------------------------ -->
+            <section class="section layout-grid layout-grid--ruled" aria-labelledby="intro-title">
+                <div class="stack-24">
+                    <div class="stack-24">
+                        <svg class="block h-(--text-h1) w-auto" viewBox="0 0 344 66" role="img" aria-label="Kite Co.">
+                            <use href="#kite-co-logo" />
+                        </svg>
+                        <h1 id="intro-title" class="max-w-[22ch]">struts: a CSS and JS starter for web projects</h1>
+                    </div>
+                    <ul class="flex-list [--gap:--spacing(12)]" aria-label="What's in it">
+                        <li class="tag">Colour contexts</li>
+                        <li class="tag">Custom-property API</li>
+                        <li class="tag">Fluid type</li>
+                        <li class="tag">Flow spacing</li>
+                        <li class="tag">Layout</li>
+                        <li class="tag">Accessible JS</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Services / approach: the ruled split --------------------------- -->
+            <section class="layout-grid layout-grid--ruled rule-block-start" aria-label="Ruled split" data-demo="ruled-split">
+                <div class="layout-start section stack-24">
+                    <p class="type-label">Services</p>
+                    <ul class="flex-list [--gap:--spacing(10)]">
+                        <li><a class="tag" href="#colour">Websites</a></li>
+                        <li><a class="tag" href="#colour">Web Applications</a></li>
+                        <li><a class="tag" href="#colour">Digital Strategy</a></li>
+                        <li><a class="tag" href="#colour">CMS &amp; Content Systems</a></li>
+                        <li><a class="tag" href="#colour">Ticketing &amp; CRM Integration</a></li>
+                    </ul>
+                </div>
+                <div class="layout-end section stack-16 max-md:rule-block-start md:rule-inline-start md:ps-(--layout--inset)">
+                    <p class="type-label">Approach</p>
+                    <p class="type-h3 max-w-[28ch]">
+                        layout-grid--ruled draws the keyline; rule-block-start and rule-inline-start draw the rest.
+                        Each follows the surface it's on.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Colour ------------------------------------------------------------ -->
+            <section
+                id="colour"
+                class="section layout-grid layout-grid--ruled rule-block-start flow"
+                aria-labelledby="colour-title"
+            >
+                <p class="type-label">Colour</p>
+                <h2 id="colour-title" class="type-h1 [--flow-space:--spacing(16)]">Surfaces set roles</h2>
+                <p class="max-w-[60ch]">
+                    Each palette colour gives a <code>surface-*</code> class: background, foreground,
+                    <code>color-scheme</code> and the role tokens it sets. Buttons, links, tags, rules and focus rings
+                    read the roles, so they follow the surface with no overrides.
+                </p>
+
+                <ul class="grid-auto list-reset" data-demo="surfaces">
+                    <li class="surface-neutral swatch">
+                        <p class="type-label">surface-neutral</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-white swatch">
+                        <p class="type-label">surface-white</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-lilac swatch">
+                        <p class="type-label">surface-lilac</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-blue swatch" data-demo="surface-blue">
+                        <p class="type-label">surface-blue</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-red swatch">
+                        <p class="type-label">surface-red</p>
+                        <p><a href="#colour">Inline link example</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                    <li class="surface-background swatch">
+                        <p class="type-label">surface-background</p>
+                        <p><a href="#colour">Follows the scheme</a></p>
+                        <p class="flex-list">
+                            <a class="btn" href="#colour">Button</a>
+                            <a class="btn btn--secondary" href="#colour">Secondary</a>
+                            <span class="tag">Tag</span>
+                        </p>
+                    </li>
+                </ul>
+
+                <h3>On a colour</h3>
+                <p>
+                    <code>on-*</code> sets the foreground and roles without a background, for text over an image or
+                    a background set some other way.
+                </p>
+                <div class="layout-wide img-fit aspect-[3/1] rounded-md" data-demo="on-blue">
+                    <div class="bg-blue"></div>
+                    <div class="on-blue p-24 stack-16">
+                        <p class="type-h3">on-blue</p>
+                        <p><a href="#colour">Inline link example</a> and a <a class="btn btn--small" href="#colour">button</a></p>
+                    </div>
+                </div>
+
+                <h3>Dark scheme</h3>
+                <p>
+                    Roles switch with the OS setting, or with <code>data-scheme</code> on any element. Kite Co.'s dark
+                    scheme is the blue. This box is always dark:
+                </p>
+                <div data-scheme="dark" class="p-24 rounded-md stack-16" data-demo="scheme-dark">
+                    <p>Text, an <a href="#colour">inline link example</a> and buttons inside <code>[data-scheme=dark]</code>.</p>
+                    <p class="flex-list">
+                        <a class="btn" href="#colour">Button</a>
+                        <a class="btn btn--secondary" href="#colour">Secondary</a>
+                        <button class="btn btn--ghost" type="button">Ghost</button>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Type ------------------------------------------------------------- -->
+            <section
+                id="type"
+                class="section layout-grid layout-grid--ruled rule-block-start"
+                aria-labelledby="type-title"
+            >
+                <div class="prose" data-demo="prose">
+                    <p class="type-label">Type</p>
+                    <h2 id="type-title" class="type-h1 [--flow-space:--spacing(16)]">Type and flow</h2>
+                    <p>
+                        This block is <code>prose</code>: flow spacing, a reading measure and list styling. Each
+                        element declares the space above it with <code>--flow-space</code>, so a paragraph after a
+                        heading sits closer than a heading after a paragraph.
+                    </p>
+                    <h3>A third-level heading</h3>
+                    <h4>Followed straight away by a fourth</h4>
+                    <p>
+                        Headings are IBM Plex Serif, body is IBM Plex Sans, and labels are IBM Plex Mono. Sizes are fluid,
+                        built at compile time with <code>fluid(min, max)</code>: resize the window to see them scale
+                        between the 400 and 1440 pixel frames.
+                    </p>
+                    <ul>
+                        <li>List items get markers back inside prose</li>
+                        <li>
+                            And spacing between them
+                            <ul>
+                                <li>Nested lists indent further</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ol>
+                        <li>Ordered lists use numbers</li>
+                        <li>Like this</li>
+                    </ol>
+                    <blockquote>
+                        <p>Kite Co. brought both deep technical expertise and genuine care to every stage.</p>
+                        <cite>The client</cite>
+                    </blockquote>
+                    <div class="not-prose">
+                        <ul class="flex-list">
+                            <li>not-prose</li>
+                            <li>leaves</li>
+                            <li>this list</li>
+                            <li>alone</li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <p class="type-meta">type-meta: captions, credits and dates.</p>
+                </div>
+
+                <dl class="mt-(--space-layout) grid-simple cols-1 md:cols-2 [--row-gap:--spacing(24)]" data-demo="type-scale">
+                    <div class="stack-8">
+                        <dt class="type-label">type-h1 · Heading 1</dt>
+                        <dd class="type-h1">Cultural organisations</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-h2 · Heading 2</dt>
+                        <dd class="type-h2">Cultural organisations</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-h3 · Heading 3</dt>
+                        <dd class="type-h3">Cultural organisations</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-h4 · Heading 4</dt>
+                        <dd class="type-h4">Cultural organisations</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-base · Body</dt>
+                        <dd>Better technology and better ways to communicate.</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-label · Surtitle</dt>
+                        <dd class="type-label">Announcement</dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-label-sm · tag</dt>
+                        <dd><span class="tag">CMS &amp; Content Systems</span></dd>
+                    </div>
+                    <div class="stack-8">
+                        <dt class="type-label">type-meta · Caption</dt>
+                        <dd class="type-meta">Visual identity by Doug Kerr</dd>
+                    </div>
+                </dl>
+
+                <div class="mt-(--space-layout) grid-simple cols-1 md:cols-2">
+                    <div class="stack-8 surface-white p-24 rounded-md" data-demo="stack">
+                        <p class="type-label">stack-8</p>
+                        <p>One fixed gap between every child,</p>
+                        <p>whatever the element.</p>
+                    </div>
+                    <div class="flow surface-white p-24 rounded-md" data-demo="flow">
+                        <p class="type-label">flow</p>
+                        <p>Each child sets its own space.</p>
+                        <figure class="bg-lilac p-8 rounded-sm">A figure falls back to layout space.</figure>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Layout ----------------------------------------------------------- -->
+            <section
+                id="layout"
+                class="section layout-grid layout-grid--ruled rule-block-start flow"
+                aria-labelledby="layout-title"
+                data-demo="layout-grid"
+            >
+                <p class="type-label">Layout</p>
+                <h2 id="layout-title" class="type-h1 [--flow-space:--spacing(16)]">Tracks and roles</h2>
+                <p class="max-w-[60ch]">
+                    Children of <code>layout-grid</code> sit in the content track unless they ask for another. Kite
+                    Co.'s content runs the width of the frame, inset from the keyline, so text sits left.
+                </p>
+
+                <div class="layout-full demo-box" data-demo="layout-full">layout-full</div>
+                <div class="layout-wide demo-box" data-demo="layout-wide">layout-wide</div>
+                <div class="demo-box" data-demo="layout-default">content (default)</div>
+                <div class="layout-narrow demo-box" data-demo="layout-narrow">layout-narrow</div>
+                <div class="layout-start demo-box" data-demo="layout-start">layout-start</div>
+                <div class="layout-end demo-box" data-demo="layout-end">layout-end</div>
+
+                <h3>Outside the grid</h3>
+                <div data-demo="outside-grid" class="stack-8">
+                    <div class="layout-wide demo-box" data-demo="outside-wide">layout-wide, not in a grid</div>
+                    <div class="layout-width-xs demo-box" data-demo="layout-width-xs">layout-width-xs</div>
+                </div>
+
+                <h3>Grids</h3>
+                <ul class="grid-simple cols-2 md:cols-4 list-reset" data-demo="grid-simple">
+                    <li class="demo-box">grid-simple</li>
+                    <li class="demo-box">cols-2</li>
+                    <li class="demo-box">md:cols-4</li>
+                    <li class="demo-box">4</li>
+                </ul>
+                <ul class="grid-auto list-reset">
+                    <li class="demo-box">grid-auto</li>
+                    <li class="demo-box">fits</li>
+                    <li class="demo-box">as many</li>
+                    <li class="demo-box">as it can</li>
+                    <li class="demo-box">at 250px</li>
+                </ul>
+                <ul class="flex-grid cols-3 justify-center list-reset">
+                    <li class="demo-box">flex-grid</li>
+                    <li class="demo-box">cols-3</li>
+                    <li class="demo-box">centres</li>
+                    <li class="demo-box">the last</li>
+                    <li class="demo-box">row</li>
+                </ul>
+            </section>
+
+            <!-- Forms ------------------------------------------------------------ -->
+            <section id="forms" class="section surface-lilac layout-grid layout-grid--ruled" aria-labelledby="forms-title">
+                <form class="max-w-(--container-2xs) stack-24" data-demo="form" onsubmit="return false">
+                    <div class="stack-16">
+                        <p class="type-label">Forms</p>
+                        <h2 id="forms-title" class="type-h1">If you think we'd be a good fit</h2>
+                        <p>Bare elements styled by the opt-in <code>base/forms.css</code>.</p>
+                    </div>
+                    <div class="stack-8">
+                        <label class="type-label-sm" for="name">Name</label>
+                        <input id="name" type="text" autocomplete="name" placeholder="Ada Lovelace" />
+                    </div>
+                    <div class="stack-8">
+                        <label class="type-label-sm" for="topic">Topic</label>
+                        <select id="topic">
+                            <option>A new site</option>
+                            <option>Help with an existing one</option>
+                            <option>Something else</option>
+                        </select>
+                    </div>
+                    <div class="stack-8">
+                        <label class="type-label-sm" for="message">Message</label>
+                        <textarea id="message"></textarea>
+                    </div>
+                    <fieldset class="stack-8">
+                        <legend class="type-label-sm">Budget</legend>
+                        <label class="flex items-center gap-8"><input type="radio" name="budget" checked /> Small</label>
+                        <label class="flex items-center gap-8"><input type="radio" name="budget" /> Large</label>
+                    </fieldset>
+                    <label class="flex items-center gap-8"><input type="checkbox" checked /> Send me a copy</label>
+                    <div class="input-group">
+                        <label class="sr-only" for="search">Search</label>
+                        <input id="search" type="search" placeholder="input-group" />
+                        <button class="btn btn--small" type="submit">Search</button>
+                    </div>
+                    <p><button class="btn" type="submit">Send</button></p>
+                </form>
+            </section>
+
+            <!-- Behaviour -------------------------------------------------------- -->
+            <section
+                id="behaviour"
+                class="section layout-grid layout-grid--ruled flow"
+                aria-labelledby="behaviour-title"
+            >
+                <p class="type-label">Behaviour</p>
+                <h2 id="behaviour-title" class="type-h1 [--flow-space:--spacing(16)]">Native first</h2>
+
+                <h3>Disclosure</h3>
+                <div class="stack-8" data-demo="disclosure">
+                    <button class="btn btn--secondary" type="button" aria-controls="answer-1" aria-expanded="false">
+                        <span data-show-collapsed>Show the answer</span>
+                        <span data-show-expanded>Hide the answer</span>
+                    </button>
+                    <div id="answer-1" data-disclosure data-disclosure-animate hidden>
+                        <p class="surface-white p-16 rounded-md">
+                            Hidden with <code>hidden</code> and <code>inert</code>. Press Escape inside to close it.
+                            <a href="#behaviour">Focusable link example</a>.
+                        </p>
+                    </div>
+
+                    <!-- biome-ignore lint/a11y/useSemanticElements: demonstrates that non-button triggers work -->
+                    <span class="link" role="button" tabindex="0" aria-controls="answer-2" aria-expanded="false" data-demo="span-trigger"
+                        >A non-button trigger (Enter or Space)</span
+                    >
+                    <div id="answer-2" data-disclosure hidden>
+                        <p class="surface-white p-16 rounded-md">Opened from a span with role="button".</p>
+                    </div>
+                </div>
+
+                <p>For a simple accordion, native <code>&lt;details name&gt;</code> needs no script:</p>
+                <div class="stack-8">
+                    <details name="faq">
+                        <summary>First question</summary>
+                        <p>Only one in the group stays open.</p>
+                    </details>
+                    <details name="faq">
+                        <summary>Second question</summary>
+                        <p>Opening this closes the first.</p>
+                    </details>
+                </div>
+
+                <h3>Dialog</h3>
+                <p class="flex-list">
+                    <button class="btn" type="button" commandfor="demo-dialog" command="show-modal" data-demo="commandfor">
+                        Open with commandfor
+                    </button>
+                    <button
+                        class="btn btn--secondary"
+                        type="button"
+                        data-dialog-open="demo-dialog"
+                        data-dialog-template="dialog-content-alt"
+                        data-demo="data-open"
+                    >
+                        Open with data-dialog-open
+                    </button>
+                </p>
+
+                <dialog
+                    id="demo-dialog"
+                    class="surface-neutral m-auto max-w-[min(--spacing(560),100%-2*var(--gutter))] rounded-md p-24 backdrop:bg-blue/60"
+                    aria-labelledby="demo-dialog-title"
+                    data-dialog
+                    data-dialog-template="dialog-content"
+                >
+                    <div class="stack-16">
+                        <h2 id="demo-dialog-title" class="type-h3">A dialog</h2>
+                        <div data-dialog-slot></div>
+                        <button class="btn btn--secondary" type="button" commandfor="demo-dialog" command="close">
+                            Close
+                        </button>
+                    </div>
+                </dialog>
+
+                <template id="dialog-content">
+                    <p>This content came from a template, cloned into the slot when the dialog opened.</p>
+                </template>
+                <template id="dialog-content-alt">
+                    <p>This opener asked for a different template with <code>data-dialog-template</code>.</p>
+                </template>
+
+                <h3>Animate on scroll</h3>
+                <div class="animate grid-simple cols-1 md:cols-3" data-animate data-animate-stagger="120" data-demo="animate">
+                    <p class="animate__item demo-box">Fades in</p>
+                    <p class="animate__item demo-box">one after</p>
+                    <p class="animate__item demo-box">another</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="surface-blue">
+            <div class="layout-grid layout-grid--ruled">
+                <div class="layout-start section stack-32">
+                    <svg class="block h-24 w-auto" viewBox="0 0 344 66" role="img" aria-label="Kite Co.">
+                        <use href="#kite-co-logo" />
+                    </svg>
+                    <p class="type-h4 max-w-[26ch]">
+                        Cultural organisations deserve better technology and better ways to communicate with the people
+                        who care about them.
+                    </p>
+                </div>
+                <nav
+                    class="layout-end section max-md:rule-block-start md:rule-inline-start md:ps-(--layout--inset)"
+                    aria-label="Footer"
+                >
+                    <ul class="stack-24 list-reset">
+                        <li><a class="type-label" href="https://github.com/">Source</a></li>
+                        <li><a class="type-label" href="#colour">Colour</a></li>
+                        <li><a class="type-label" href="#main">Back to top</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="layout-grid rule-block-start">
+                <p class="layout-wide type-meta py-16">©2026 Kite Co.</p>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,87 @@
+/* ---------------------------------------------------------------------------
+ * Input
+ *
+ * Text inputs and textareas. select builds on it (select.css). base/forms.css
+ * applies it to bare elements when that file is turned on.
+ *
+ * Block knobs: --input--padding-x, --input--padding-y, --input--border-width,
+ * --input--border-color, --input--border-radius, --input--background-color
+ * (+ --hover, --focus), --input--color.
+ *
+ * Focus uses the global :focus-visible ring.
+ * ------------------------------------------------------------------------- */
+
+@utility input {
+    --input--padding-x: 0.7em;
+    --input--padding-y: 0.5em;
+    --input--border-width: 1px;
+    --input--border-color: var(--color-accent);
+    --input--border-radius: var(--radius-md);
+    --input--background-color: color-mix(in oklab, var(--color-accent) 3%, var(--color-background));
+    --input--background-color--hover: color-mix(in oklab, var(--color-accent) 8%, var(--color-background));
+    --input--background-color--focus: var(--color-background);
+    --input--color: var(--color-foreground);
+
+    display: block;
+    inline-size: 100%;
+    padding-block: var(--input--padding-y);
+    padding-inline: var(--input--padding-x);
+    border: var(--input--border-width) solid var(--input--border-color);
+    border-radius: var(--input--border-radius);
+    background-color: var(--input--background-color);
+    color: var(--input--color);
+    font: inherit;
+    transition: transition(color, background-color, border-color);
+
+    &::placeholder {
+        color: color-mix(in oklab, currentColor 70%, transparent);
+        opacity: 1;
+    }
+
+    @variant hover {
+        background-color: var(--input--background-color--hover);
+    }
+
+    &:focus {
+        background-color: var(--input--background-color--focus);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+/*
+ * A field with an inline button or icon:
+ *   <div class="input-group"><input type="search"><button class="btn">Go</button></div>
+ * The group draws the input's box; the control inside is bare.
+ */
+@utility input-group {
+    @apply input;
+
+    display: flex;
+    align-items: center;
+    gap: --spacing(8);
+    padding-block: 0;
+    padding-inline-end: var(--input--padding-y);
+
+    &:focus-within {
+        @apply focus-ring;
+
+        background-color: var(--input--background-color--focus);
+    }
+
+    & > :where(input) {
+        flex: 1;
+        min-inline-size: 0;
+        padding-block: var(--input--padding-y);
+        border: 0;
+        background: transparent;
+        color: inherit;
+
+        &:focus-visible {
+            @apply focus-none;
+        }
+    }
+}

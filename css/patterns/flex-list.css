@@ -1,0 +1,18 @@
+/* ---------------------------------------------------------------------------
+ * Flex list
+ *
+ * A wrapping row of items at their natural width: tags, inline nav, buttons.
+ * Only a <ul>/<ol> has its list styles reset.
+ * ------------------------------------------------------------------------- */
+
+@utility flex-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--col-gap, var(--gap));
+    row-gap: var(--row-gap, var(--gap));
+
+    &:where(ul, ol) {
+        @apply list-reset;
+    }
+}

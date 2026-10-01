@@ -1,0 +1,24 @@
+/* ---------------------------------------------------------------------------
+ * Prose
+ *
+ * Flow plus a reading measure and list styling, for rich text you don't
+ * control (CMS content, Markdown).
+ *
+ * Add the class not-prose to opt a subtree out of the list styling. It needs no
+ * CSS of its own: prose's selectors exclude it with :where(). It's an exclusion,
+ * not a reset, so a .prose nested inside .not-prose stays excluded.
+ * ------------------------------------------------------------------------- */
+
+@utility prose {
+    --prose--max-inline-size: 65ch;
+
+    @apply flow;
+
+    & > :where(p, ul, ol, dl, h1, h2, h3, h4, h5, h6, blockquote, pre) {
+        max-inline-size: var(--prose--max-inline-size);
+    }
+
+    & :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+        @apply list-styled;
+    }
+}

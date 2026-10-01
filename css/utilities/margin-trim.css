@@ -1,0 +1,17 @@
+/* Remove the outer margins of a container's first and/or last child. */
+
+@utility margin-trim-first {
+    & > :first-child {
+        margin-block-start: 0;
+    }
+}
+
+@utility margin-trim-last {
+    & > :last-child {
+        margin-block-end: 0;
+    }
+}
+
+@utility margin-trim {
+    @apply margin-trim-first margin-trim-last;
+}

@@ -1,0 +1,74 @@
+/* ---------------------------------------------------------------------------
+ * Type styles
+ *
+ * Sizes are theme tokens (text-h1 …, see tokens/theme.css), each carrying its
+ * line height and letter spacing. These compose family and weight with a size.
+ * Headings get them in base/elements.css.
+ *
+ *   type-h1 … type-h6, type-hero   IBM Plex Serif Medium
+ *   type-base                      IBM Plex Sans, the body default
+ *   type-label, type-label-sm      IBM Plex Mono SemiBold: surtitles, nav, tags
+ *   type-meta                      IBM Plex Serif Medium, small: captions, credits, dates
+ * ------------------------------------------------------------------------- */
+
+@utility type-heading {
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-medium);
+    text-wrap: balance;
+}
+
+@utility type-base {
+    @apply text-base;
+
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-normal);
+}
+
+@utility type-label {
+    @apply text-label;
+
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+}
+
+@utility type-label-sm {
+    @apply text-label-sm;
+
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+}
+
+@utility type-meta {
+    @apply text-meta;
+
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-medium);
+}
+
+@utility type-hero {
+    @apply type-heading text-hero;
+}
+
+@utility type-h1 {
+    @apply type-heading text-h1;
+}
+
+@utility type-h2 {
+    @apply type-heading text-h2;
+}
+
+@utility type-h3 {
+    @apply type-heading text-h3;
+}
+
+@utility type-h4 {
+    @apply type-heading text-h4;
+}
+
+@utility type-h5 {
+    @apply type-heading text-h5;
+}
+
+@utility type-h6 {
+    @apply type-heading text-h6;
+}

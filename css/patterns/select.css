@@ -1,0 +1,41 @@
+/* ---------------------------------------------------------------------------
+ * Select
+ *
+ * An input with a chevron. The chevron is two currentColor gradients, so it
+ * follows the text colour in every context. (A <select> can't have a pseudo-
+ * element, which rules out a mask icon.)
+ *
+ * Block knobs: --select--icon-size, plus everything from input.
+ * ------------------------------------------------------------------------- */
+
+@utility select {
+    --select--icon-size: 0.5em;
+
+    @apply input;
+
+    min-inline-size: 6rem;
+
+    &:not([multiple]) {
+        appearance: none;
+        padding-inline-end: calc(var(--input--padding-x) * 1.5 + var(--select--icon-size));
+        background-image:
+            linear-gradient(45deg, transparent 50%, currentColor 50%),
+            linear-gradient(135deg, currentColor 50%, transparent 50%);
+        background-position:
+            right calc(var(--input--padding-x) + var(--select--icon-size) / 2) center,
+            right var(--input--padding-x) center;
+        background-size: calc(var(--select--icon-size) / 2) calc(var(--select--icon-size) / 2);
+        background-repeat: no-repeat;
+        cursor: pointer;
+
+        &:dir(rtl) {
+            background-position:
+                left var(--input--padding-x) center,
+                left calc(var(--input--padding-x) + var(--select--icon-size) / 2) center;
+        }
+    }
+
+    &[multiple] {
+        min-block-size: --spacing(100);
+    }
+}

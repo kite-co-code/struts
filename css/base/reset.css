@@ -1,0 +1,59 @@
+/* ---------------------------------------------------------------------------
+ * Reset additions
+ *
+ * Tailwind's preflight does most of the reset (box-sizing, margins, media,
+ * form fonts). This file adds what it doesn't. Imported into @layer base.
+ * ------------------------------------------------------------------------- */
+
+html {
+    block-size: 100%;
+    scroll-padding-block-start: var(--scroll-offset, 0px);
+    text-rendering: optimizeLegibility;
+    text-underline-offset: 0.2em;
+    -webkit-font-smoothing: antialiased;
+
+    @media (prefers-reduced-motion: no-preference) {
+        scroll-behavior: smooth;
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    @apply type-base;
+
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100%;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+}
+
+/* Preflight removes all margins; dialogs need theirs to centre. */
+dialog {
+    margin: auto;
+}
+
+/* Avoid text overflowing narrow containers */
+:where(p, h1, h2, h3, h4, h5, h6, li, dd, figcaption) {
+    overflow-wrap: break-word;
+}
+
+/* Keyboard focus only. Colour follows the context unless --focus-color is set. */
+:focus-visible {
+    @apply focus-ring;
+}
+
+/* Elements focused by script (skip-link targets, dialogs) don't need a ring. */
+[tabindex="-1"]:focus {
+    @apply focus-none;
+}
+
+button,
+[role="button"] {
+    cursor: pointer;
+}
+
+::selection {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+}

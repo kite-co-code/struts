@@ -1,0 +1,120 @@
+/* ---------------------------------------------------------------------------
+ * WordPress adapter
+ *
+ * Maps the classes WordPress writes into post content onto struts patterns.
+ * Import it after everything else in index.css, and in postcss.config.js:
+ *
+ *   struts({
+ *       safelist: true,   // post content lives in the database, not in scanned files
+ *       classes: {
+ *           surface: ['surface-{name}', 'has-{name}-background-color'],
+ *           on: ['on-{name}', 'has-{name}-color'],
+ *       },
+ *   })
+ *
+ * The editor palette: mark colours with "meta": { "wordpress": { "editor": true } }
+ * in colors.config.json and build theme.json's palette from those entries.
+ *
+ * Plain rules in @layer components, not @utility: these classes come from the
+ * database, so Tailwind's scanner never sees them. Utilities still win.
+ * ------------------------------------------------------------------------- */
+
+@layer components {
+    /* Alignment → layout */
+    .alignfull {
+        @apply layout-full;
+    }
+
+    .alignwide {
+        @apply layout-wide;
+    }
+
+    .aligncenter {
+        @apply layout-narrow;
+    }
+
+    .alignleft {
+        @apply layout-start;
+    }
+
+    .alignright {
+        @apply layout-end;
+    }
+
+    /* Text after a wide or full block gets layout-sized space */
+    :where(.alignwide, .alignfull) + :where(.wp-block-heading, .wp-block-paragraph, .wp-block-list) {
+        --flow-space: var(--space-layout);
+    }
+
+    /* Consecutive full-width blocks with backgrounds butt up against each other */
+    :where(.alignfull.has-background) + :where(.alignfull.has-background) {
+        --flow-space: 0;
+    }
+
+    /* Block style variations (register them as "type-hero", "type-h1" …) */
+    .is-style-type-hero {
+        @apply type-hero;
+    }
+
+    .is-style-type-h1 {
+        @apply type-h1;
+    }
+
+    .is-style-type-h2 {
+        @apply type-h2;
+    }
+
+    .is-style-type-h3 {
+        @apply type-h3;
+    }
+
+    .is-style-type-h4 {
+        @apply type-h4;
+    }
+
+    .is-style-type-h5 {
+        @apply type-h5;
+    }
+
+    .is-style-type-h6 {
+        @apply type-h6;
+    }
+
+    .is-style-type-meta {
+        @apply type-meta;
+    }
+
+    /* Core blocks */
+    .wp-block-list {
+        @apply list-styled;
+    }
+
+    .wp-block-quote {
+        @apply blockquote;
+    }
+
+    .wp-block-embed {
+        @apply media-embed;
+    }
+
+    .wp-block-buttons {
+        @apply flex-list;
+    }
+
+    .wp-block-button__link {
+        @apply btn;
+    }
+
+    .wp-block-button.is-style-outline > .wp-block-button__link {
+        @apply btn--secondary;
+    }
+
+    /* Screen-reader text WordPress core and plugins output */
+    .screen-reader-text {
+        @apply sr-only;
+
+        &:focus {
+            @apply not-sr-only;
+        }
+    }
+}

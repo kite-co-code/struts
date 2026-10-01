@@ -1,0 +1,30 @@
+/* ---------------------------------------------------------------------------
+ * Media embed
+ *
+ * A figure holding an iframe or video at a fixed aspect ratio, with a caption.
+ *   <figure class="media-embed"><iframe …></iframe><figcaption>…</figcaption></figure>
+ *
+ * Block knob: --media-embed--aspect-ratio (16 / 9).
+ * ------------------------------------------------------------------------- */
+
+@utility media-embed {
+    --media-embed--aspect-ratio: 16 / 9;
+
+    display: grid;
+    gap: --spacing(4);
+    text-align: center;
+
+    & > :where(iframe, video, img) {
+        inline-size: 100%;
+        block-size: auto;
+        aspect-ratio: var(--media-embed--aspect-ratio);
+        object-fit: cover;
+    }
+
+    & > figcaption {
+        @apply type-meta;
+
+        max-inline-size: var(--container-2xs);
+        margin-inline: auto;
+    }
+}

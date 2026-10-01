@@ -1,0 +1,18 @@
+/* ---------------------------------------------------------------------------
+ * Show or hide parts of a disclosure trigger based on its aria-expanded state:
+ *
+ *   <button aria-controls="menu" aria-expanded="false">
+ *       <span data-show-collapsed>Open menu</span>
+ *       <span data-show-expanded>Close menu</span>
+ *   </button>
+ *
+ * data-show-expanded / data-hide-collapsed: visible only when expanded.
+ * data-hide-expanded / data-show-collapsed: visible only when collapsed.
+ * ------------------------------------------------------------------------- */
+
+@layer utilities {
+    :where([aria-expanded="false"]) :where([data-show-expanded], [data-hide-collapsed]),
+    :where([aria-expanded="true"]) :where([data-hide-expanded], [data-show-collapsed]) {
+        display: none;
+    }
+}

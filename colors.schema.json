@@ -1,0 +1,109 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://kite-co.net/struts/colors.schema.json",
+    "title": "struts colour config",
+    "description": "Palette colours, role aliases and schemes for postcss/color-system.js.",
+    "type": "object",
+    "required": ["colors"],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "colors": {
+            "description": "Keyed by kebab-case name. Each becomes --color-{name}, surface-{name} and on-{name}.",
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[a-z][a-z0-9-]*$"
+            },
+            "additionalProperties": {
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/palette"
+                    },
+                    {
+                        "$ref": "#/$defs/alias"
+                    }
+                ]
+            }
+        },
+        "schemes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "dark": {
+                    "description": "Role \u2192 colour name or CSS value. Keys must be aliases, or an alias + \"-foreground\". Output under prefers-color-scheme: dark and [data-scheme=dark].",
+                    "type": "object",
+                    "propertyNames": {
+                        "pattern": "^[a-z][a-z0-9-]*$"
+                    },
+                    "additionalProperties": {
+                        "$ref": "#/$defs/value"
+                    }
+                }
+            }
+        }
+    },
+    "$defs": {
+        "value": {
+            "description": "A colour name from this config (becomes var(--color-{name})) or any CSS value.",
+            "type": "string",
+            "minLength": 1
+        },
+        "palette": {
+            "type": "object",
+            "required": ["color"],
+            "additionalProperties": false,
+            "properties": {
+                "color": {
+                    "description": "Any CSS colour culori can parse (hex, rgb(), oklch() \u2026).",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Human label, for editors and adapters.",
+                    "type": "string"
+                },
+                "foreground": {
+                    "description": "Text colour on this colour. Becomes --color-{name}-foreground.",
+                    "$ref": "#/$defs/value"
+                },
+                "colorScheme": {
+                    "description": "Overrides the color-scheme worked out from luminance.",
+                    "enum": ["light", "dark"]
+                },
+                "vars": {
+                    "description": "Custom properties set by surface-{name} and on-{name}. Set role tokens (--color-accent \u2026), not component variables.",
+                    "type": "object",
+                    "propertyNames": {
+                        "pattern": "^--[a-zA-Z0-9-_]+$"
+                    },
+                    "additionalProperties": {
+                        "$ref": "#/$defs/value"
+                    }
+                },
+                "meta": {
+                    "description": "Free-form data for adapters and tooling, e.g. { \"wordpress\": { \"editor\": true } } to list the colour in the block editor palette. The plugin ignores it.",
+                    "type": "object"
+                }
+            }
+        },
+        "alias": {
+            "type": "object",
+            "required": ["alias"],
+            "additionalProperties": false,
+            "properties": {
+                "alias": {
+                    "description": "Another colour's name. Emitted as var(--color-{alias}).",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "meta": {
+                    "description": "Free-form data for adapters and tooling, e.g. { \"wordpress\": { \"editor\": true } } to list the colour in the block editor palette. The plugin ignores it.",
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

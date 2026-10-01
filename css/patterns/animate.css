@@ -1,0 +1,43 @@
+/* ---------------------------------------------------------------------------
+ * Animate on scroll
+ *
+ *   <div class="animate" data-animate data-animate-stagger="80">
+ *       <p class="animate__item">…</p>
+ *       <p class="animate__item">…</p>
+ *   </div>
+ *
+ * js/animate.ts sets [data-playing] when the block scrolls into view. The block
+ * can be its own item. Items stay visible without JS (the html.js class) and
+ * when the user prefers reduced motion.
+ *
+ * Block knobs: --animate--animation-name (fade-in), --animate--animation-duration,
+ * --animate--animation-timing-function, --animate--animation-delay, and
+ * --animate--translate for fade-in-translate.
+ * Item knob (read with a fallback): --animate__item--animation-delay, added to
+ * the block's delay. animate.ts sets it from data-animate-stagger.
+ *
+ * .animate__item needs no CSS of its own; .animate styles it.
+ * ------------------------------------------------------------------------- */
+
+@utility animate {
+    --animate--animation-name: fade-in;
+    --animate--animation-duration: 300ms;
+    --animate--animation-timing-function: ease-out;
+    --animate--animation-delay: 50ms;
+
+    @media (prefers-reduced-motion: no-preference) {
+        :where(.js) &:where(.animate__item),
+        :where(.js) & :where(.animate__item) {
+            opacity: 0;
+        }
+
+        &:where([data-playing]):where(.animate__item),
+        &:where([data-playing]) :where(.animate__item) {
+            /* The keyframes animate from their start state to this */
+            opacity: 1;
+            animation: var(--animate--animation-name) var(--animate--animation-duration)
+                var(--animate--animation-timing-function) both;
+            animation-delay: calc(var(--animate--animation-delay) + var(--animate__item--animation-delay, 0ms));
+        }
+    }
+}

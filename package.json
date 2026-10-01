@@ -1,0 +1,35 @@
+{
+    "name": "kite-co-struts",
+    "version": "0.1.0",
+    "description": "A framework-agnostic CSS and JS starter built on Tailwind v4: colour contexts, a custom-property API, fluid sizing, flow spacing and accessible JS helpers.",
+    "private": true,
+    "type": "module",
+    "author": "Jerome Toole",
+    "license": "MIT",
+    "packageManager": "pnpm@11.24.0",
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "test": "vitest run",
+        "check": "tsc --noEmit",
+        "lint": "biome check ."
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.5.14",
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/culori": "^4.0.1",
+        "@types/node": "^26.6.3",
+        "culori": "^4.0.2",
+        "fast-glob": "^3.3.3",
+        "postcss": "^8.5.28",
+        "postcss-functions": "^4.0.2",
+        "tailwindcss": "^4.3.3",
+        "typescript": "^7.0.2",
+        "vite": "^8.3.1",
+        "vitest": "^5.0.3"
+    }
+}

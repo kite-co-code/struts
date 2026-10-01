@@ -1,0 +1,62 @@
+/* ---------------------------------------------------------------------------
+ * Checkbox
+ *
+ * Restyles the input itself (appearance: none), so no wrapper is needed:
+ *   <label><input type="checkbox" class="checkbox"> Remember me</label>
+ *
+ * Block knobs: --checkbox--size, --checkbox--border-width, --checkbox--border-color,
+ * --checkbox--border-radius, --checkbox--background-color (+ --checked),
+ * --checkbox--color--checked (the tick).
+ * ------------------------------------------------------------------------- */
+
+@utility checkbox {
+    --checkbox--size: 1.1em;
+    --checkbox--border-width: 1px;
+    --checkbox--border-color: var(--color-accent);
+    --checkbox--border-radius: var(--radius-xs);
+    --checkbox--background-color: var(--color-background);
+    --checkbox--background-color--checked: var(--color-accent);
+    --checkbox--color--checked: var(--color-accent-foreground);
+
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    flex: none;
+    inline-size: var(--checkbox--size);
+    block-size: var(--checkbox--size);
+    margin: 0;
+    border: var(--checkbox--border-width) solid var(--checkbox--border-color);
+    border-radius: var(--checkbox--border-radius);
+    background-color: var(--checkbox--background-color);
+    color: var(--checkbox--color--checked);
+    vertical-align: -0.25em;
+    cursor: pointer;
+    transition: transition(background-color, border-color);
+
+    /* The tick: two borders of a rotated box */
+    &::before {
+        content: "";
+        inline-size: 0.6em;
+        block-size: 0.3em;
+        border-block-end: 0.15em solid currentColor;
+        border-inline-start: 0.15em solid currentColor;
+        rotate: -45deg;
+        translate: 0 -0.08em;
+        scale: 0;
+        transition: transition(scale);
+    }
+
+    &:checked {
+        border-color: var(--checkbox--background-color--checked);
+        background-color: var(--checkbox--background-color--checked);
+
+        &::before {
+            scale: 1;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}

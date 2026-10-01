@@ -1,0 +1,46 @@
+/* ---------------------------------------------------------------------------
+ * Link
+ *
+ * Applied to every <a> in base/elements.css.
+ *
+ * Context knobs (never declared, so a surface or parent can set them):
+ *   --link--color          falls back to --color-accent
+ *   --link--color--hover   falls back to --link--color mixed toward the foreground
+ *
+ * Block knobs (declared here, set by variants):
+ *   --link--text-decoration-line, --link--text-decoration-thickness (+ --hover)
+ *
+ * The underline thickens on hover, so there's feedback even where the accent
+ * and the foreground are the same colour (Kite Co.'s blue on neutral).
+ * ------------------------------------------------------------------------- */
+
+@utility link {
+    --link--text-decoration-line: underline;
+    --link--text-decoration-line--hover: underline;
+    --link--text-decoration-thickness: 1px;
+    --link--text-decoration-thickness--hover: 2px;
+
+    color: var(--link--color, var(--color-accent));
+    text-decoration-line: var(--link--text-decoration-line);
+    text-decoration-thickness: var(--link--text-decoration-thickness);
+    transition: transition(color, text-decoration-color, text-decoration-thickness);
+
+    @variant hover {
+        color: var(
+            --link--color--hover,
+            color-mix(in oklab, var(--link--color, var(--color-accent)) 75%, var(--color-foreground))
+        );
+        text-decoration-line: var(--link--text-decoration-line--hover);
+        text-decoration-thickness: var(--link--text-decoration-thickness--hover);
+    }
+}
+
+/* No underline until hover */
+@utility link--subtle {
+    --link--text-decoration-line: none;
+}
+
+/* Takes the text colour instead of the accent */
+@utility link--foreground {
+    --link--color: var(--color-foreground);
+}

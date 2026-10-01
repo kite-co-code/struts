@@ -1,0 +1,90 @@
+/* ---------------------------------------------------------------------------
+ * Element defaults
+ *
+ * Bare elements get the matching pattern, so markup from a CMS or Markdown
+ * looks right without classes. Imported into @layer base, so any class wins.
+ * ------------------------------------------------------------------------- */
+
+a {
+    @apply link;
+}
+
+/* Headings */
+h1 {
+    @apply type-h1;
+}
+
+h2 {
+    @apply type-h2;
+}
+
+h3 {
+    @apply type-h3;
+}
+
+h4 {
+    @apply type-h4;
+}
+
+h5 {
+    @apply type-h5;
+}
+
+h6 {
+    @apply type-h6;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+    --flow-space: 1lh;
+
+    /* Links inside headings take the heading's colour */
+    & a {
+        color: inherit;
+        text-decoration-line: none;
+    }
+}
+
+/* Consecutive headings sit close together */
+:where(h1, h2, h3, h4, h5, h6) + :where(h1, h2, h3, h4, h5, h6) {
+    --flow-space: --spacing(4);
+}
+
+/* Text */
+p {
+    --flow-space: var(--space-base);
+
+    text-wrap: pretty;
+}
+
+:where(ul, ol, dl) {
+    --flow-space: var(--space-base);
+}
+
+/* Text after a wide or full-width block gets layout-sized space */
+:where(.layout-wide, .layout-full) + :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl) {
+    --flow-space: var(--space-layout);
+}
+
+dt {
+    font-weight: var(--font-weight-bold);
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+/* Monospace looks large beside proportional text at the same size */
+:where(code, kbd, samp, pre) {
+    font-size: 0.9em;
+}
+
+hr {
+    @apply rule-block-start;
+
+    border-inline: 0;
+    border-block-end: 0;
+}
+
+blockquote {
+    @apply blockquote;
+}

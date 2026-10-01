@@ -1,0 +1,9 @@
+/*
+ * Remove focus styles. Only for elements that are never reached by keyboard,
+ * or that draw their own focus indicator. Getting this wrong hides focus.
+ */
+
+@utility focus-none {
+    outline: none;
+    box-shadow: none;
+}

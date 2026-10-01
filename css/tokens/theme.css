@@ -1,0 +1,125 @@
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ *
+ * Everything here is a Tailwind theme variable, so each namespace also gives
+ * utilities (text-h1, ease-out-quad, max-w-md …). Names follow Tailwind.
+ *
+ * Colours come from colors.config.json via postcss/color-system.js, which
+ * also clears Tailwind's default palette (--color-*: initial).
+ * ------------------------------------------------------------------------- */
+
+@theme {
+    /* 1px at the default root size, so p-16 = 1rem. In CSS use --spacing(n). */
+    --spacing: 0.0625rem;
+
+    /* Breakpoints (Tailwind's sm–2xl, plus three more) */
+    --breakpoint-2xs: 25rem;
+    --breakpoint-xs: 36rem;
+    --breakpoint-3xl: 118.75rem;
+
+    /* Containers: reset Tailwind's scale so only these exist */
+    --container-*: initial;
+    --container-2xs: to-rem(560);
+    --container-xs: to-rem(720);
+    --container-sm: to-rem(765);
+    --container-md: to-rem(1200);
+    --container-lg: to-rem(1328);
+
+    /* Fonts (@font-face rules in base/fonts.css) */
+    --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+    --font-serif: "IBM Plex Serif", Georgia, serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    /*
+     * Type scale, from the Figma text styles (set in Post there; Plex Serif
+     * and Plex Mono stand in here). fluid(min, max) scales between
+     * the preset's viewport range (the 402 and 1440 frames).
+     *   h1–h4   Heading 1–4      IBM Plex Serif Medium
+     *   base    Body             IBM Plex Sans (Mobile/Body at the small end)
+     *   label   Surtitle         IBM Plex Mono SemiBold; label-sm for tags
+     *   meta    Caption          IBM Plex Serif Medium
+     * hero is a step above Heading 1 for one-off display text.
+     */
+    --text-hero: fluid(36, 56);
+    --text-hero--line-height: 1.1;
+    --text-hero--letter-spacing: -0.01em;
+    --text-h1: fluid(32, 42);
+    --text-h1--line-height: 1.2;
+    --text-h1--letter-spacing: -0.01em;
+    --text-h2: fluid(28, 32);
+    --text-h2--line-height: 1.3;
+    --text-h2--letter-spacing: 0em;
+    --text-h3: fluid(24, 28);
+    --text-h3--line-height: 1.25;
+    --text-h3--letter-spacing: -0.01em;
+    --text-h4: fluid(20, 24);
+    --text-h4--line-height: 1.35;
+    --text-h4--letter-spacing: -0.01em;
+    --text-h5: fluid(18, 20);
+    --text-h5--line-height: 1.4;
+    --text-h5--letter-spacing: 0em;
+    --text-h6: to-rem(16);
+    --text-h6--line-height: 1.4;
+    --text-h6--letter-spacing: 0em;
+    --text-base: fluid(18, 22);
+    --text-base--line-height: 1.4;
+    --text-base--letter-spacing: -0.01em;
+    --text-label: to-rem(16);
+    --text-label--line-height: 1.2;
+    --text-label--letter-spacing: 0em;
+    --text-label-sm: to-rem(14);
+    --text-label-sm--line-height: 1.3;
+    --text-label-sm--letter-spacing: 0em;
+    --text-meta: to-rem(14);
+    --text-meta--line-height: 1.4;
+    --text-meta--letter-spacing: 0em;
+
+    /* Transitions: read by transition() and Tailwind's transition-* utilities */
+    --default-transition-duration: 200ms;
+    --default-transition-timing-function: var(--ease-out-quad);
+
+    /* Easing curves */
+    --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    --ease-in-sine: cubic-bezier(0.47, 0, 0.745, 0.715);
+    --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+    --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+    --ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-out-sine: cubic-bezier(0.39, 0.575, 0.565, 1);
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+    --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+    --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+    --ease-in-out-sine: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+    --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Animations (see patterns/animate.css) */
+    --animate-fade-in: fade-in var(--animate--animation-duration, 300ms)
+        var(--animate--animation-timing-function, ease-out) both;
+    --animate-fade-in-translate: fade-in-translate var(--animate--animation-duration, 300ms)
+        var(--animate--animation-timing-function, ease-out) both;
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes fade-in-translate {
+        from {
+            opacity: 0;
+            translate: var(--animate--translate, 0 --spacing(16));
+        }
+    }
+}

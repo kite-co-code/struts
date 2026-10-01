@@ -1,0 +1,50 @@
+/* ---------------------------------------------------------------------------
+ * Radio
+ *
+ * Restyles the input itself (appearance: none):
+ *   <label><input type="radio" name="size" class="radio"> Small</label>
+ *
+ * Block knobs: --radio--size, --radio--border-width, --radio--border-color,
+ * --radio--background-color, --radio--color--checked (the dot).
+ * ------------------------------------------------------------------------- */
+
+@utility radio {
+    --radio--size: 1.1em;
+    --radio--border-width: 1px;
+    --radio--border-color: var(--color-accent);
+    --radio--background-color: var(--color-background);
+    --radio--color--checked: var(--color-accent);
+
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    flex: none;
+    inline-size: var(--radio--size);
+    block-size: var(--radio--size);
+    margin: 0;
+    border: var(--radio--border-width) solid var(--radio--border-color);
+    border-radius: 50%;
+    background-color: var(--radio--background-color);
+    vertical-align: -0.25em;
+    cursor: pointer;
+
+    /* The dot */
+    &::before {
+        content: "";
+        inline-size: calc(var(--radio--size) / 2);
+        block-size: calc(var(--radio--size) / 2);
+        border-radius: 50%;
+        background-color: var(--radio--color--checked);
+        scale: 0;
+        transition: transition(scale);
+    }
+
+    &:checked::before {
+        scale: 1;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}

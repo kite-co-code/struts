@@ -1,0 +1,29 @@
+/* ---------------------------------------------------------------------------
+ * Flex grid
+ *
+ * Like grid-simple, but the last row's items can be centred or justified,
+ * because it's flexbox. Children are sized to --cols columns (set with cols-{n}).
+ *
+ * flex-grid-auto: children keep their own width and wrap.
+ * ------------------------------------------------------------------------- */
+
+@utility flex-grid {
+    /* --cols doesn't inherit, so hand it to the children through internal values */
+    --_cols: var(--cols);
+    --_col-gap: var(--col-gap, var(--gap));
+
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--_col-gap);
+    row-gap: var(--row-gap, var(--gap));
+
+    & > * {
+        inline-size: calc((100% - (var(--_cols) - 1) * var(--_col-gap)) / var(--_cols));
+    }
+}
+
+@utility flex-grid-auto {
+    & > * {
+        inline-size: auto;
+    }
+}

@@ -1,0 +1,16 @@
+/* ---------------------------------------------------------------------------
+ * Flow
+ *
+ * Space between siblings. Each child declares the space above itself with
+ * --flow-space (registered as non-inheriting in tokens/globals.css); anything
+ * that doesn't falls back to --space-layout.
+ *
+ * Element defaults (p, headings, lists) are in base/elements.css. For one
+ * fixed gap regardless of element, use stack-{n} instead.
+ * ------------------------------------------------------------------------- */
+
+@utility flow {
+    & > * + * {
+        margin-block-start: var(--flow-space, var(--space-layout));
+    }
+}
